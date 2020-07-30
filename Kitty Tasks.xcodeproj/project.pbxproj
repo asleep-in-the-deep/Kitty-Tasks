@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49D44CE42F923262C21DB06A /* Pods_Kitty_Tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */; };
+		8400AC7724D3356A00DF54B7 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400AC7624D3356A00DF54B7 /* CalendarView.swift */; };
+		8400AC7924D335A000DF54B7 /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400AC7824D335A000DF54B7 /* TaskModel.swift */; };
+		8400AC7B24D335B000DF54B7 /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400AC7A24D335B000DF54B7 /* GroupModel.swift */; };
 		84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84085C3E24D3133A00AA718F /* AppDelegate.swift */; };
 		84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84085C4024D3133A00AA718F /* SceneDelegate.swift */; };
 		84085C4624D3133A00AA718F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84085C4424D3133A00AA718F /* Main.storyboard */; };
@@ -20,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8400AC7624D3356A00DF54B7 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		8400AC7824D335A000DF54B7 /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
+		8400AC7A24D335B000DF54B7 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
 		84085C3B24D3133A00AA718F /* Kitty Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kitty Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84085C3E24D3133A00AA718F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84085C4024D3133A00AA718F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -32,6 +39,9 @@
 		84D9314324D329FE00CC7CCD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		84D9314524D32A0A00CC7CCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupViewController.swift; sourceTree = "<group>"; };
+		8BA29CF0CB58BD9F97282B01 /* Pods-Kitty Tasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kitty Tasks.release.xcconfig"; path = "Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks.release.xcconfig"; sourceTree = "<group>"; };
+		9DF06D114C370F0FD91DE13C /* Pods-Kitty Tasks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kitty Tasks.debug.xcconfig"; path = "Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks.debug.xcconfig"; sourceTree = "<group>"; };
+		D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kitty_Tasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,17 +49,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D44CE42F923262C21DB06A /* Pods_Kitty_Tasks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630AC1E65313A663926ECCA5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		84085C3224D3133A00AA718F = {
 			isa = PBXGroup;
 			children = (
 				84085C3D24D3133A00AA718F /* Kitty Tasks */,
 				84085C3C24D3133A00AA718F /* Products */,
+				D03973C2F93B2CD16F19A765 /* Pods */,
+				630AC1E65313A663926ECCA5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,6 +99,9 @@
 		84D9313A24D31FD300CC7CCD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8400AC7824D335A000DF54B7 /* TaskModel.swift */,
+				8400AC7A24D335B000DF54B7 /* GroupModel.swift */,
+				84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -85,6 +109,7 @@
 		84D9313B24D31FE000CC7CCD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8400AC7624D3356A00DF54B7 /* CalendarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -105,7 +130,6 @@
 			children = (
 				84085C3E24D3133A00AA718F /* AppDelegate.swift */,
 				84085C4024D3133A00AA718F /* SceneDelegate.swift */,
-				84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */,
 			);
 			path = "Supporting files";
 			sourceTree = "<group>";
@@ -119,6 +143,15 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		D03973C2F93B2CD16F19A765 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9DF06D114C370F0FD91DE13C /* Pods-Kitty Tasks.debug.xcconfig */,
+				8BA29CF0CB58BD9F97282B01 /* Pods-Kitty Tasks.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -126,9 +159,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84085C5224D3133D00AA718F /* Build configuration list for PBXNativeTarget "Kitty Tasks" */;
 			buildPhases = (
+				2E3F5A8B18C7DF1D76245E3F /* [CP] Check Pods Manifest.lock */,
 				84085C3724D3133A00AA718F /* Sources */,
 				84085C3824D3133A00AA718F /* Frameworks */,
 				84085C3924D3133A00AA718F /* Resources */,
+				F65B07ED641687C3BA8CEF43 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -185,6 +220,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2E3F5A8B18C7DF1D76245E3F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Kitty Tasks-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F65B07ED641687C3BA8CEF43 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		84085C3724D3133A00AA718F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -192,10 +269,13 @@
 			files = (
 				84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */,
 				84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */,
+				8400AC7724D3356A00DF54B7 /* CalendarView.swift in Sources */,
+				8400AC7B24D335B000DF54B7 /* GroupModel.swift in Sources */,
 				84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */,
 				84085C4924D3133A00AA718F /* Kitty_Tasks.xcdatamodeld in Sources */,
 				84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */,
 				84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */,
+				8400AC7924D335A000DF54B7 /* TaskModel.swift in Sources */,
 				84D9314624D32A0A00CC7CCD /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +418,7 @@
 		};
 		84085C5324D3133D00AA718F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DF06D114C370F0FD91DE13C /* Pods-Kitty Tasks.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -356,6 +437,7 @@
 		};
 		84085C5424D3133D00AA718F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BA29CF0CB58BD9F97282B01 /* Pods-Kitty Tasks.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
