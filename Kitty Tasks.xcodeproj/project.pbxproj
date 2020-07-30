@@ -9,23 +9,29 @@
 /* Begin PBXBuildFile section */
 		84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84085C3E24D3133A00AA718F /* AppDelegate.swift */; };
 		84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84085C4024D3133A00AA718F /* SceneDelegate.swift */; };
-		84085C4324D3133A00AA718F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84085C4224D3133A00AA718F /* ViewController.swift */; };
 		84085C4624D3133A00AA718F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84085C4424D3133A00AA718F /* Main.storyboard */; };
 		84085C4924D3133A00AA718F /* Kitty_Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */; };
 		84085C4B24D3133D00AA718F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84085C4A24D3133D00AA718F /* Assets.xcassets */; };
 		84085C4E24D3133D00AA718F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84085C4C24D3133D00AA718F /* LaunchScreen.storyboard */; };
+		84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314124D329E200CC7CCD /* MainViewController.swift */; };
+		84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314324D329FE00CC7CCD /* CalendarViewController.swift */; };
+		84D9314624D32A0A00CC7CCD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314524D32A0A00CC7CCD /* SettingsViewController.swift */; };
+		84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		84085C3B24D3133A00AA718F /* Kitty Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kitty Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84085C3E24D3133A00AA718F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84085C4024D3133A00AA718F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		84085C4224D3133A00AA718F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		84085C4524D3133A00AA718F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84085C4824D3133A00AA718F /* Kitty_Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kitty_Tasks.xcdatamodel; sourceTree = "<group>"; };
 		84085C4A24D3133D00AA718F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84085C4D24D3133D00AA718F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84085C4F24D3133D00AA718F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84D9314124D329E200CC7CCD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		84D9314324D329FE00CC7CCD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		84D9314524D32A0A00CC7CCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +64,59 @@
 		84085C3D24D3133A00AA718F /* Kitty Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				84085C3E24D3133A00AA718F /* AppDelegate.swift */,
-				84085C4024D3133A00AA718F /* SceneDelegate.swift */,
-				84085C4224D3133A00AA718F /* ViewController.swift */,
-				84085C4424D3133A00AA718F /* Main.storyboard */,
+				84D9313A24D31FD300CC7CCD /* Models */,
+				84D9313B24D31FE000CC7CCD /* Views */,
+				84D9313C24D31FE800CC7CCD /* Controllers */,
+				84D9313E24D3206B00CC7CCD /* Storyboards */,
+				84D9313D24D3200000CC7CCD /* Supporting files */,
 				84085C4A24D3133D00AA718F /* Assets.xcassets */,
-				84085C4C24D3133D00AA718F /* LaunchScreen.storyboard */,
 				84085C4F24D3133D00AA718F /* Info.plist */,
-				84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */,
 			);
 			path = "Kitty Tasks";
+			sourceTree = "<group>";
+		};
+		84D9313A24D31FD300CC7CCD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		84D9313B24D31FE000CC7CCD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84D9313C24D31FE800CC7CCD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				84D9314124D329E200CC7CCD /* MainViewController.swift */,
+				84D9314324D329FE00CC7CCD /* CalendarViewController.swift */,
+				84D9314524D32A0A00CC7CCD /* SettingsViewController.swift */,
+				84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		84D9313D24D3200000CC7CCD /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				84085C3E24D3133A00AA718F /* AppDelegate.swift */,
+				84085C4024D3133A00AA718F /* SceneDelegate.swift */,
+				84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		84D9313E24D3206B00CC7CCD /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				84085C4424D3133A00AA718F /* Main.storyboard */,
+				84085C4C24D3133D00AA718F /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,10 +190,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84085C4324D3133A00AA718F /* ViewController.swift in Sources */,
+				84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */,
+				84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */,
 				84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */,
 				84085C4924D3133A00AA718F /* Kitty_Tasks.xcdatamodeld in Sources */,
 				84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */,
+				84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */,
+				84D9314624D32A0A00CC7CCD /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
