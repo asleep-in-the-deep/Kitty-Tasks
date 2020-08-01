@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E9594F924D4F6DE002B1127 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9594F824D4F6DE002B1127 /* NewTaskViewController.swift */; };
+		2E9594FB24D4F6ED002B1127 /* ViewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9594FA24D4F6ED002B1127 /* ViewTaskViewController.swift */; };
 		49D44CE42F923262C21DB06A /* Pods_Kitty_Tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */; };
 		8400AC7724D3356A00DF54B7 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400AC7624D3356A00DF54B7 /* CalendarView.swift */; };
 		8400AC7924D335A000DF54B7 /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400AC7824D335A000DF54B7 /* TaskModel.swift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E9594F824D4F6DE002B1127 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
+		2E9594FA24D4F6ED002B1127 /* ViewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTaskViewController.swift; sourceTree = "<group>"; };
 		8400AC7624D3356A00DF54B7 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8400AC7824D335A000DF54B7 /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
 		8400AC7A24D335B000DF54B7 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
@@ -118,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				84D9314124D329E200CC7CCD /* MainViewController.swift */,
+				2E9594F824D4F6DE002B1127 /* NewTaskViewController.swift */,
+				2E9594FA24D4F6ED002B1127 /* ViewTaskViewController.swift */,
 				84D9314324D329FE00CC7CCD /* CalendarViewController.swift */,
 				84D9314524D32A0A00CC7CCD /* SettingsViewController.swift */,
 				84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */,
@@ -270,10 +276,12 @@
 				84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */,
 				84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */,
 				8400AC7724D3356A00DF54B7 /* CalendarView.swift in Sources */,
+				2E9594F924D4F6DE002B1127 /* NewTaskViewController.swift in Sources */,
 				8400AC7B24D335B000DF54B7 /* GroupModel.swift in Sources */,
 				84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */,
 				84085C4924D3133A00AA718F /* Kitty_Tasks.xcdatamodeld in Sources */,
 				84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */,
+				2E9594FB24D4F6ED002B1127 /* ViewTaskViewController.swift in Sources */,
 				84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */,
 				8400AC7924D335A000DF54B7 /* TaskModel.swift in Sources */,
 				84D9314624D32A0A00CC7CCD /* SettingsViewController.swift in Sources */,
@@ -304,6 +312,7 @@
 /* Begin XCBuildConfiguration section */
 		84085C5024D3133D00AA718F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DF06D114C370F0FD91DE13C /* Pods-Kitty Tasks.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -364,6 +373,7 @@
 		};
 		84085C5124D3133D00AA718F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BA29CF0CB58BD9F97282B01 /* Pods-Kitty Tasks.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
