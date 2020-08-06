@@ -1,5 +1,5 @@
 //
-//  SettingsViewController.swift
+//  ViewGroupsViewController.swift
 //  Kitty Tasks
 //
 //  Created by Arina on 07/08/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsViewController: UITableViewController {
+class ViewGroupsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
