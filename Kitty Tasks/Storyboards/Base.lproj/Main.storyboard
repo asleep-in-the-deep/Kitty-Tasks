@@ -59,7 +59,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupCell" rowHeight="50" id="rGa-Hb-Yns">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupCell" rowHeight="50" id="rGa-Hb-Yns" customClass="GroupsViewCell" customModule="Kitty_Tasks" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rGa-Hb-Yns" id="n5U-TD-Kai">
@@ -89,6 +89,10 @@
                                         <constraint firstAttribute="bottom" secondItem="hQp-oS-YzA" secondAttribute="bottom" constant="10" id="uCE-S2-tlk"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="colorPoint" destination="myG-TH-gvq" id="VEl-zD-9po"/>
+                                    <outlet property="groupTitleLabel" destination="RrD-4R-ZPa" id="PoH-tA-a3Q"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -112,7 +116,7 @@
         <!--Settings-->
         <scene sceneID="IWV-22-23L">
             <objects>
-                <tableViewController title="Settings" id="nn0-QY-IgL" sceneMemberID="viewController">
+                <tableViewController title="Settings" id="nn0-QY-IgL" customClass="SettingsViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="3T3-H4-cIt">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -156,7 +160,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Numbers of total created groups" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xtR-VH-K0S">
                                                     <rect key="frame" x="20" y="13" width="354" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -181,9 +185,6 @@
                                                     <state key="normal" title=" Add new group" image="plus" catalog="system">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
-                                                    <connections>
-                                                        <segue destination="F3g-nc-avt" kind="presentation" id="WR0-qx-pUF"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -193,6 +194,9 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="9ks-y1-RyG" secondAttribute="trailing" constant="20" id="u3L-km-XXo"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="F3g-nc-avt" kind="presentation" id="BtN-vv-qdN"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -441,7 +445,7 @@
         <!--New group-->
         <scene sceneID="I4p-AB-iZd">
             <objects>
-                <tableViewController id="oyw-Fa-E5v" sceneMemberID="viewController">
+                <tableViewController id="oyw-Fa-E5v" customClass="NewGroupViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="znY-dc-AJU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -501,9 +505,17 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="New group" id="q0D-IN-UdH">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GmS-0d-9Hb"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GmS-0d-9Hb">
+                            <connections>
+                                <action selector="cancelAction:" destination="oyw-Fa-E5v" id="uXA-c1-qUZ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="QyD-oV-Rcd"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="colorPickerView" destination="WX6-SL-6fc" id="fQP-Tp-N15"/>
+                        <outlet property="groupNameTextField" destination="xVI-mH-sMa" id="jTM-jV-g8B"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCa-zF-774" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -518,25 +530,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Des-mc-97g" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="88" width="414" height="80"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="WRx-G2-TPK"/>
+                                    <constraint firstAttribute="height" constant="100" id="WRx-G2-TPK"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="firstWeekday">
                                         <integer key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="jCI-bT-IN6" id="gaf-Bh-tUh"/>
                                 </connections>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dng-zX-EAt">
-                                <rect key="frame" x="0.0" y="168" width="414" height="645"/>
+                                <rect key="frame" x="0.0" y="218" width="414" height="595"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskCell" rowHeight="75" id="bZQ-qy-afe">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskCell" rowHeight="75" id="bZQ-qy-afe" customClass="TasksViewCell" customModule="Kitty_Tasks" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bZQ-qy-afe" id="jiT-DW-wxJ">
@@ -589,22 +602,60 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="groupColorPoint" destination="IB8-nb-b4k" id="0gn-rX-TAP"/>
+                                            <outlet property="groupNameLabel" destination="EGV-hZ-xIc" id="Li6-qb-mga"/>
+                                            <outlet property="taskTitleLabel" destination="Ja6-cA-p2H" id="BhH-YD-Rfo"/>
+                                            <outlet property="timeLabel" destination="qaD-jf-cIu" id="SAk-ED-X88"/>
                                             <segue destination="h3l-7r-y4f" kind="presentation" id="dMb-wH-Epp"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGz-Cu-6tD">
+                                <rect key="frame" x="0.0" y="188" width="414" height="30"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="nob-r2-9oM">
+                                        <rect key="frame" x="20" y="5" width="374" height="20"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Wb-a8-eFj">
+                                                <rect key="frame" x="0.0" y="0.0" width="100" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total hours" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GU1-2g-h7n">
+                                                <rect key="frame" x="293.33333333333331" y="0.0" width="80.666666666666686" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="nob-r2-9oM" secondAttribute="trailing" constant="20" id="1AZ-u4-ON5"/>
+                                    <constraint firstItem="nob-r2-9oM" firstAttribute="leading" secondItem="nGz-Cu-6tD" secondAttribute="leading" constant="20" id="5iY-1J-ADK"/>
+                                    <constraint firstAttribute="bottom" secondItem="nob-r2-9oM" secondAttribute="bottom" constant="5" id="T3j-pl-twF"/>
+                                    <constraint firstAttribute="height" constant="30" id="WHB-xG-B1U"/>
+                                    <constraint firstItem="nob-r2-9oM" firstAttribute="top" secondItem="nGz-Cu-6tD" secondAttribute="top" constant="5" id="eXy-i4-dHt"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="dng-zX-EAt" firstAttribute="top" secondItem="nGz-Cu-6tD" secondAttribute="bottom" id="7UR-At-l0s"/>
                             <constraint firstItem="dng-zX-EAt" firstAttribute="trailing" secondItem="h36-Dc-e0n" secondAttribute="trailing" id="D5c-Ie-j1h"/>
                             <constraint firstItem="Des-mc-97g" firstAttribute="top" secondItem="h36-Dc-e0n" secondAttribute="top" id="Iib-Mn-8tb"/>
+                            <constraint firstItem="nGz-Cu-6tD" firstAttribute="leading" secondItem="h36-Dc-e0n" secondAttribute="leading" id="Nrd-LY-twI"/>
                             <constraint firstItem="dng-zX-EAt" firstAttribute="leading" secondItem="h36-Dc-e0n" secondAttribute="leading" id="Oi3-BX-GN6"/>
+                            <constraint firstItem="nGz-Cu-6tD" firstAttribute="trailing" secondItem="h36-Dc-e0n" secondAttribute="trailing" id="RIf-HA-E4H"/>
+                            <constraint firstItem="dng-zX-EAt" firstAttribute="top" secondItem="nGz-Cu-6tD" secondAttribute="bottom" id="ZYz-PL-2WP"/>
                             <constraint firstItem="dng-zX-EAt" firstAttribute="bottom" secondItem="h36-Dc-e0n" secondAttribute="bottom" id="eYy-Yv-dk7"/>
                             <constraint firstItem="Des-mc-97g" firstAttribute="leading" secondItem="h36-Dc-e0n" secondAttribute="leading" id="grD-lz-SuP"/>
-                            <constraint firstItem="dng-zX-EAt" firstAttribute="top" secondItem="Des-mc-97g" secondAttribute="bottom" id="h0M-vZ-0Ro"/>
                             <constraint firstItem="h36-Dc-e0n" firstAttribute="trailing" secondItem="Des-mc-97g" secondAttribute="trailing" id="j83-P3-O6G"/>
                             <constraint firstItem="Des-mc-97g" firstAttribute="centerX" secondItem="h36-Dc-e0n" secondAttribute="centerX" id="qCI-8W-DC4"/>
+                            <constraint firstItem="nGz-Cu-6tD" firstAttribute="top" secondItem="Des-mc-97g" secondAttribute="bottom" id="wLf-NC-8m7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="h36-Dc-e0n"/>
                     </view>
@@ -616,6 +667,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="calendar" destination="Des-mc-97g" id="X1O-FW-IeE"/>
+                        <outlet property="calendarHeightConstraint" destination="WRx-G2-TPK" id="IRa-XE-N1f"/>
+                        <outlet property="currentDayLabel" destination="2Wb-a8-eFj" id="Gz5-W0-6Ub"/>
+                        <outlet property="taskTable" destination="dng-zX-EAt" id="5qW-XW-N6U"/>
+                        <outlet property="totalHoursLabel" destination="GU1-2g-h7n" id="de0-pZ-Jgv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sQB-Kv-ZBz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -848,6 +906,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F3g-nc-avt" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="2mh-rd-4Ol"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ppa-h7-MII">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1076,6 +1135,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mfL-H7-R8u"/>
-        <segue reference="WR0-qx-pUF"/>
+        <segue reference="BtN-vv-qdN"/>
     </inferredMetricsTieBreakers>
 </document>
