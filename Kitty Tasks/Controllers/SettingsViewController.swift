@@ -10,6 +10,9 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
+    @IBOutlet var settingsGroupNumbers: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +23,7 @@ class SettingsViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    
     // MARK: - Table view data source
 
     /*

@@ -185,6 +185,9 @@
                                                     <state key="normal" title=" Add new group" image="plus" catalog="system">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <connections>
+                                                        <segue destination="F3g-nc-avt" kind="presentation" id="IL3-X8-ZH1"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -194,9 +197,6 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="9ks-y1-RyG" secondAttribute="trailing" constant="20" id="u3L-km-XXo"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="F3g-nc-avt" kind="presentation" id="BtN-vv-qdN"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -437,6 +437,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="nFU-FV-vz0"/>
+                    <connections>
+                        <outlet property="settingsGroupNumbers" destination="xtR-VH-K0S" id="q09-iP-DEX"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cm3-va-8En" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -699,7 +702,7 @@
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a task title" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="cQJ-hs-xru">
                                                     <rect key="frame" x="15" y="0.0" width="344" height="45"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -797,7 +800,7 @@
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Choose a time" textAlignment="natural" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="oe8-5O-fLS">
                                                     <rect key="frame" x="15" y="0.0" width="344" height="45"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -817,9 +820,24 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="New task" id="7xx-e8-hDf">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VL8-pv-4tZ"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="W8A-gV-lLJ"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VL8-pv-4tZ">
+                            <connections>
+                                <action selector="newTaskCancel:" destination="8Bc-Rb-aU5" id="160-Vt-eVQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="W8A-gV-lLJ">
+                            <connections>
+                                <action selector="newTaskSave:" destination="8Bc-Rb-aU5" id="IXL-Rv-Tz3"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="newTaskComment" destination="oe8-5O-fLS" id="YA0-d4-sUC"/>
+                        <outlet property="newTaskDate" destination="bnf-AV-MTh" id="7HE-o2-yAK"/>
+                        <outlet property="newTaskGroup" destination="yGp-uC-URO" id="Br8-rN-hlo"/>
+                        <outlet property="newTaskName" destination="cQJ-hs-xru" id="7I9-In-Jyf"/>
+                        <outlet property="newTaskTime" destination="1vD-BB-DiN" id="lK1-75-OBl"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q23-Rk-8f2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1061,9 +1079,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="View Task" id="9W4-WK-TaR">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iad-Du-c7A"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iad-Du-c7A">
+                            <connections>
+                                <action selector="viewTaskCancel:" destination="g3i-X5-nmS" id="u8l-Rj-yc8"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Cpd-tp-aAF"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="viewTaskComment" destination="7Sy-i8-mol" id="Hzs-7q-J5w"/>
+                        <outlet property="viewTaskDate" destination="US4-Rq-LfC" id="PRG-D6-188"/>
+                        <outlet property="viewTaskGroup" destination="CgJ-MA-tCk" id="jxO-bT-21K"/>
+                        <outlet property="viewTaskName" destination="tnP-z7-OA6" id="Ak9-fd-jU5"/>
+                        <outlet property="viewTaskTime" destination="SeZ-bP-QU4" id="XJR-0z-2Uo"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mpj-yC-Gnx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1135,6 +1164,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mfL-H7-R8u"/>
-        <segue reference="BtN-vv-qdN"/>
+        <segue reference="IL3-X8-ZH1"/>
     </inferredMetricsTieBreakers>
 </document>

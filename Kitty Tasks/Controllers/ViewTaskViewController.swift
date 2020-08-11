@@ -9,7 +9,19 @@
 import UIKit
 
 class ViewTaskViewController: UITableViewController {
-
+    
+    
+    @IBOutlet var viewTaskName: UILabel!
+    
+    @IBOutlet var viewTaskDate: UILabel!
+    
+    @IBOutlet var viewTaskGroup: UILabel!
+    
+    @IBOutlet var viewTaskTime: UILabel!
+    
+    @IBOutlet var viewTaskComment: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -19,7 +31,12 @@ class ViewTaskViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
+    
+    @IBAction func viewTaskCancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
     // MARK: - Table view data source
 
     /*
@@ -76,5 +93,7 @@ class ViewTaskViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
 
 }
