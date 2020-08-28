@@ -8,21 +8,16 @@
 
 import UIKit
 
-class NewTaskViewController: UITableViewController {
+class NewTaskViewController: UITableViewController, UITextFieldDelegate {
 
     var selectedGroup: String?
     let groupArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
     
     @IBOutlet var newTaskName: UITextField!
-    
     @IBOutlet var newTaskDate: UIDatePicker!
-    
     @IBOutlet var newTaskGroup: UITextField!
-    
     @IBOutlet var newTaskTime: UITextField!
-    
     @IBOutlet var newTaskComment: UITextField!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +26,13 @@ class NewTaskViewController: UITableViewController {
         
         setInputViewDatePicker(target: self, selector: #selector(tapDone)) //1
 
+        newTaskName.delegate = self
+        newTaskComment.delegate = self
         
+        self.hideKeyboardWhenTappedOutside()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     @IBAction func newTaskCancel(_ sender: UIBarButtonItem) {
@@ -47,68 +42,6 @@ class NewTaskViewController: UITableViewController {
     @IBAction func newTaskSave(_ sender: UIBarButtonItem) {
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.view.endEditing(true)
-//    }
-    
-    // MARK: - Table view data source
-
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
     
     @objc func tapDone() {
         if let datePicker = self.newTaskTime.inputView as? UIDatePicker {
@@ -120,37 +53,29 @@ class NewTaskViewController: UITableViewController {
                 minutes = 5
                 self.newTaskTime.text = "\(minutes) min"
             } else {
-                if hours == 0{
-               self.newTaskTime.text = "\(minutes) min"
-               print("\(minutes) min")
-            } else {
-                if minutes == 0 {
-                     self.newTaskTime.text = "\(hours) h"
-                }
-                else {
-                    self.newTaskTime.text = "\(hours) h \(minutes) min"
+                if hours == 0 {
+                    self.newTaskTime.text = "\(minutes) min"
+                    print("\(minutes) min")
+                } else {
+                    if minutes == 0 {
+                        self.newTaskTime.text = "\(hours) h"
+                    }
+                    else {
+                        self.newTaskTime.text = "\(hours) h \(minutes) min"
+                    }
                 }
             }
-            
-            }
-            
-            
-
         }
+        
         self.newTaskTime.resignFirstResponder()
     }
 
 
-    
-    
-}
-
-extension NewTaskViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    
 }
 
 extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
@@ -198,8 +123,6 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
 
 extension NewTaskViewController {
     
-    
-    
     func setInputViewDatePicker(target: Any, selector: Selector) {
         
         let screenWidth = UIScreen.main.bounds.width
@@ -213,10 +136,21 @@ extension NewTaskViewController {
         let button = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
         toolBar.setItems([button], animated: true)
         newTaskTime.inputAccessoryView = toolBar
-
-
+        
     }
 
     
+}
+
+extension NewTaskViewController {
     
+    func hideKeyboardWhenTappedOutside() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(NewTaskViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

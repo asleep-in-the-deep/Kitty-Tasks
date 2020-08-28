@@ -11,74 +11,66 @@ import UIKit
 class SettingsViewController: UITableViewController {
 
     @IBOutlet var settingsGroupNumbers: UILabel!
+    @IBOutlet var stateOfNotification: UISwitch!
+    
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        getNumberOfGroups()
     }
 
     
-    // MARK: - Table view data source
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    @IBAction func EnableNotificationSet(_ sender: UISwitch) {
+        
+        let firstIndexPath = IndexPath(row: 1, section: 1)
+        let lastIndexPath = IndexPath(row: 2, section: 1)
+        let numberIndexPath = IndexPath(row: 3, section: 1)
+        
+        let firstNotificationCell = tableView.cellForRow(at: firstIndexPath)
+        let lastNotificationCell = tableView.cellForRow(at: lastIndexPath)
+        let numberCell = tableView.cellForRow(at: numberIndexPath)
+        
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+            firstNotificationCell?.isHidden = !firstNotificationCell!.isHidden
+            lastNotificationCell?.isHidden = !lastNotificationCell!.isHidden
+            numberCell?.isHidden = !numberCell!.isHidden
+        })
+        
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func getNumberOfGroups(){
+        settingsGroupNumbers.text = "No groups added"
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func showAlert(message: String, deleteText: String) {
+        let deleteAlert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .actionSheet)
+        let delete = UIAlertAction(title: deleteText, style: .destructive)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        deleteAlert.addAction(delete)
+        deleteAlert.addAction(cancel)
+        
+        DispatchQueue.main.async {
+            self.present(deleteAlert, animated: true)
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard indexPath.section == 2 else { return }
+        
+        if indexPath.row == 0 {
+            showAlert(message: "Do you really wanna delete all tasks?", deleteText: "Delete all tasks")
+        } else if indexPath.row == 1 {
+            showAlert(message: "Do you really wanna delete all groups?", deleteText: "Delete all groups")
+        } else if indexPath.row == 2 {
+            showAlert(message: "Do you really wanna delete all data?", deleteText: "Delete all data")
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
