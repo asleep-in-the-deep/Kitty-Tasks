@@ -441,6 +441,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="nFU-FV-vz0"/>
                     <connections>
+                        <outlet property="firstTimeLabel" destination="OV0-F4-ofZ" id="3ou-mH-esK"/>
+                        <outlet property="lastTimeLabel" destination="3PB-F6-Sl9" id="MpT-zC-5p3"/>
+                        <outlet property="numbersOfNotificationLabel" destination="Ih0-wL-rN7" id="QzS-SR-wVu"/>
                         <outlet property="settingsGroupNumbers" destination="xtR-VH-K0S" id="q09-iP-DEX"/>
                         <outlet property="stateOfNotification" destination="6Hu-CS-QuD" id="LMN-K7-Y0t"/>
                     </connections>
@@ -841,6 +844,7 @@
                         <outlet property="newTaskGroup" destination="yGp-uC-URO" id="Br8-rN-hlo"/>
                         <outlet property="newTaskName" destination="cQJ-hs-xru" id="7I9-In-Jyf"/>
                         <outlet property="newTaskTime" destination="1vD-BB-DiN" id="lK1-75-OBl"/>
+                        <outlet property="saveButton" destination="W8A-gV-lLJ" id="3IB-1d-muL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q23-Rk-8f2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1010,17 +1014,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your task group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CgJ-MA-tCk">
-                                                    <rect key="frame" x="20" y="11" width="364" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-MA-fYh">
+                                                    <rect key="frame" x="20" y="11" width="142" height="21"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Ve1-lv-h3D">
+                                                            <rect key="frame" x="0.0" y="0.99999999999999822" width="19.666666666666668" height="19.666666666666664"/>
+                                                            <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your task group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbK-yD-xni">
+                                                            <rect key="frame" x="27.666666666666657" y="0.0" width="114.33333333333334" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="CgJ-MA-tCk" firstAttribute="top" secondItem="CFo-yH-laO" secondAttribute="topMargin" id="8Ew-DM-KzK"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="CgJ-MA-tCk" secondAttribute="trailing" constant="10" id="IT2-oG-nw0"/>
-                                                <constraint firstItem="CgJ-MA-tCk" firstAttribute="leading" secondItem="CFo-yH-laO" secondAttribute="leadingMargin" id="j9a-ah-7iy"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="f8h-MA-fYh" secondAttribute="trailing" constant="10" id="Ju6-JT-hZ6"/>
+                                                <constraint firstItem="f8h-MA-fYh" firstAttribute="top" secondItem="CFo-yH-laO" secondAttribute="topMargin" id="MON-we-rTY"/>
+                                                <constraint firstItem="f8h-MA-fYh" firstAttribute="leading" secondItem="CFo-yH-laO" secondAttribute="leadingMargin" id="hNy-VL-hg7"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="f8h-MA-fYh" secondAttribute="bottom" constant="2" id="vyv-nt-LFM"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1091,9 +1105,9 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Cpd-tp-aAF"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="colorMark" destination="Ve1-lv-h3D" id="zTW-us-Nor"/>
                         <outlet property="viewTaskComment" destination="7Sy-i8-mol" id="Hzs-7q-J5w"/>
                         <outlet property="viewTaskDate" destination="US4-Rq-LfC" id="PRG-D6-188"/>
-                        <outlet property="viewTaskGroup" destination="CgJ-MA-tCk" id="jxO-bT-21K"/>
                         <outlet property="viewTaskName" destination="tnP-z7-OA6" id="Ak9-fd-jU5"/>
                         <outlet property="viewTaskTime" destination="SeZ-bP-QU4" id="XJR-0z-2Uo"/>
                     </connections>

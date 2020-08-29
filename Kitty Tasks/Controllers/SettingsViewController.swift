@@ -13,6 +13,9 @@ class SettingsViewController: UITableViewController {
     @IBOutlet var settingsGroupNumbers: UILabel!
     @IBOutlet var stateOfNotification: UISwitch!
     
+    @IBOutlet var firstTimeLabel: UILabel!
+    @IBOutlet var lastTimeLabel: UILabel!
+    @IBOutlet var numbersOfNotificationLabel: UILabel!
     
     
     
@@ -20,12 +23,13 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         
         getNumberOfGroups()
+        
+        
     }
 
     
     
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {
-        
         let firstIndexPath = IndexPath(row: 1, section: 1)
         let lastIndexPath = IndexPath(row: 2, section: 1)
         let numberIndexPath = IndexPath(row: 3, section: 1)
@@ -62,15 +66,48 @@ class SettingsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard indexPath.section == 2 else { return }
         
-        if indexPath.row == 0 {
+        if indexPath.row == 0 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all tasks?", deleteText: "Delete all tasks")
-        } else if indexPath.row == 1 {
+        } else if indexPath.row == 1 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all groups?", deleteText: "Delete all groups")
-        } else if indexPath.row == 2 {
+        } else if indexPath.row == 2 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all data?", deleteText: "Delete all data")
         }
+        
+        if indexPath.row == 1 && indexPath.section == 1 {
+            
+            
+            //let screenWidth = UIScreen.main.bounds.width
+            let datePicker = UIDatePicker()
+            
+            datePicker.datePickerMode = .time
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            firstTimeLabel.text = formatter.string(from: datePicker.date)
+            
+            
+        }
+        
+        
     }
+    
+    
+}
+
+extension SettingsViewController {
+    
+    func setInputViewDatePicker() {
+        
+        let screenWidth = UIScreen.main.bounds.width
+        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
+        datePicker.datePickerMode = .time
+        
+        
+    
+        
+    }
+
     
 }

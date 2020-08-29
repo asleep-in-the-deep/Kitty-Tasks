@@ -12,13 +12,10 @@ class ViewTaskViewController: UITableViewController {
     
     
     @IBOutlet var viewTaskName: UILabel!
-    
     @IBOutlet var viewTaskDate: UILabel!
-    
     @IBOutlet var viewTaskGroup: UILabel!
-    
+    @IBOutlet var colorMark: UIImageView!
     @IBOutlet var viewTaskTime: UILabel!
-    
     @IBOutlet var viewTaskComment: UILabel!
     
     

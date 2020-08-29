@@ -18,6 +18,8 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var newTaskGroup: UITextField!
     @IBOutlet var newTaskTime: UITextField!
     @IBOutlet var newTaskComment: UITextField!
+    @IBOutlet var saveButton: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +33,10 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
         self.hideKeyboardWhenTappedOutside()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
+        saveButton.isEnabled = false
+        
     }
 
     @IBAction func newTaskCancel(_ sender: UIBarButtonItem) {
@@ -40,6 +44,9 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func newTaskSave(_ sender: UIBarButtonItem) {
+        
+        
+        
     }
     
     
@@ -118,6 +125,9 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
           view.endEditing(true)
     }
     
+    
+    
+    
 }
     
 
@@ -153,4 +163,19 @@ extension NewTaskViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+}
+
+extension NewTaskViewController{
+    
+    
+    @objc private func textFieldChanged() {
+        
+        if newTaskName.text?.isEmpty == false{
+            saveButton.isEnabled = true
+        } else {
+            saveButton.isEnabled = false
+        }
+        
+    }
+    
 }
