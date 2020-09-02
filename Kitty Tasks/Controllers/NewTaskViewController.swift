@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class NewTaskViewController: UITableViewController, UITextFieldDelegate {
 
     var selectedGroup: String?
     let groupArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
+    var tasks: [Task] = []
     
     @IBOutlet var newTaskName: UITextField!
     @IBOutlet var newTaskDate: UIDatePicker!
@@ -45,10 +47,30 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func newTaskSave(_ sender: UIBarButtonItem) {
         
-        
+        if let taskTitle = self.newTaskName.text {
+            self.saveTask(withTitle: taskTitle)
+        }
         
     }
     
+    private func saveTask(withTitle taskTitle: String?) {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+        
+        let taskObject = Task(entity: entity, insertInto: context)
+        taskObject.taskTitle = taskTitle
+        
+        do {
+            try context.save()
+
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+    }
     
     @objc func tapDone() {
         if let datePicker = self.newTaskTime.inputView as? UIDatePicker {
