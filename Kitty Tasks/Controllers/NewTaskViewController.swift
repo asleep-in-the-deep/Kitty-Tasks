@@ -15,13 +15,13 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     let groupArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
     var tasks: [Task] = []
     
-    @IBOutlet var newTaskName: UITextField!
-    @IBOutlet var newTaskDate: UIDatePicker!
-    @IBOutlet var newTaskGroup: UITextField!
-    @IBOutlet var newTaskTime: UITextField!
-    @IBOutlet var newTaskComment: UITextField!
-    @IBOutlet var saveButton: UIBarButtonItem!
+    @IBOutlet weak var newTaskName: UITextField!
+    @IBOutlet weak var newTaskDate: UIDatePicker!
+    @IBOutlet weak var newTaskGroup: UITextField!
+    @IBOutlet weak var newTaskTime: UITextField!
+    @IBOutlet weak var newTaskComment: UITextField!
     
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,7 +84,6 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             } else {
                 if hours == 0 {
                     self.newTaskTime.text = "\(minutes) min"
-                    print("\(minutes) min")
                 } else {
                     if minutes == 0 {
                         self.newTaskTime.text = "\(hours) h"
@@ -192,7 +191,7 @@ extension NewTaskViewController{
     
     @objc private func textFieldChanged() {
         
-        if newTaskName.text?.isEmpty == false{
+        if newTaskName.text?.isEmpty == false {
             saveButton.isEnabled = true
         } else {
             saveButton.isEnabled = false

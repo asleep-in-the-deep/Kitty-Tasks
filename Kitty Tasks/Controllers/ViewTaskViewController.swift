@@ -11,12 +11,12 @@ import UIKit
 class ViewTaskViewController: UITableViewController {
     
     
-    @IBOutlet var viewTaskName: UILabel!
-    @IBOutlet var viewTaskDate: UILabel!
-    @IBOutlet var viewTaskGroup: UILabel!
-    @IBOutlet var colorMark: UIImageView!
-    @IBOutlet var viewTaskTime: UILabel!
-    @IBOutlet var viewTaskComment: UILabel!
+    @IBOutlet weak var viewTaskName: UILabel!
+    @IBOutlet weak var viewTaskDate: UILabel!
+    @IBOutlet weak var viewTaskGroup: UILabel!
+    @IBOutlet weak var colorMark: UIImageView!
+    @IBOutlet weak var viewTaskTime: UILabel!
+    @IBOutlet weak var viewTaskComment: UILabel!
     
     
     override func viewDidLoad() {
