@@ -427,7 +427,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1c4-Eo-5tD">
-                                                    <rect key="frame" x="20" y="11.000000000000002" width="374" height="21.666666666666671"/>
+                                                    <rect key="frame" x="8" y="11.000000000000002" width="398" height="21.666666666666671"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete all tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrH-fD-Ow4">
                                                             <rect key="frame" x="0.0" y="0.0" width="109.66666666666667" height="21.666666666666668"/>
@@ -435,8 +435,8 @@
                                                             <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lEb-Zo-Muk">
-                                                            <rect key="frame" x="355" y="-0.66666666666666785" width="19" height="21.666666666666668"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar.badge.minus" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lEb-Zo-Muk">
+                                                            <rect key="frame" x="374.33333333333331" y="1.6666666666666661" width="23.666666666666686" height="20.333333333333336"/>
                                                             <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </imageView>
                                                     </subviews>
@@ -458,7 +458,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FuI-Gf-B27">
-                                                    <rect key="frame" x="20" y="11.000000000000002" width="374" height="21.666666666666671"/>
+                                                    <rect key="frame" x="8" y="11.000000000000002" width="398" height="21.666666666666671"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete all groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZO-Bp-SWH">
                                                             <rect key="frame" x="0.0" y="0.0" width="122" height="21.666666666666668"/>
@@ -466,8 +466,8 @@
                                                             <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="foo-rG-9xC">
-                                                            <rect key="frame" x="355" y="-0.66666666666666785" width="19" height="21.666666666666668"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rectangle.stack.badge.minus" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="foo-rG-9xC">
+                                                            <rect key="frame" x="373" y="-0.66666666666666785" width="25" height="23.666666666666668"/>
                                                             <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </imageView>
                                                     </subviews>
@@ -489,7 +489,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="72Y-A1-EHW">
-                                                    <rect key="frame" x="20" y="11.000000000000002" width="374" height="21.666666666666671"/>
+                                                    <rect key="frame" x="8" y="11.000000000000002" width="398" height="21.666666666666671"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete all data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-7Q-p8k">
                                                             <rect key="frame" x="0.0" y="0.0" width="103.33333333333333" height="21.666666666666668"/>
@@ -498,7 +498,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="JHP-4l-Giw">
-                                                            <rect key="frame" x="355" y="-0.66666666666666785" width="19" height="21.666666666666668"/>
+                                                            <rect key="frame" x="379" y="-0.66666666666666785" width="19" height="21.666666666666668"/>
                                                             <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </imageView>
                                                     </subviews>
@@ -604,15 +604,22 @@
                                 <action selector="cancelAction:" destination="oyw-Fa-E5v" id="uXA-c1-qUZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="QyD-oV-Rcd"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="QyD-oV-Rcd">
+                            <connections>
+                                <action selector="saveAction:" destination="oyw-Fa-E5v" id="R4m-1j-W4A"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="colorPickerView" destination="WX6-SL-6fc" id="fQP-Tp-N15"/>
                         <outlet property="groupNameTextField" destination="xVI-mH-sMa" id="jTM-jV-g8B"/>
                         <outlet property="saveButton" destination="QyD-oV-Rcd" id="v2U-ig-5Ja"/>
+                        <segue destination="5Vl-3e-ll9" kind="unwind" identifier="saveGroupAndReload" unwindAction="unwindToGroupViewWithSegue:" id="xxI-gh-RPa"/>
+                        <segue destination="5Vl-3e-ll9" kind="unwind" identifier="reloadSettings" unwindAction="unwindToSettingsWithSegue:" id="fL9-GM-O7o"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCa-zF-774" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="5Vl-3e-ll9" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2922" y="1069"/>
         </scene>
@@ -930,9 +937,11 @@
                         <outlet property="newTaskName" destination="cQJ-hs-xru" id="7I9-In-Jyf"/>
                         <outlet property="newTaskTime" destination="1vD-BB-DiN" id="lK1-75-OBl"/>
                         <outlet property="saveButton" destination="W8A-gV-lLJ" id="3IB-1d-muL"/>
+                        <segue destination="E1b-xq-VVf" kind="unwind" identifier="saveTaskAndReload" unwindAction="unwindToMainViewWithSegue:" id="TRh-jV-CQw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q23-Rk-8f2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="E1b-xq-VVf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3831.884057971015" y="-371.65178571428572"/>
         </scene>
@@ -1259,10 +1268,12 @@
     <resources>
         <image name="briefcase" catalog="system" width="64" height="50"/>
         <image name="calendar" catalog="system" width="64" height="52"/>
+        <image name="calendar.badge.minus" catalog="system" width="64" height="50"/>
         <image name="circle.fill" catalog="system" width="64" height="60"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="pencil" catalog="system" width="64" height="56"/>
         <image name="plus" catalog="system" width="64" height="56"/>
+        <image name="rectangle.stack.badge.minus" catalog="system" width="64" height="56"/>
         <image name="trash.fill" catalog="system" width="60" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SettingsViewController: UITableViewController {
 
@@ -33,14 +34,32 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getNumberOfGroups()
         createPickerView()
+        
+        setValuesForNotifications()
     }
-
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        getNumberOfGroups()
+        self.tableView.reloadData()
+    }
+    
+    @IBAction func unwindToSettings(segue: UIStoryboardSegue) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.main.async {
+                self.viewWillAppear(true)
+            }
+        }
+    }
     
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {
+        
         self.tableView.reloadData()
+        
+        let enableStatus = stateOfNotification.isOn
+        UserNotificationSettings.userEnableOfNotification = enableStatus
     }
     
     @IBAction func firstDatePickerChanged(_ sender: UIDatePicker) {
@@ -54,6 +73,8 @@ class SettingsViewController: UITableViewController {
         let dateString = dateFormatter.string(from: date)
         
         firstTimeLabel.text = dateString
+        
+        UserNotificationSettings.firstNotificationTime = dateString
     }
     
     @IBAction func lastDatePickerChanged(_ sender: UIDatePicker) {
@@ -69,10 +90,32 @@ class SettingsViewController: UITableViewController {
         
         lastTimeLabel.text = dateString
         
+        UserNotificationSettings.lastNotificationTime = dateString
+    }
+    
+    private func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
     }
 
     func getNumberOfGroups(){
         settingsGroupNumbers.text = "No groups added"
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+        
+        do {
+            let count = try context.count(for: fetchRequest)
+            if count > 1 {
+                settingsGroupNumbers.text = "\(count) groups added"
+            } else if count == 1 {
+                settingsGroupNumbers.text = "\(count) group added"
+            } else {
+                settingsGroupNumbers.text = "No groups added"
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
     
     func showAlert(message: String, deleteText: String) {
@@ -87,7 +130,41 @@ class SettingsViewController: UITableViewController {
             self.present(deleteAlert, animated: true)
         }
     }
+    
+    func setValuesForNotifications() {
+        
+        stateOfNotification.isOn = UserNotificationSettings.userEnableOfNotification ?? false
+        
+        let firstTime = UserNotificationSettings.firstNotificationTime
+        let defaultFirstTime = "10:00"
+        firstTimeLabel.text = firstTime ?? defaultFirstTime
+        firstTimePicker.date = getDateForPicker(dateString: firstTime, defaultTime: defaultFirstTime)
+        
+        let lastTime = UserNotificationSettings.lastNotificationTime
+        let defaultLastTime = "18:00"
+        lastTimeLabel.text = lastTime ?? defaultLastTime
+        lastTimePicker.date = getDateForPicker(dateString: lastTime, defaultTime: defaultLastTime)
+        
+        let numberOfNotifications = UserNotificationSettings.numberOfNotifications
+        let defaultNumber = "2"
+        numbersOfNotificationLabel.text = numberOfNotifications ?? defaultNumber
+        
+        let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
+        numberOfNotificationPicker.selectRow(numberOfRow - 2, inComponent: 0, animated: true)
+    }
 
+    func getDateForPicker(dateString: String?, defaultTime: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        
+        let notificationTime = defaultTime
+        let date = dateFormatter.date(from: dateString ?? notificationTime)
+        
+        let defaultDate = dateFormatter.date(from: notificationTime)
+        return date ?? defaultDate!
+    }
+    
+    // MARK: Table View
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -203,6 +280,8 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource{
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedGroup = numberOfNotificationArray[row]
         numbersOfNotificationLabel.text = selectedGroup
+        
+        UserNotificationSettings.numberOfNotifications = selectedGroup
     }
     
     func createPickerView() {

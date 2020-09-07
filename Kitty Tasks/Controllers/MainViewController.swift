@@ -8,19 +8,22 @@
 
 import UIKit
 import FSCalendar
+import CoreData
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FSCalendarDelegate, FSCalendarDataSource {
     
-    var tasks = [
-        TaskCell(taskTitle: "Some", taskGroup: "Work", groupColor: "Red", time: "2 h 20 min"),
-        TaskCell(taskTitle: "Very long name for task oh really", taskGroup: "Some group", groupColor: "Purple", time: "30 min"),
-        TaskCell(taskTitle: "Very very very very very evry vyreyyevry", taskGroup: "It's too very very long long omg op", groupColor: "Brown", time: "4 hours"),
-        TaskCell(taskTitle: "Pet kitty", taskGroup: "Home", groupColor: "Yellow", time: "15 min"),
-        TaskCell(taskTitle: "Hello malyavochka!", taskGroup: "Little kitten", groupColor: "Pink", time: ""),
-        TaskCell(taskTitle: "English grammar", taskGroup: "English", groupColor: "Cyan", time: "30 min"),
-        TaskCell(taskTitle: "Do homework for course", taskGroup: "English", groupColor: "Cyan", time: "1 h 30 min"),
-        TaskCell(taskTitle: "Hmm", taskGroup: "Work", groupColor: "Magenta", time: "2 hours")
-    ]
+//    var tasks = [
+//        TaskCell(taskTitle: "Some", taskGroup: "Work", groupColor: "Red", time: "2 h 20 min"),
+//        TaskCell(taskTitle: "Very long name for task oh really", taskGroup: "Some group", groupColor: "Purple", time: "30 min"),
+//        TaskCell(taskTitle: "Very very very very very evry vyreyyevry", taskGroup: "It's too very very long long omg op", groupColor: "Brown", time: "4 hours"),
+//        TaskCell(taskTitle: "Pet kitty", taskGroup: "Home", groupColor: "Yellow", time: "15 min"),
+//        TaskCell(taskTitle: "Hello malyavochka!", taskGroup: "Little kitten", groupColor: "Pink", time: ""),
+//        TaskCell(taskTitle: "English grammar", taskGroup: "English", groupColor: "Cyan", time: "30 min"),
+//        TaskCell(taskTitle: "Do homework for course", taskGroup: "English", groupColor: "Cyan", time: "1 h 30 min"),
+//        TaskCell(taskTitle: "Hmm", taskGroup: "Work", groupColor: "Magenta", time: "2 hours")
+//    ]
+    
+    var tasks: [Task] = []
     
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
@@ -42,6 +45,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         currentDayLabel.text = TasksHeader().getCurrentDate()
         totalHoursLabel.text = TasksHeader().getTotalHours()
+    }
+    
+    @IBAction func unwindToMainView(segue: UIStoryboardSegue) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.main.async {
+                self.viewWillAppear(true)
+            }
+        }
     }
     
     // MARK: - Calendar customize
@@ -72,20 +83,36 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
         let task = tasks[indexPath.row]
-        cell.setCell(object: task)
+        cell.taskTitleLabel.text = task.taskTitle
 
         return cell
     }
     
+    // MARK: - Core Data
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+   private func getContext() -> NSManagedObjectContext {
+       let appDelegate = UIApplication.shared.delegate as! AppDelegate
+       return appDelegate.persistentContainer.viewContext
+   }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        
+//        let freq: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Task")
+//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: freq)
+        
+        do {
+            tasks = try context.fetch(fetchRequest)
+            //try context.execute(deleteRequest)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        self.taskTable.reloadData()
+        
     }
-    */
 
 }

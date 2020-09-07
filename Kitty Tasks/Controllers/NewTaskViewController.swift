@@ -53,24 +53,33 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
     }
     
+    private func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
+    
     private func saveTask(withTitle taskTitle: String?) {
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = getContext()
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+        guard let entityTask = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
         
-        let taskObject = Task(entity: entity, insertInto: context)
+        let taskObject = Task(entity: entityTask, insertInto: context)
         taskObject.taskTitle = taskTitle
-        
+        taskObject.date = Date()
+        taskObject.isDone = false
+       
         do {
             try context.save()
-
+            tasks.append(taskObject)
+            print("got \(tasks.count) tasks")
         } catch let error as NSError {
             print(error.localizedDescription)
         }
         
+        self.performSegue(withIdentifier: "saveTaskAndReload", sender: self)
     }
+    
     
     @objc func tapDone() {
         if let datePicker = self.newTaskTime.inputView as? UIDatePicker {

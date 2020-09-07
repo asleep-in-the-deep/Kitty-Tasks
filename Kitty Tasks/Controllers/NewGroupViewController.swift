@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class NewGroupViewController: UITableViewController {
     
@@ -16,6 +17,8 @@ class NewGroupViewController: UITableViewController {
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
+    
+    var groups: [Group] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +40,38 @@ class NewGroupViewController: UITableViewController {
         }
     }
     
+    @IBAction func saveAction(_ sender: Any) {
+        if let groupTitle = self.groupNameTextField.text {
+            self.saveGroup(withTitle: groupTitle)
+        }
+        dismiss(animated: true)
+    }
+    
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
+    }
+    
+    private func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
+    
+    private func saveGroup(withTitle groupTitle: String?) {
+        
+        let context = getContext()
+        
+        guard let entityGroup = NSEntityDescription.entity(forEntityName: "Group", in: context) else { return }
+        
+        let groupObject = Group(entity: entityGroup, insertInto: context)
+        groupObject.groupName = groupTitle
+       
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        self.performSegue(withIdentifier: "reloadSettings", sender: self)
     }
     
 }
