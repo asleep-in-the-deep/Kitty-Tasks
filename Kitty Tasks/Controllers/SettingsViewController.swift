@@ -145,13 +145,13 @@ class SettingsViewController: UITableViewController {
     func showAlert(message: String, deleteText: String) {
         let deleteAlert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .actionSheet)
         
-        let delete = UIAlertAction(title: deleteText, style: .destructive) { (action:UIAlertAction) in
+        let delete = UIAlertAction(title: deleteText, style: .destructive) { [weak self] (action:UIAlertAction) in
             switch deleteText {
-            case "Delete all tasks": self.deleteData(entity: "Task")
-            case "Delete all groups": self.deleteData(entity: "Group")
+            case "Delete all tasks": self?.deleteData(entity: "Task")
+            case "Delete all groups": self?.deleteData(entity: "Group")
             case "Delete all data":
-                self.deleteData(entity: "Task")
-                self.deleteData(entity: "Group")
+                self?.deleteData(entity: "Task")
+                self?.deleteData(entity: "Group")
             default: print("wrong")
             };
         }
