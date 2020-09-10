@@ -80,9 +80,6 @@ class SettingsViewController: UITableViewController {
         let lastMinutePicker = calendar.component(.minute, from: lastTimePicker.date)
         let lastPickerTime = (lastHourPicker * 3600) + (lastMinutePicker * 60)
         
-        print("firstHourPicker is \(firstHourPicker), firstMinutePicker is \(firstMinutePicker), firstPickerTime is \(firstPickerTime)")
-        print("lastHourPicker is \(lastHourPicker), lastMinutePicker is \(lastMinutePicker), lastPickerTime is \(lastPickerTime)")
-        
         self.notifications.sheduleNotification(firstPickerTime: firstPickerTime, lastPickerTime: lastPickerTime, numberOfNotification: numberOfRow, intervalOfNotifications: getTimeIntervalForNotifications())
     }
     
