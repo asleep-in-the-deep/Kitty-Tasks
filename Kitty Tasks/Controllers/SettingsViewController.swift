@@ -11,6 +11,8 @@ import CoreData
 
 class SettingsViewController: UITableViewController {
 
+    let notifications = Notifications()
+    
     @IBOutlet weak var settingsGroupNumbers: UILabel!
     @IBOutlet weak var stateOfNotification: UISwitch!
     
@@ -37,10 +39,13 @@ class SettingsViewController: UITableViewController {
         createPickerView()
         
         setValuesForNotifications()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        print(getTimeIntervalForNotifications())
         
         getNumberOfGroups()
         self.tableView.reloadData()
@@ -60,6 +65,25 @@ class SettingsViewController: UITableViewController {
         
         let enableStatus = stateOfNotification.isOn
         UserNotificationSettings.userEnableOfNotification = enableStatus
+        
+        let numberOfNotifications = UserNotificationSettings.numberOfNotifications
+        let defaultNumber = "2"
+        let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
+        
+        let calendar = Calendar.current
+        
+        let firstHourPicker = calendar.component(.hour, from: firstTimePicker.date)
+        let firstMinutePicker = calendar.component(.minute, from: firstTimePicker.date)
+        let firstPickerTime = (firstHourPicker * 3600) + (firstMinutePicker * 60)
+        
+        let lastHourPicker = calendar.component(.hour, from: lastTimePicker.date)
+        let lastMinutePicker = calendar.component(.minute, from: lastTimePicker.date)
+        let lastPickerTime = (lastHourPicker * 3600) + (lastMinutePicker * 60)
+        
+        print("firstHourPicker is \(firstHourPicker), firstMinutePicker is \(firstMinutePicker), firstPickerTime is \(firstPickerTime)")
+        print("lastHourPicker is \(lastHourPicker), lastMinutePicker is \(lastMinutePicker), lastPickerTime is \(lastPickerTime)")
+        
+        self.notifications.sheduleNotification(firstPickerTime: firstPickerTime, lastPickerTime: lastPickerTime, numberOfNotification: numberOfRow, intervalOfNotifications: getTimeIntervalForNotifications())
     }
     
     @IBAction func firstDatePickerChanged(_ sender: UIDatePicker) {
@@ -120,7 +144,17 @@ class SettingsViewController: UITableViewController {
     
     func showAlert(message: String, deleteText: String) {
         let deleteAlert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .actionSheet)
-        let delete = UIAlertAction(title: deleteText, style: .destructive)
+        
+        let delete = UIAlertAction(title: deleteText, style: .destructive) { (action:UIAlertAction) in
+            switch deleteText {
+            case "Delete all tasks": self.deleteData(entity: "Task")
+            case "Delete all groups": self.deleteData(entity: "Group")
+            case "Delete all data":
+                self.deleteData(entity: "Task")
+                self.deleteData(entity: "Group")
+            default: print("wrong")
+            };
+        }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         
         deleteAlert.addAction(delete)
@@ -151,6 +185,18 @@ class SettingsViewController: UITableViewController {
         
         let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
         numberOfNotificationPicker.selectRow(numberOfRow - 2, inComponent: 0, animated: true)
+        
+    }
+    
+    func getTimeIntervalForNotifications() -> TimeInterval {
+        
+        let fisrtTimeInterval = Int(firstTimePicker.countDownDuration)
+        let lastTimeInterval = Int(lastTimePicker.countDownDuration)
+        let numberOfNotifications = Int(UserNotificationSettings.numberOfNotifications ?? "2")!
+        let notificationTimeInterval = TimeInterval((lastTimeInterval - fisrtTimeInterval) / numberOfNotifications)
+        
+        return notificationTimeInterval
+    
     }
 
     func getDateForPicker(dateString: String?, defaultTime: String) -> Date {
@@ -161,6 +207,7 @@ class SettingsViewController: UITableViewController {
         let date = dateFormatter.date(from: dateString ?? notificationTime)
         
         let defaultDate = dateFormatter.date(from: notificationTime)
+        
         return date ?? defaultDate!
     }
     
@@ -173,6 +220,7 @@ class SettingsViewController: UITableViewController {
             showAlert(message: "Do you really wanna delete all tasks?", deleteText: "Delete all tasks")
         } else if indexPath.row == 1 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all groups?", deleteText: "Delete all groups")
+            
         } else if indexPath.row == 2 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all data?", deleteText: "Delete all data")
         }
@@ -247,6 +295,22 @@ class SettingsViewController: UITableViewController {
         }
         
         return tableView.rowHeight
+    }
+    
+    func deleteData(entity name:String) {
+        
+        let context = getContext()
+        let freq: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: name)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: freq)
+        
+        do {
+            try context.execute(deleteRequest)
+        }
+        catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        viewWillAppear(true)
     }
     
     

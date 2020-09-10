@@ -66,13 +66,9 @@ class ViewGroupsViewController: UITableViewController {
         
         let context = getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
-        
-//        let freq: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Group")
-//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: freq)
 
         do {
             groups = try context.fetch(fetchRequest)
-            //try context.execute(deleteRequest)
         }
         catch let error as NSError {
             print(error.localizedDescription)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E23CBF525066E5F006E4D27 /* UserNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E23CBF425066E5F006E4D27 /* UserNotificationSettings.swift */; };
+		2E23CBF725093A8A006E4D27 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E23CBF625093A8A006E4D27 /* Notifications.swift */; };
 		2E9594F924D4F6DE002B1127 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9594F824D4F6DE002B1127 /* NewTaskViewController.swift */; };
 		2E9594FB24D4F6ED002B1127 /* ViewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9594FA24D4F6ED002B1127 /* ViewTaskViewController.swift */; };
 		49D44CE42F923262C21DB06A /* Pods_Kitty_Tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		2E23CBF425066E5F006E4D27 /* UserNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationSettings.swift; sourceTree = "<group>"; };
+		2E23CBF625093A8A006E4D27 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		2E9594F824D4F6DE002B1127 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
 		2E9594FA24D4F6ED002B1127 /* ViewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTaskViewController.swift; sourceTree = "<group>"; };
 		8400AC7624D3356A00DF54B7 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				84085C3E24D3133A00AA718F /* AppDelegate.swift */,
 				84085C4024D3133A00AA718F /* SceneDelegate.swift */,
 				2E23CBF425066E5F006E4D27 /* UserNotificationSettings.swift */,
+				2E23CBF625093A8A006E4D27 /* Notifications.swift */,
 			);
 			path = "Supporting files";
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */,
 				2E9594FB24D4F6ED002B1127 /* ViewTaskViewController.swift in Sources */,
 				84366E1E24DDFE1200D05FB5 /* TasksHeader.swift in Sources */,
+				2E23CBF725093A8A006E4D27 /* Notifications.swift in Sources */,
 				842FEDA624DCBE2000AE6604 /* SettingsViewController.swift in Sources */,
 				84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */,
 				8400AC7924D335A000DF54B7 /* TaskModel.swift in Sources */,
