@@ -708,7 +708,7 @@
                                             <outlet property="groupNameLabel" destination="EGV-hZ-xIc" id="Li6-qb-mga"/>
                                             <outlet property="taskTitleLabel" destination="Ja6-cA-p2H" id="BhH-YD-Rfo"/>
                                             <outlet property="timeLabel" destination="qaD-jf-cIu" id="SAk-ED-X88"/>
-                                            <segue destination="h3l-7r-y4f" kind="presentation" id="dMb-wH-Epp"/>
+                                            <segue destination="h3l-7r-y4f" kind="presentation" identifier="showTask" id="B5C-bK-bo7"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1202,6 +1202,7 @@
                         <outlet property="colorMark" destination="Ve1-lv-h3D" id="zTW-us-Nor"/>
                         <outlet property="viewTaskComment" destination="7Sy-i8-mol" id="Hzs-7q-J5w"/>
                         <outlet property="viewTaskDate" destination="US4-Rq-LfC" id="PRG-D6-188"/>
+                        <outlet property="viewTaskGroup" destination="ZbK-yD-xni" id="Znz-V6-MPH"/>
                         <outlet property="viewTaskName" destination="tnP-z7-OA6" id="Ak9-fd-jU5"/>
                         <outlet property="viewTaskTime" destination="SeZ-bP-QU4" id="XJR-0z-2Uo"/>
                     </connections>

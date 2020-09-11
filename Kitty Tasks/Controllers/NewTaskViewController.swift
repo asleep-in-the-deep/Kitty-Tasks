@@ -14,6 +14,8 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     var selectedGroup: String?
     let groupArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
     var tasks: [Task] = []
+    var groups: [Group] = []
+    var groupsForPicker:[String] = []
     
     @IBOutlet weak var newTaskName: UITextField!
     @IBOutlet weak var newTaskDate: UIDatePicker!
@@ -38,6 +40,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
         saveButton.isEnabled = false
+
         
     }
 
@@ -47,9 +50,22 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func newTaskSave(_ sender: UIBarButtonItem) {
         
-        if let taskTitle = self.newTaskName.text {
-            self.saveTask(withTitle: taskTitle)
-        }
+        let taskTitle = self.newTaskName.text
+        let datePicker = self.newTaskTime.inputView as? UIDatePicker
+        let timeInterval = Int(datePicker?.countDownDuration ?? 5)
+        
+        let calendar = Calendar.current
+        let hour = timeInterval / (60 * 60)
+        let minute = timeInterval % (60 * 60) / 60
+        let components = DateComponents(hour: hour , minute: minute)
+        let date = calendar.date(from: components)
+        
+        let dateFromDatePicker = newTaskDate.date
+        let comment = newTaskComment.text
+    
+        
+        self.saveTask(withTitle: taskTitle, withTime: date, withGroup: selectedGroup ?? "default", withDate: dateFromDatePicker, withComment: comment)
+        
         
     }
     
@@ -58,7 +74,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         return appDelegate.persistentContainer.viewContext
     }
     
-    private func saveTask(withTitle taskTitle: String?) {
+    private func saveTask(withTitle taskTitle: String?, withTime taskTime: Date?, withGroup taskGroup: String, withDate taskDate: Date?, withComment taskComment: String?) {
         
         let context = getContext()
         
@@ -66,7 +82,10 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
         let taskObject = Task(entity: entityTask, insertInto: context)
         taskObject.taskTitle = taskTitle
-        taskObject.date = Date()
+        taskObject.time = taskTime
+        taskObject.date = taskDate
+        taskObject.group = taskGroup
+        taskObject.comment = taskComment
         taskObject.isDone = false
        
         do {
@@ -121,15 +140,15 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return groupArray.count
+        return groupsForPicker.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return groupArray[row]
+        return groupsForPicker[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedGroup = groupArray[row]
+        selectedGroup = groupsForPicker[row]
         newTaskGroup.text = selectedGroup
     }
 
@@ -156,7 +175,21 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
     }
     
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+
+        do {
+            let result = try context.fetch(fetchRequest)
+            for data in result as [NSManagedObject] {
+                groupsForPicker.append((data.value(forKey: "groupName") as! String))
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
     
 }
     

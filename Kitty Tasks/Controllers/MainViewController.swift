@@ -24,6 +24,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 //    ]
     
     var tasks: [Task] = []
+    var task: Task!
+    var groupEntity: Group!
+    var color: String?
+    let groupsVC = GroupsViewCell()
     
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
@@ -45,6 +49,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         currentDayLabel.text = TasksHeader().getCurrentDate()
         totalHoursLabel.text = TasksHeader().getTotalHours()
+        
     }
     
     @IBAction func unwindToMainView(segue: UIStoryboardSegue) {
@@ -84,9 +89,66 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
         let task = tasks[indexPath.row]
         cell.taskTitleLabel.text = task.taskTitle
+        cell.timeLabel.text = getTimeInString(timeFromCoreData: task.time)
+        cell.groupNameLabel.text = task.group
+        cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group)
 
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        taskTable.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func getTimeInString(timeFromCoreData: Date?) -> String?{
+        
+        guard timeFromCoreData != nil else { return "no time" }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h'h' mm'min'"
+        let timeTaskText = dateFormatter.string(from: timeFromCoreData!)
+        return timeTaskText
+    }
+    
+    func getColorToGroupName(withGroup taskGroup: String?) -> UIColor{
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            for group in result as [NSManagedObject] {
+                if (group.value(forKey: "groupName") as! String?) == taskGroup {
+                    color = group.value(forKey: "color") as! String?
+        
+                }
+                }
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+
+        let finishColor = groupsVC.transformStringTo(color: color ?? "red")
+        
+        return finishColor
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showTask" {
+            
+            guard let indexPath = taskTable.indexPathForSelectedRow else { return }
+            let task: Task
+            
+            task = tasks[indexPath.row]
+            
+            let destinationNavigation = segue.destination as! UINavigationController
+            let targetController = destinationNavigation.topViewController as! ViewTaskViewController
+            targetController.currentTask = task
+            
+        }
+    }
+    
+    
+    
     
     // MARK: - Core Data
 
@@ -101,15 +163,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let context = getContext()
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         
-//        let freq: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Task")
-//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: freq)
         
         do {
             tasks = try context.fetch(fetchRequest)
-            //try context.execute(deleteRequest)
+            
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+
         
         self.taskTable.reloadData()
         

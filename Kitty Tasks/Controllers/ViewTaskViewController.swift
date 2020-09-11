@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewTaskViewController: UITableViewController {
     
+    var tasks: [Task] = []
+    var currentTask: Task!
+    var mainVC = MainViewController()
     
     @IBOutlet weak var viewTaskName: UILabel!
     @IBOutlet weak var viewTaskDate: UILabel!
@@ -17,16 +21,18 @@ class ViewTaskViewController: UITableViewController {
     @IBOutlet weak var colorMark: UIImageView!
     @IBOutlet weak var viewTaskTime: UILabel!
     @IBOutlet weak var viewTaskComment: UILabel!
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+   
+        viewTaskName.text = currentTask.taskTitle
+        viewTaskTime.text = getTimeInString(timeFromCoreData: currentTask.time)
+        viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
+        viewTaskComment.text = currentTask.comment
+        colorMark.tintColor = mainVC.getColorToGroupName(withGroup: currentTask.group)
+        viewTaskGroup.text = currentTask.group
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     
@@ -34,63 +40,36 @@ class ViewTaskViewController: UITableViewController {
         dismiss(animated: true)
     }
     
-    // MARK: - Table view data source
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
+    // MARK: - Core Data
+
+    private func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+        
+    }
+    
+    func getTimeInString(timeFromCoreData: Date?) -> String?{
+        
+        guard timeFromCoreData != nil else { return "no time" }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h'h' mm'min'"
+        let timeTaskText = dateFormatter.string(from: timeFromCoreData!)
+        return timeTaskText
+    }
+    
+    func getDateInString(dateFromCoreData: Date?) -> String?{
+        
+        guard dateFromCoreData != nil else { return "no time" }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
+        let timeTaskText = dateFormatter.string(from: dateFromCoreData!)
+        return timeTaskText
+    }
     
 
 }
+

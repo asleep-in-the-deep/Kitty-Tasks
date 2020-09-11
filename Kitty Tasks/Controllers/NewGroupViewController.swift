@@ -19,6 +19,7 @@ class NewGroupViewController: UITableViewController {
     let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
     
     var groups: [Group] = []
+    var selectedColor: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,9 +42,11 @@ class NewGroupViewController: UITableViewController {
     }
     
     @IBAction func saveAction(_ sender: Any) {
-        if let groupTitle = self.groupNameTextField.text {
-            self.saveGroup(withTitle: groupTitle)
-        }
+        let groupTitle = self.groupNameTextField.text
+        let groupColor = selectedColor
+        
+        self.saveGroup(withTitle: groupTitle, withColor: groupColor)
+        
         dismiss(animated: true)
     }
     
@@ -56,7 +59,7 @@ class NewGroupViewController: UITableViewController {
         return appDelegate.persistentContainer.viewContext
     }
     
-    private func saveGroup(withTitle groupTitle: String?) {
+    private func saveGroup(withTitle groupTitle: String?, withColor groupColor: String?) {
         
         let context = getContext()
         
@@ -64,6 +67,7 @@ class NewGroupViewController: UITableViewController {
         
         let groupObject = Group(entity: entityGroup, insertInto: context)
         groupObject.groupName = groupTitle
+        groupObject.color = groupColor
        
         do {
             try context.save()
@@ -90,6 +94,9 @@ extension NewGroupViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         return colorArray[row]
     }
 
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedColor = colorArray[row]
+    }
 }
 
 extension NewGroupViewController {
