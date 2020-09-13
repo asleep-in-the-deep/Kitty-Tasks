@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class SettingsViewController: UITableViewController {
 
@@ -39,6 +40,9 @@ class SettingsViewController: UITableViewController {
         createPickerView()
         
         setValuesForNotifications()
+        sendNotificationOnShedule()
+        
+
         
     }
     
@@ -65,22 +69,10 @@ class SettingsViewController: UITableViewController {
         
         let enableStatus = stateOfNotification.isOn
         UserNotificationSettings.userEnableOfNotification = enableStatus
-        
-        let numberOfNotifications = UserNotificationSettings.numberOfNotifications
-        let defaultNumber = "2"
-        let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
-        
-        let calendar = Calendar.current
-        
-        let firstHourPicker = calendar.component(.hour, from: firstTimePicker.date)
-        let firstMinutePicker = calendar.component(.minute, from: firstTimePicker.date)
-        let firstPickerTime = (firstHourPicker * 3600) + (firstMinutePicker * 60)
-        
-        let lastHourPicker = calendar.component(.hour, from: lastTimePicker.date)
-        let lastMinutePicker = calendar.component(.minute, from: lastTimePicker.date)
-        let lastPickerTime = (lastHourPicker * 3600) + (lastMinutePicker * 60)
-        
-        self.notifications.sheduleNotification(firstPickerTime: firstPickerTime, lastPickerTime: lastPickerTime, numberOfNotification: numberOfRow, intervalOfNotifications: getTimeIntervalForNotifications())
+ 
+        //notifications.notificationCenter.removeAllPendingNotificationRequests()
+        //notifications.notificationCenter.removeAllDeliveredNotifications()
+        sendNotificationOnShedule()
     }
     
     @IBAction func firstDatePickerChanged(_ sender: UIDatePicker) {
@@ -90,12 +82,22 @@ class SettingsViewController: UITableViewController {
         dateFormatter.timeStyle = .short
         dateFormatter.dateStyle = .none
         
-        let date = firstTimePicker.date
-        let dateString = dateFormatter.string(from: date)
-        
-        firstTimeLabel.text = dateString
-        
-        UserNotificationSettings.firstNotificationTime = dateString
+        if firstTimePicker.date >= lastTimePicker.date {
+            
+            showWrongTimeAlert(textAlert: "The first notification can't be more the last notification. Set another value.")
+            
+        } else {
+            let date = firstTimePicker.date
+            let dateString = dateFormatter.string(from: date)
+            
+            firstTimeLabel.text = dateString
+            
+            UserNotificationSettings.firstNotificationTime = dateString
+        }
+
+        notifications.notificationCenter.removeAllPendingNotificationRequests()
+        notifications.notificationCenter.removeAllDeliveredNotifications()
+        sendNotificationOnShedule()
     }
     
     @IBAction func lastDatePickerChanged(_ sender: UIDatePicker) {
@@ -106,12 +108,24 @@ class SettingsViewController: UITableViewController {
         dateFormatter.timeStyle = .short
         dateFormatter.dateStyle = .none
         
-        let date = lastTimePicker.date
-        let dateString = dateFormatter.string(from: date)
+        if firstTimePicker.date >= lastTimePicker.date {
+            
+            showWrongTimeAlert(textAlert: "The last notification can't be earlier than the first one. Set a new value.")
+            
+        } else {
+            let date = lastTimePicker.date
+            let dateString = dateFormatter.string(from: date)
+            
+            lastTimeLabel.text = dateString
+            
+            UserNotificationSettings.lastNotificationTime = dateString
+        }
         
-        lastTimeLabel.text = dateString
         
-        UserNotificationSettings.lastNotificationTime = dateString
+    
+        notifications.notificationCenter.removeAllPendingNotificationRequests()
+        notifications.notificationCenter.removeAllDeliveredNotifications()
+        sendNotificationOnShedule()
     }
     
     private func getContext() -> NSManagedObjectContext {
@@ -162,17 +176,72 @@ class SettingsViewController: UITableViewController {
         }
     }
     
+    func showWrongTimeAlert(textAlert: String){
+        let wrongTimeAlert = UIAlertController(title: "Incorrect time", message: textAlert, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default){ [weak self] (action:UIAlertAction) in
+            self?.compareNotificationTimes();
+        }
+        wrongTimeAlert.addAction(okAction)
+        
+        DispatchQueue.main.async {
+            self.present(wrongTimeAlert, animated: true)
+        }
+    }
+    
+    func getIntervalFromDatePicker(date: Date) -> Int {
+        
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: date)
+        let minute = calendar.component(.minute, from: date)
+        let interval = (hour * 3600) + (minute * 60)
+        
+        return interval
+    }
+    
+    func compareNotificationTimes(){
+        
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .none
+        
+        let calendar = Calendar.current
+        let firstLabelHour = 8
+        let firstLabelMinute = 0
+        let firstComponents = DateComponents(hour: firstLabelHour , minute: firstLabelMinute)
+        let firstTime = calendar.date(from: firstComponents)
+        firstTimePicker.date = firstTime!
+        let firstDateString = dateFormatter.string(from: firstTime!)
+        firstTimeLabel.text = firstDateString
+        UserNotificationSettings.firstNotificationTime = firstDateString
+        
+        let lastLabelHour = 20
+        let lastLabelMinute = 0
+        let lastComponents = DateComponents(hour: lastLabelHour , minute: lastLabelMinute)
+        let lastTime = calendar.date(from: lastComponents)
+        lastTimePicker.date = lastTime!
+        let lastDateString = dateFormatter.string(from: lastTime!)
+        lastTimeLabel.text = lastDateString
+        UserNotificationSettings.lastNotificationTime = lastDateString
+        
+        
+    }
+    
+    
     func setValuesForNotifications() {
         
         stateOfNotification.isOn = UserNotificationSettings.userEnableOfNotification ?? false
         
         let firstTime = UserNotificationSettings.firstNotificationTime
-        let defaultFirstTime = "10:00"
+        let defaultFirstTime = "08:00"
         firstTimeLabel.text = firstTime ?? defaultFirstTime
         firstTimePicker.date = getDateForPicker(dateString: firstTime, defaultTime: defaultFirstTime)
         
         let lastTime = UserNotificationSettings.lastNotificationTime
-        let defaultLastTime = "18:00"
+        let defaultLastTime = "20:00"
         lastTimeLabel.text = lastTime ?? defaultLastTime
         lastTimePicker.date = getDateForPicker(dateString: lastTime, defaultTime: defaultLastTime)
         
@@ -206,6 +275,24 @@ class SettingsViewController: UITableViewController {
         let defaultDate = dateFormatter.date(from: notificationTime)
         
         return date ?? defaultDate!
+    }
+    
+    func sendNotificationOnShedule(){
+        let numberOfNotifications = UserNotificationSettings.numberOfNotifications
+        let defaultNumber = "2"
+        let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
+        
+        let calendar = Calendar.current
+        
+        let firstHourPicker = calendar.component(.hour, from: firstTimePicker.date)
+        let firstMinutePicker = calendar.component(.minute, from: firstTimePicker.date)
+        let firstPickerTime = (firstHourPicker * 3600) + (firstMinutePicker * 60)
+        
+        let lastHourPicker = calendar.component(.hour, from: lastTimePicker.date)
+        let lastMinutePicker = calendar.component(.minute, from: lastTimePicker.date)
+        let lastPickerTime = (lastHourPicker * 3600) + (lastMinutePicker * 60)
+        
+        self.notifications.sheduleNotification(firstPickerTime: firstPickerTime, lastPickerTime: lastPickerTime, numberOfNotification: numberOfRow, intervalOfNotifications: getTimeIntervalForNotifications())
     }
     
     // MARK: Table View
@@ -343,6 +430,10 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource{
         numbersOfNotificationLabel.text = selectedGroup
         
         UserNotificationSettings.numberOfNotifications = selectedGroup
+        
+        notifications.notificationCenter.removeAllPendingNotificationRequests()
+        notifications.notificationCenter.removeAllDeliveredNotifications()
+        sendNotificationOnShedule()
     }
     
     func createPickerView() {

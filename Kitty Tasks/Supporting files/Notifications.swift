@@ -13,7 +13,7 @@ import UserNotifications
 class Notifications: NSObject, UNUserNotificationCenterDelegate {
     
     let notificationCenter = UNUserNotificationCenter.current()
-    
+
     
     func requestAuthorization(){
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
@@ -30,7 +30,11 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
+
+    
     func sheduleNotification(firstPickerTime: Int, lastPickerTime: Int, numberOfNotification: Int, intervalOfNotifications: TimeInterval) {
+        
+        print("firstPickerTime is \(firstPickerTime), lastPickerTime is \(lastPickerTime), numberOfNotification is \(numberOfNotification), intervalOfNotifications is \(intervalOfNotifications)")
         
         let content = UNMutableNotificationContent()
         let firstContent = UNMutableNotificationContent()
@@ -55,20 +59,20 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         lastContent.badge = 1
         lastContent.categoryIdentifier = userAction
         
-        guard let path =  Bundle.main.path(forResource: "favicon", ofType: "png") else { return }
+        //guard let path =  Bundle.main.path(forResource: "favicon", ofType: "png") else { return }
         
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            let attachment = try UNNotificationAttachment(identifier: "favicon", url: url, options: nil)
-            
-            content.attachments = [attachment]
-            firstContent.attachments = [attachment]
-            lastContent.attachments = [attachment]
-            
-        } catch {
-            print("attachment couldn't be loaded")
-        }
+//        let url = URL(fileURLWithPath: path)
+//        
+//        do {
+//            let attachment = try UNNotificationAttachment(identifier: "favicon", url: url, options: nil)
+//
+//            content.attachments = [attachment]
+//            firstContent.attachments = [attachment]
+//            lastContent.attachments = [attachment]
+//
+//        } catch {
+//            print("attachment couldn't be loaded")
+//        }
         
         let date = Date()
         let timeIntervalNotif: TimeInterval = 60
@@ -186,6 +190,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             return requestLast
         }
         
+        
         func addNotification(requestName: UNNotificationRequest){
             
             notificationCenter.add(requestName) { (error) in
@@ -253,7 +258,20 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         
         notificationCenter.setNotificationCategories([category])
         
+        notificationCenter.getDeliveredNotifications { (notifications) in
+            for notification:UNNotification in notifications {
+                print(notification.request.identifier)
+            }
+        }
+        
+        notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+             for notificationRequest:UNNotificationRequest in notificationRequests {
+                print(notificationRequest.identifier)
+            }
+        }
+        
     }
+
     
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
