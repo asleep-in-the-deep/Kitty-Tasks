@@ -11,15 +11,10 @@ import CoreData
 
 class ViewGroupsViewController: UITableViewController {
     
-//    var groups = [
-//        TaskGroup(title: "Work", color: "Pink"),
-//        TaskGroup(title: "Home", color: "Brown"),
-//        TaskGroup(title: "Very long name with something", color: "Purple"),
-//        TaskGroup(title: "Кириллическая группа", color: "Cyan"),
-//        TaskGroup(title: "very very very VERY long name for group really", color: "Yellow")
-//    ]
-    
     var groups: [Group] = []
+    
+    let groupsViewCell = GroupsViewCell()
+    var color: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +23,6 @@ class ViewGroupsViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem?.image = UIImage(systemName: "pencil")
     }
     
-    
     @IBAction func unwindToGroupView(segue: UIStoryboardSegue) {
         DispatchQueue.global(qos: .userInitiated).async {
             DispatchQueue.main.async {
@@ -36,6 +30,7 @@ class ViewGroupsViewController: UITableViewController {
             }
         }
     }
+    
 
     // MARK: - Table view data source
 
@@ -52,10 +47,35 @@ class ViewGroupsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupsViewCell
         let group = groups[indexPath.row]
         cell.groupTitleLabel.text = group.groupName
+        cell.colorPoint.tintColor = groupsViewCell.transformStringTo(color: group.color ?? "Red")
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let context = getContext()
+        let group = groups[indexPath.row]
+        
+        if editingStyle == .delete {
+            context.delete(group)
+            groups.remove(at: indexPath.row)
+            
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 
+    // MARK: - Core data
+    
     private func getContext() -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
@@ -75,7 +95,6 @@ class ViewGroupsViewController: UITableViewController {
         }
         
         self.tableView.reloadData()
-        
     }
 
 }

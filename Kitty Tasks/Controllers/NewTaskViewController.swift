@@ -64,7 +64,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         let comment = newTaskComment.text
     
         
-        self.saveTask(withTitle: taskTitle, withTime: date, withGroup: selectedGroup ?? "default", withDate: dateFromDatePicker, withComment: comment)
+        self.saveTask(withTitle: taskTitle, withTime: date, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
         
         
     }
@@ -91,7 +91,6 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         do {
             try context.save()
             tasks.append(taskObject)
-            print("got \(tasks.count) tasks")
         } catch let error as NSError {
             print(error.localizedDescription)
         }

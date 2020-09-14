@@ -12,22 +12,12 @@ import CoreData
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FSCalendarDelegate, FSCalendarDataSource {
     
-//    var tasks = [
-//        TaskCell(taskTitle: "Some", taskGroup: "Work", groupColor: "Red", time: "2 h 20 min"),
-//        TaskCell(taskTitle: "Very long name for task oh really", taskGroup: "Some group", groupColor: "Purple", time: "30 min"),
-//        TaskCell(taskTitle: "Very very very very very evry vyreyyevry", taskGroup: "It's too very very long long omg op", groupColor: "Brown", time: "4 hours"),
-//        TaskCell(taskTitle: "Pet kitty", taskGroup: "Home", groupColor: "Yellow", time: "15 min"),
-//        TaskCell(taskTitle: "Hello malyavochka!", taskGroup: "Little kitten", groupColor: "Pink", time: ""),
-//        TaskCell(taskTitle: "English grammar", taskGroup: "English", groupColor: "Cyan", time: "30 min"),
-//        TaskCell(taskTitle: "Do homework for course", taskGroup: "English", groupColor: "Cyan", time: "1 h 30 min"),
-//        TaskCell(taskTitle: "Hmm", taskGroup: "Work", groupColor: "Magenta", time: "2 hours")
-//    ]
-    
-    var tasks: [Task] = []
     var task: Task!
+    var tasks: [Task] = []
+    
     var groupEntity: Group!
     var color: String?
-    let groupsVC = GroupsViewCell()
+    let groupsViewCell = GroupsViewCell()
     
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
@@ -50,6 +40,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         currentDayLabel.text = TasksHeader().getCurrentDate()
         totalHoursLabel.text = TasksHeader().getTotalHours()
         
+    }
+    
+    @IBAction func editButtonTapped(_ sender: Any) {
+        self.taskTable.setEditing(!taskTable.isEditing, animated: true)
     }
     
     @IBAction func unwindToMainView(segue: UIStoryboardSegue) {
@@ -100,7 +94,25 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         taskTable.deselectRow(at: indexPath, animated: true)
     }
     
-    func getTimeInString(timeFromCoreData: Date?) -> String?{
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let context = getContext()
+        let task = tasks[indexPath.row]
+        
+        if editingStyle == .delete {
+            context.delete(task)
+            tasks.remove(at: indexPath.row)
+            
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    func getTimeInString(timeFromCoreData: Date?) -> String? {
         
         guard timeFromCoreData != nil else { return "no time" }
         let dateFormatter = DateFormatter()
@@ -109,7 +121,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return timeTaskText
     }
     
-    func getColorToGroupName(withGroup taskGroup: String?) -> UIColor{
+    func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
         
         let context = getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
@@ -119,15 +131,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             for group in result as [NSManagedObject] {
                 if (group.value(forKey: "groupName") as! String?) == taskGroup {
                     color = group.value(forKey: "color") as! String?
-        
+                    
                 }
-                }
+            }
             
         } catch let error as NSError {
             print(error.localizedDescription)
         }
 
-        let finishColor = groupsVC.transformStringTo(color: color ?? "red")
+        let finishColor = groupsViewCell.transformStringTo(color: color ?? "red")
         
         return finishColor
     }
@@ -146,7 +158,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
     }
-    
     
     
     
@@ -170,10 +181,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-
         
         self.taskTable.reloadData()
-        
     }
 
 }

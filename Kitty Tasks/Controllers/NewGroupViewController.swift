@@ -41,6 +41,7 @@ class NewGroupViewController: UITableViewController {
         }
     }
     
+    
     @IBAction func saveAction(_ sender: Any) {
         let groupTitle = self.groupNameTextField.text
         let groupColor = selectedColor
@@ -75,7 +76,7 @@ class NewGroupViewController: UITableViewController {
             print(error.localizedDescription)
         }
         
-        self.performSegue(withIdentifier: "reloadSettings", sender: self)
+        self.performSegue(withIdentifier: "saveGroupAndReload", sender: self)
     }
     
 }

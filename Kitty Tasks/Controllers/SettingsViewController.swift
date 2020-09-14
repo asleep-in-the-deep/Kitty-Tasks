@@ -42,8 +42,6 @@ class SettingsViewController: UITableViewController {
         setValuesForNotifications()
         sendNotificationOnShedule()
         
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +53,10 @@ class SettingsViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("did appear")
+    }
+    
     @IBAction func unwindToSettings(segue: UIStoryboardSegue) {
         DispatchQueue.global(qos: .userInitiated).async {
             DispatchQueue.main.async {
@@ -62,6 +64,7 @@ class SettingsViewController: UITableViewController {
             }
         }
     }
+    
     
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {
         

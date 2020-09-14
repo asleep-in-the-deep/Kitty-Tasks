@@ -762,7 +762,11 @@
                         <viewLayoutGuide key="safeArea" id="h36-Dc-e0n"/>
                     </view>
                     <navigationItem key="navigationItem" title="Tasks" id="L7y-bf-y7q">
-                        <barButtonItem key="leftBarButtonItem" image="pencil" catalog="system" id="pPj-wl-mfi"/>
+                        <barButtonItem key="leftBarButtonItem" image="pencil" catalog="system" id="pPj-wl-mfi">
+                            <connections>
+                                <action selector="editButtonTapped:" destination="jCI-bT-IN6" id="6QD-ze-KZ3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="xfn-Yf-V3v">
                             <connections>
                                 <segue destination="4o7-He-5EK" kind="presentation" identifier="newTask" id="mfL-H7-R8u"/>
@@ -1279,6 +1283,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mfL-H7-R8u"/>
-        <segue reference="IL3-X8-ZH1"/>
+        <segue reference="qW7-bQ-U99"/>
     </inferredMetricsTieBreakers>
 </document>
