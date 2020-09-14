@@ -82,7 +82,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
         let taskObject = Task(entity: entityTask, insertInto: context)
         taskObject.taskTitle = taskTitle
-        taskObject.time = taskTime
+        //taskObject.time = taskTime
         taskObject.date = taskDate
         taskObject.group = taskGroup
         taskObject.comment = taskComment

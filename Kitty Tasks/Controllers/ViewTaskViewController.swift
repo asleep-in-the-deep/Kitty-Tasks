@@ -27,7 +27,7 @@ class ViewTaskViewController: UITableViewController {
         super.viewDidLoad()
    
         viewTaskName.text = currentTask.taskTitle
-        viewTaskTime.text = getTimeInString(timeFromCoreData: currentTask.time)
+        //viewTaskTime.text = getTimeInString(timeFromCoreData: currentTask.time)
         viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
         viewTaskComment.text = currentTask.comment
         colorMark.tintColor = mainVC.getColorToGroupName(withGroup: currentTask.group)

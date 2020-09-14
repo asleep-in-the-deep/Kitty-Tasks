@@ -83,7 +83,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
         let task = tasks[indexPath.row]
         cell.taskTitleLabel.text = task.taskTitle
-        cell.timeLabel.text = getTimeInString(timeFromCoreData: task.time)
+        //cell.timeLabel.text = getTimeInString(timeFromCoreData: task.time)
         cell.groupNameLabel.text = task.group
         cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group)
 
