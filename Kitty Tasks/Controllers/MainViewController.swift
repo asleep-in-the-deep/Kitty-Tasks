@@ -65,6 +65,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.calendar.scope = .week
         self.calendarHeightConstraint.constant = 400
     }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, d MMM"
+        let currentDate = formatter.string(from: date)
+        currentDayLabel.text = currentDate
+    }
 
     // MARK: - Table header
     
