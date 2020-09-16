@@ -11,6 +11,7 @@ import CoreData
 
 class ViewGroupsViewController: UITableViewController {
     
+    var group: Group!
     var groups: [Group] = []
     
     let groupsViewCell = GroupsViewCell()
@@ -31,6 +32,12 @@ class ViewGroupsViewController: UITableViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("disappear")
+        
+        
+    }
 
     // MARK: - Table view data source
 
@@ -39,7 +46,6 @@ class ViewGroupsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return groups.count
     }
 
@@ -54,6 +60,14 @@ class ViewGroupsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
+        
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let editViewController = storyboard.instantiateViewController(withIdentifier: "newGroup") as! NewGroupViewController
+        let navController = UINavigationController(rootViewController: editViewController)
+        
+        let group: Group! = groups[indexPath.row]
+        editViewController.newGroup = group
+        self.present(navController, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

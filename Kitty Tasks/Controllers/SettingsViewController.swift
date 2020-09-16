@@ -41,7 +41,6 @@ class SettingsViewController: UITableViewController {
         
         setValuesForNotifications()
         sendNotificationOnShedule()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,10 +52,6 @@ class SettingsViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("did appear")
-    }
-    
     @IBAction func unwindToSettings(segue: UIStoryboardSegue) {
         DispatchQueue.global(qos: .userInitiated).async {
             DispatchQueue.main.async {
@@ -64,7 +59,6 @@ class SettingsViewController: UITableViewController {
             }
         }
     }
-    
     
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {
         
@@ -86,9 +80,7 @@ class SettingsViewController: UITableViewController {
         dateFormatter.dateStyle = .none
         
         if firstTimePicker.date >= lastTimePicker.date {
-            
             showWrongTimeAlert(textAlert: "The first notification can't be more the last notification. Set another value.")
-            
         } else {
             let date = firstTimePicker.date
             let dateString = dateFormatter.string(from: date)
@@ -124,8 +116,6 @@ class SettingsViewController: UITableViewController {
             UserNotificationSettings.lastNotificationTime = dateString
         }
         
-        
-    
         notifications.notificationCenter.removeAllPendingNotificationRequests()
         notifications.notificationCenter.removeAllDeliveredNotifications()
         sendNotificationOnShedule()
@@ -161,8 +151,8 @@ class SettingsViewController: UITableViewController {
         
         let delete = UIAlertAction(title: deleteText, style: .destructive) { [weak self] (action:UIAlertAction) in
             switch deleteText {
-            case "Delete all tasks": self?.deleteData(entity: "Task")
-            case "Delete all groups": self?.deleteData(entity: "Group")
+            case "Delete the tasks": self?.deleteData(entity: "Task")
+            case "Delete the groups": self?.deleteData(entity: "Group")
             case "Delete all data":
                 self?.deleteData(entity: "Task")
                 self?.deleteData(entity: "Group")
@@ -193,7 +183,6 @@ class SettingsViewController: UITableViewController {
     }
     
     func getIntervalFromDatePicker(date: Date) -> Int {
-        
         let calendar = Calendar.current
         
         let hour = calendar.component(.hour, from: date)
@@ -204,7 +193,6 @@ class SettingsViewController: UITableViewController {
     }
     
     func compareNotificationTimes(){
-        
         let dateFormatter = DateFormatter()
         
         dateFormatter.locale = Locale(identifier: "en_GB")
@@ -229,13 +217,9 @@ class SettingsViewController: UITableViewController {
         let lastDateString = dateFormatter.string(from: lastTime!)
         lastTimeLabel.text = lastDateString
         UserNotificationSettings.lastNotificationTime = lastDateString
-        
-        
     }
     
-    
     func setValuesForNotifications() {
-        
         stateOfNotification.isOn = UserNotificationSettings.userEnableOfNotification ?? false
         
         let firstTime = UserNotificationSettings.firstNotificationTime
@@ -254,18 +238,15 @@ class SettingsViewController: UITableViewController {
         
         let numberOfRow = Int(numberOfNotifications ?? defaultNumber)!
         numberOfNotificationPicker.selectRow(numberOfRow - 2, inComponent: 0, animated: true)
-        
     }
     
     func getTimeIntervalForNotifications() -> TimeInterval {
-        
         let fisrtTimeInterval = Int(firstTimePicker.countDownDuration)
         let lastTimeInterval = Int(lastTimePicker.countDownDuration)
         let numberOfNotifications = Int(UserNotificationSettings.numberOfNotifications ?? "2")!
         let notificationTimeInterval = TimeInterval((lastTimeInterval - fisrtTimeInterval) / numberOfNotifications)
         
         return notificationTimeInterval
-    
     }
 
     func getDateForPicker(dateString: String?, defaultTime: String) -> Date {
@@ -298,7 +279,7 @@ class SettingsViewController: UITableViewController {
         self.notifications.sheduleNotification(firstPickerTime: firstPickerTime, lastPickerTime: lastPickerTime, numberOfNotification: numberOfRow, intervalOfNotifications: getTimeIntervalForNotifications())
     }
     
-    // MARK: Table View
+    // MARK: - Table View
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -332,46 +313,37 @@ class SettingsViewController: UITableViewController {
         if indexPath.row == 5 && indexPath.section == 1 {
             numberOfNotificationEnable = !numberOfNotificationEnable
         }
-        
     }
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if indexPath.row == 2 && indexPath.section == 1 && !firstTimePickerEnable {
-            
             return 0
         }
         
         if let selectedIndexPath = self.tappedIndexPath,
         indexPath.row - 1 == selectedIndexPath.row && indexPath.section == 1 && firstTimePickerEnable {
-            
             return 130
         }
         
         if indexPath.row == 4 && indexPath.section == 1 && !lastTimePickerEnable {
-            
             return 0
         }
         
         if let selectedLastIndexPath = self.tappedLastIndexPath,
         indexPath.row - 1 == selectedLastIndexPath.row && indexPath.section == 1 && lastTimePickerEnable {
-            
             return 130
         }
         
         if indexPath.row == 6 && indexPath.section == 1 && !numberOfNotificationEnable {
-            
             return 0
         }
         
         if let selectedNumberOfNotificationIndexPath = self.tappedNumberOfNotificationIndexPath,
         indexPath.row - 1 == selectedNumberOfNotificationIndexPath.row && indexPath.section == 1 && numberOfNotificationEnable {
-            
             return 130
         }
-        
-        
         
         if !stateOfNotification.isOn {
            if indexPath.section == 1 && (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 5 || indexPath.row == 6) {
@@ -399,8 +371,6 @@ class SettingsViewController: UITableViewController {
         
         viewWillAppear(true)
     }
-    
-    
 }
 
 extension SettingsViewController {
@@ -411,8 +381,6 @@ extension SettingsViewController {
         let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
         datePicker.datePickerMode = .time
     }
-
-    
 }
 
 extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource{

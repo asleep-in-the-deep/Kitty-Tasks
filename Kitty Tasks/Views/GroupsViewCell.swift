@@ -20,25 +20,27 @@ class GroupsViewCell: UITableViewCell {
     func transformStringTo(color: String) -> UIColor {
         switch color {
         case "Red":
-            return .red
+            return .systemRed
         case "Orange":
-            return .orange
+            return .systemOrange
         case "Yellow":
             return .systemYellow
         case "Green":
-            return .green
+            return .systemGreen
         case "Blue":
-            return .blue
-        case "Cyan":
-            return .cyan
+            return .systemBlue
+        case "Sky":
+            return .systemTeal
         case "Purple":
-            return .purple
+            return .systemPurple
         case "Pink":
-            return .systemPink
-        case "Magenta":
-            return .magenta
+            return .init(red: 251.0/255.0, green: 159.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+        case "Indigo":
+            return .systemIndigo
         case "Brown":
             return .brown
+        case "White":
+            return .systemFill
         default:
             return .black
         }

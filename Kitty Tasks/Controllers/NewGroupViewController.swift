@@ -11,12 +11,14 @@ import CoreData
 
 class NewGroupViewController: UITableViewController {
     
+    var newGroup: Group!
+    
     @IBOutlet weak var groupNameTextField: UITextField!
     @IBOutlet weak var colorPickerView: UIPickerView!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
+    let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Sky", "Purple", "Pink", "Indigo", "Brown", "White"]
     
     var groups: [Group] = []
     var selectedColor: String?
@@ -27,8 +29,16 @@ class NewGroupViewController: UITableViewController {
         colorPickerView.dataSource = self
         colorPickerView.delegate = self
         
-        saveButton.isEnabled = false
         groupNameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
+        if newGroup != nil {
+            self.title = "Edit group"
+            
+            groupNameTextField.text = newGroup.groupName
+            colorPickerView.selectRow(colorArray.firstIndex(of: newGroup.color ?? "Red") ?? 0, inComponent: 0, animated: true)
+        } else {
+            saveButton.isEnabled = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,12 +51,25 @@ class NewGroupViewController: UITableViewController {
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if let settings = presentingViewController as? SettingsViewController {
+            DispatchQueue.main.async {
+                settings.getNumberOfGroups()
+            }
+        }
+    }
     
     @IBAction func saveAction(_ sender: Any) {
         let groupTitle = self.groupNameTextField.text
         let groupColor = selectedColor
         
-        self.saveGroup(withTitle: groupTitle, withColor: groupColor)
+        if newGroup != nil {
+            self.saveGroup(withTitle: groupNameTextField.text, withColor: selectedColor)
+        } else {
+            self.saveGroup(withTitle: groupTitle, withColor: groupColor)
+        }
         
         dismiss(animated: true)
     }
@@ -61,15 +84,19 @@ class NewGroupViewController: UITableViewController {
     }
     
     private func saveGroup(withTitle groupTitle: String?, withColor groupColor: String?) {
-        
         let context = getContext()
         
-        guard let entityGroup = NSEntityDescription.entity(forEntityName: "Group", in: context) else { return }
+        if newGroup == nil {
+            guard let entityGroup = NSEntityDescription.entity(forEntityName: "Group", in: context) else { return }
+             
+             let groupObject = Group(entity: entityGroup, insertInto: context)
+             groupObject.groupName = groupTitle
+             groupObject.color = groupColor
+        } else {
+            newGroup.groupName = groupTitle
+            newGroup.color = groupColor
+        }
         
-        let groupObject = Group(entity: entityGroup, insertInto: context)
-        groupObject.groupName = groupTitle
-        groupObject.color = groupColor
-       
         do {
             try context.save()
         } catch let error as NSError {
@@ -109,6 +136,5 @@ extension NewGroupViewController {
         } else {
             saveButton.isEnabled = false
         }
-        
     }
 }

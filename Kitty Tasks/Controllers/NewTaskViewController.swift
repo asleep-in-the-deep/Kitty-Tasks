@@ -12,10 +12,11 @@ import CoreData
 class NewTaskViewController: UITableViewController, UITextFieldDelegate {
 
     var selectedGroup: String?
-    let groupArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Cyan", "Purple", "Pink", "Magenta", "Brown"]
+    
     var tasks: [Task] = []
     var groups: [Group] = []
-    var groupsForPicker:[String] = []
+    
+    var groupsForPicker: [String] = []
     var currentTaskInNewTask: Task!
     var mainVC = MainViewController()
     
@@ -52,8 +53,6 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         self.hideKeyboardWhenTappedOutside()
 
         newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-
-
         
     }
 
@@ -65,17 +64,15 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
         let taskTitle = self.newTaskName.text
         let datePicker = self.newTaskTime.inputView as? UIDatePicker
-        var timeInterval = Int(datePicker?.countDownDuration ?? 5)
-        
-        if timeInterval == 60 {
-            timeInterval = Int(currentTaskInNewTask.timeInt)
-        }
+        var timeInterval = Int(datePicker?.countDownDuration ?? 60)
 
         let dateFromDatePicker = newTaskDate.date
         let comment = newTaskComment.text
-    
         
         if currentTaskInNewTask != nil {
+            if timeInterval == 60 {
+                timeInterval = Int(currentTaskInNewTask.timeInt)
+            }
             self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: newTaskGroup.text!, withDate: newTaskDate.date, withComment: newTaskComment.text)
         } else {
             self.saveTask(withTitle: taskTitle, withTime: timeInterval, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
@@ -102,27 +99,18 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             taskObject.group = taskGroup
             taskObject.comment = taskComment
             taskObject.isDone = false
-            
-            do {
-                try context.save()
-                tasks.append(taskObject)
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
         } else {
-            
-            
             currentTaskInNewTask.taskTitle = taskTitle
             currentTaskInNewTask.timeInt = Int32(taskTime)
             currentTaskInNewTask.date = taskDate
             currentTaskInNewTask.group = taskGroup
             currentTaskInNewTask.comment = taskComment
-            
-            do {
-                try context.save()
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
+        }
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
         }
         
         self.performSegue(withIdentifier: "saveTaskAndReload", sender: self)
@@ -238,7 +226,6 @@ extension NewTaskViewController {
         let button = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
         toolBar.setItems([button], animated: true)
         newTaskTime.inputAccessoryView = toolBar
-        
     }
 
     
@@ -255,10 +242,6 @@ extension NewTaskViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-}
-
-extension NewTaskViewController{
-    
     
     @objc private func textFieldChanged() {
         
@@ -269,5 +252,4 @@ extension NewTaskViewController{
         }
         
     }
-    
 }

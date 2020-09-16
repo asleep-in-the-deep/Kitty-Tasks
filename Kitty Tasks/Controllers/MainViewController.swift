@@ -19,6 +19,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     var color: String?
     let groupsViewCell = GroupsViewCell()
     
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
@@ -38,8 +40,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.taskTable.dataSource = self
         
         currentDayLabel.text = TasksHeader().getCurrentDate()
-        totalHoursLabel.text = TasksHeader().getTotalHours()
-        
     }
     
     @IBAction func editButtonTapped(_ sender: Any) {
@@ -71,6 +71,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.dateFormat = "E, d MMM"
         let currentDate = formatter.string(from: date)
         currentDayLabel.text = currentDate
+        self.viewWillAppear(true)
     }
 
     // MARK: - Table header
@@ -89,10 +90,29 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
         let task = tasks[indexPath.row]
+        
         cell.taskTitleLabel.text = task.taskTitle
         cell.timeLabel.text = getTimeInString(timeFromCoreData: task.timeInt)
         cell.groupNameLabel.text = task.group
         cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group)
+        
+        if task.isDone == true {
+            let strokeEffect: [NSAttributedString.Key : Any] = [
+                NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                NSAttributedString.Key.strikethroughColor: UIColor.gray]
+            cell.taskTitleLabel.attributedText = NSAttributedString(string: task.taskTitle!, attributes: strokeEffect)
+            
+            cell.taskTitleLabel.textColor = .systemGray
+            cell.groupNameLabel.textColor = .systemGray
+        } else {
+            let strokeEffect: [NSAttributedString.Key : Any] = [
+                NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                NSAttributedString.Key.strikethroughColor: UIColor.clear]
+            cell.taskTitleLabel.attributedText = NSAttributedString(string: task.taskTitle!, attributes: strokeEffect)
+            
+            cell.taskTitleLabel.textColor = .black
+            cell.groupNameLabel.textColor = .black
+        }
 
         return cell
     }
@@ -101,23 +121,90 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         taskTable.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let context = getContext()
-        let task = tasks[indexPath.row]
+        let task: Task! = tasks[indexPath.row]
         
-        if editingStyle == .delete {
+        let deleteTask = UIContextualAction(style: .destructive, title: "Delete") { (_, _, completionHandler) in
             context.delete(task)
-            tasks.remove(at: indexPath.row)
+            self.tasks.remove(at: indexPath.row)
             
             do {
                 try context.save()
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            
             tableView.deleteRows(at: [indexPath], with: .fade)
+            self.totalHoursLabel.text = self.calculateTotalTime()
+            
+            completionHandler(true)
         }
+        deleteTask.image = UIImage(systemName: "trash")
+        
+        let editTask = UIContextualAction(style: .normal, title: "Edit") { (_, _, completionHandler) in
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let editViewController = storyboard.instantiateViewController(withIdentifier: "newTask") as! NewTaskViewController
+            let navController = UINavigationController(rootViewController: editViewController)
+            
+            editViewController.currentTaskInNewTask = task
+            self.present(navController, animated: true, completion: nil)
+            
+            completionHandler(true)
+        }
+        editTask.backgroundColor = .systemGreen
+        editTask.image = UIImage(systemName: "pencil")
+        
+        return UISwipeActionsConfiguration(actions: [deleteTask, editTask])
     }
+
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let context = getContext()
+        let task: Task! = tasks[indexPath.row]
+        
+        let markCompleted = UIContextualAction(style: .normal, title: "Done") { (action, view, completionHandler) in
+            task.isDone = !task.isDone
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            self.taskTable.reloadData()
+            
+            completionHandler(true)
+        }
+        markCompleted.backgroundColor = .systemIndigo
+        markCompleted.image = UIImage(systemName: "checkmark.circle")
+        
+        let copyTask = UIContextualAction(style: .normal, title: "Copy") { (_, _, completionHandler) in
+            guard let taskEntity = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+            
+            let taskObject = Task(entity: taskEntity, insertInto: context)
+            taskObject.taskTitle = task.taskTitle
+            taskObject.group = task.group
+            taskObject.timeInt = task.timeInt
+            taskObject.date = task.date
+            taskObject.comment = task.comment
+            taskObject.isDone = false
+            
+            do {
+                try context.save()
+                self.tasks.append(taskObject)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            self.taskTable.reloadData()
+            self.totalHoursLabel.text = self.calculateTotalTime()
+            
+            completionHandler(true)
+        }
+        copyTask.backgroundColor = .systemGray
+        copyTask.image = UIImage(systemName: "doc.on.doc")
+
+        return UISwipeActionsConfiguration(actions: [markCompleted, copyTask])
+    }
+    
+    // MARK: - Data conversion
     
     func getTimeInString(timeFromCoreData: Int32) -> String {
                 
@@ -127,7 +214,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         if hours == 0 {
             let timeTaskText = "\(minutes) min"
             return timeTaskText
-            
         } else {
             if minutes == 0 {
                 let timeTaskText = "\(hours) h"
@@ -142,7 +228,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
-        
         let context = getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
         
@@ -151,7 +236,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             for group in result as [NSManagedObject] {
                 if (group.value(forKey: "groupName") as! String?) == taskGroup {
                     color = group.value(forKey: "color") as! String?
-                    
                 }
             }
             
@@ -159,14 +243,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             print(error.localizedDescription)
         }
 
-        let finishColor = groupsViewCell.transformStringTo(color: color ?? "red")
+        let finishColor = groupsViewCell.transformStringTo(color: color ?? "Red")
         
         return finishColor
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showTask" {
-            
             guard let indexPath = taskTable.indexPathForSelectedRow else { return }
             let task: Task
             
@@ -175,7 +258,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let destinationNavigation = segue.destination as! UINavigationController
             let targetController = destinationNavigation.topViewController as! ViewTaskViewController
             targetController.currentTask = task
-            
         }
     }
     
@@ -193,7 +275,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let context = getContext()
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        
+//        let date = Date()
+//        fetchRequest.predicate = NSPredicate(format: "date = \(date)")
         
         do {
             tasks = try context.fetch(fetchRequest)
@@ -203,6 +286,42 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         self.taskTable.reloadData()
+        totalHoursLabel.text = calculateTotalTime()
+    }
+    
+    func calculateTotalTime() -> String {
+        let context = getContext()
+        
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        var totalTime = 0
+        do {
+            let results = try context.fetch(fetchRequest)
+            for res in results {
+                let taskTime = res.value(forKey: "timeInt") as! Int
+                totalTime += taskTime
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        let hours = totalTime / (60 * 60)
+        let minutes = totalTime % (60 * 60) / 60
+        let timeText: String
+        
+        if hours == 0 {
+            timeText = "\(minutes) min"
+        } else {
+            if minutes == 0 {
+                timeText = "\(hours) h"
+            }
+            else {
+                timeText = "\(hours) h \(minutes) min"
+            }
+        }
+        
+        return "Total time: \(timeText)"
     }
 
 }

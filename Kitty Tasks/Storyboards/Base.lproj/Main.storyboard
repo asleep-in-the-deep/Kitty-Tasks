@@ -186,7 +186,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="F3g-nc-avt" kind="presentation" id="IL3-X8-ZH1"/>
+                                                        <segue destination="F3g-nc-avt" kind="presentation" modalPresentationStyle="fullScreen" id="IL3-X8-ZH1"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -429,8 +429,8 @@
                                                 <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1c4-Eo-5tD">
                                                     <rect key="frame" x="8" y="11.000000000000002" width="398" height="21.666666666666671"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete all tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrH-fD-Ow4">
-                                                            <rect key="frame" x="0.0" y="0.0" width="109.66666666666667" height="21.666666666666668"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete the tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrH-fD-Ow4">
+                                                            <rect key="frame" x="0.0" y="0.0" width="117.33333333333333" height="21.666666666666668"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -460,8 +460,8 @@
                                                 <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FuI-Gf-B27">
                                                     <rect key="frame" x="8" y="11.000000000000002" width="398" height="21.666666666666671"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete all groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZO-Bp-SWH">
-                                                            <rect key="frame" x="0.0" y="0.0" width="122" height="21.666666666666668"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete the groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZO-Bp-SWH">
+                                                            <rect key="frame" x="0.0" y="0.0" width="129.66666666666666" height="21.666666666666668"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -539,7 +539,7 @@
         <!--New group-->
         <scene sceneID="I4p-AB-iZd">
             <objects>
-                <tableViewController id="oyw-Fa-E5v" customClass="NewGroupViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="newGroup" id="oyw-Fa-E5v" customClass="NewGroupViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="znY-dc-AJU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -777,6 +777,7 @@
                         <outlet property="calendar" destination="Des-mc-97g" id="X1O-FW-IeE"/>
                         <outlet property="calendarHeightConstraint" destination="WRx-G2-TPK" id="IRa-XE-N1f"/>
                         <outlet property="currentDayLabel" destination="2Wb-a8-eFj" id="Gz5-W0-6Ub"/>
+                        <outlet property="editButton" destination="pPj-wl-mfi" id="uNc-xn-Sqq"/>
                         <outlet property="taskTable" destination="dng-zX-EAt" id="5qW-XW-N6U"/>
                         <outlet property="totalHoursLabel" destination="GU1-2g-h7n" id="de0-pZ-Jgv"/>
                     </connections>
@@ -788,7 +789,7 @@
         <!--New task-->
         <scene sceneID="udN-2Z-p0m">
             <objects>
-                <tableViewController id="8Bc-Rb-aU5" customClass="NewTaskViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="newTask" id="8Bc-Rb-aU5" customClass="NewTaskViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="spc-a4-VrK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

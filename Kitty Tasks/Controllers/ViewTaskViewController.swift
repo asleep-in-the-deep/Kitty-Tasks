@@ -11,8 +11,9 @@ import CoreData
 
 class ViewTaskViewController: UITableViewController {
     
-    var tasks: [Task] = []
     var currentTask: Task!
+    var tasks: [Task] = []
+    
     var mainVC = MainViewController()
     
     @IBOutlet weak var viewTaskName: UILabel!
@@ -32,7 +33,6 @@ class ViewTaskViewController: UITableViewController {
         viewTaskComment.text = currentTask.comment
         colorMark.tintColor = mainVC.getColorToGroupName(withGroup: currentTask.group)
         viewTaskGroup.text = currentTask.group
-
     }
     
     
@@ -68,7 +68,6 @@ class ViewTaskViewController: UITableViewController {
             let targetController = destinationNavigation.viewControllers.first as! NewTaskViewController
             targetController.currentTaskInNewTask = currentTask
         }
-        
     }
     
 
