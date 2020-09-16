@@ -790,7 +790,7 @@
             <objects>
                 <tableViewController id="8Bc-Rb-aU5" customClass="NewTaskViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="spc-a4-VrK">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Task title" id="Tlh-gk-4b5">
@@ -1200,7 +1200,11 @@
                                 <action selector="viewTaskCancel:" destination="g3i-X5-nmS" id="u8l-Rj-yc8"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Cpd-tp-aAF"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Cpd-tp-aAF">
+                            <connections>
+                                <segue destination="4o7-He-5EK" kind="presentation" identifier="editTask" modalPresentationStyle="fullScreen" id="exc-cc-f4H"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="colorMark" destination="Ve1-lv-h3D" id="zTW-us-Nor"/>
@@ -1220,8 +1224,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4o7-He-5EK" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="xqa-tG-bH5"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Qe5-Cv-lof">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1282,7 +1287,7 @@
         <image name="trash.fill" catalog="system" width="60" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mfL-H7-R8u"/>
+        <segue reference="exc-cc-f4H"/>
         <segue reference="qW7-bQ-U99"/>
     </inferredMetricsTieBreakers>
 </document>

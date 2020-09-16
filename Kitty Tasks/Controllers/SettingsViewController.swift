@@ -73,8 +73,8 @@ class SettingsViewController: UITableViewController {
         let enableStatus = stateOfNotification.isOn
         UserNotificationSettings.userEnableOfNotification = enableStatus
  
-        //notifications.notificationCenter.removeAllPendingNotificationRequests()
-        //notifications.notificationCenter.removeAllDeliveredNotifications()
+        notifications.notificationCenter.removeAllPendingNotificationRequests()
+        notifications.notificationCenter.removeAllDeliveredNotifications()
         sendNotificationOnShedule()
     }
     

@@ -16,6 +16,8 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     var tasks: [Task] = []
     var groups: [Group] = []
     var groupsForPicker:[String] = []
+    var currentTaskInNewTask: Task!
+    var mainVC = MainViewController()
     
     @IBOutlet weak var newTaskName: UITextField!
     @IBOutlet weak var newTaskDate: UIDatePicker!
@@ -28,6 +30,18 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if currentTaskInNewTask != nil {
+            self.title = "Edit task"
+            
+            newTaskName.text = currentTaskInNewTask.taskTitle
+            newTaskDate.date = currentTaskInNewTask.date!
+            newTaskTime.text = mainVC.getTimeInString(timeFromCoreData: currentTaskInNewTask.timeInt)
+            newTaskGroup.text = currentTaskInNewTask.group
+            newTaskComment.text = currentTaskInNewTask.comment
+        } else {
+            saveButton.isEnabled = false
+        }
+        
         createPickerView()
         
         setInputViewDatePicker(target: self, selector: #selector(tapDone)) //1
@@ -38,8 +52,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         self.hideKeyboardWhenTappedOutside()
 
         newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        
-        saveButton.isEnabled = false
+
 
         
     }
@@ -52,20 +65,21 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         
         let taskTitle = self.newTaskName.text
         let datePicker = self.newTaskTime.inputView as? UIDatePicker
-        let timeInterval = Int(datePicker?.countDownDuration ?? 5)
+        var timeInterval = Int(datePicker?.countDownDuration ?? 5)
         
-        let calendar = Calendar.current
-        let hour = timeInterval / (60 * 60)
-        let minute = timeInterval % (60 * 60) / 60
-        let components = DateComponents(hour: hour , minute: minute)
-        let date = calendar.date(from: components)
-        
+        if timeInterval == 60 {
+            timeInterval = Int(currentTaskInNewTask.timeInt)
+        }
+
         let dateFromDatePicker = newTaskDate.date
         let comment = newTaskComment.text
     
         
-        self.saveTask(withTitle: taskTitle, withTime: date, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
-        
+        if currentTaskInNewTask != nil {
+            self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: newTaskGroup.text!, withDate: newTaskDate.date, withComment: newTaskComment.text)
+        } else {
+            self.saveTask(withTitle: taskTitle, withTime: timeInterval, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
+        }
         
     }
     
@@ -74,30 +88,46 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         return appDelegate.persistentContainer.viewContext
     }
     
-    private func saveTask(withTitle taskTitle: String?, withTime taskTime: Date?, withGroup taskGroup: String, withDate taskDate: Date?, withComment taskComment: String?) {
+    private func saveTask(withTitle taskTitle: String?, withTime taskTime: Int, withGroup taskGroup: String, withDate taskDate: Date?, withComment taskComment: String?) {
         
         let context = getContext()
-        
-        guard let entityTask = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
-        
-        let taskObject = Task(entity: entityTask, insertInto: context)
-        taskObject.taskTitle = taskTitle
-        //taskObject.time = taskTime
-        taskObject.date = taskDate
-        taskObject.group = taskGroup
-        taskObject.comment = taskComment
-        taskObject.isDone = false
-       
-        do {
-            try context.save()
-            tasks.append(taskObject)
-        } catch let error as NSError {
-            print(error.localizedDescription)
+
+        if currentTaskInNewTask == nil {
+            guard let entityTask = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+            
+            let taskObject = Task(entity: entityTask, insertInto: context)
+            taskObject.taskTitle = taskTitle
+            taskObject.timeInt = Int32(taskTime)
+            taskObject.date = taskDate
+            taskObject.group = taskGroup
+            taskObject.comment = taskComment
+            taskObject.isDone = false
+            
+            do {
+                try context.save()
+                tasks.append(taskObject)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        } else {
+            
+            
+            currentTaskInNewTask.taskTitle = taskTitle
+            currentTaskInNewTask.timeInt = Int32(taskTime)
+            currentTaskInNewTask.date = taskDate
+            currentTaskInNewTask.group = taskGroup
+            currentTaskInNewTask.comment = taskComment
+            
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
         }
         
         self.performSegue(withIdentifier: "saveTaskAndReload", sender: self)
     }
-    
+
     
     @objc func tapDone() {
         if let datePicker = self.newTaskTime.inputView as? UIDatePicker {
@@ -232,7 +262,7 @@ extension NewTaskViewController{
     
     @objc private func textFieldChanged() {
         
-        if newTaskName.text?.isEmpty == false {
+        if newTaskName.text?.isEmpty == false{
             saveButton.isEnabled = true
         } else {
             saveButton.isEnabled = false

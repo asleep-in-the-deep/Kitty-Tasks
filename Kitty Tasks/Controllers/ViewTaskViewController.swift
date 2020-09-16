@@ -27,7 +27,7 @@ class ViewTaskViewController: UITableViewController {
         super.viewDidLoad()
    
         viewTaskName.text = currentTask.taskTitle
-        //viewTaskTime.text = getTimeInString(timeFromCoreData: currentTask.time)
+        viewTaskTime.text = mainVC.getTimeInString(timeFromCoreData: currentTask.timeInt)
         viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
         viewTaskComment.text = currentTask.comment
         colorMark.tintColor = mainVC.getColorToGroupName(withGroup: currentTask.group)
@@ -52,15 +52,6 @@ class ViewTaskViewController: UITableViewController {
         
     }
     
-    func getTimeInString(timeFromCoreData: Date?) -> String?{
-        
-        guard timeFromCoreData != nil else { return "no time" }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h'h' mm'min'"
-        let timeTaskText = dateFormatter.string(from: timeFromCoreData!)
-        return timeTaskText
-    }
-    
     func getDateInString(dateFromCoreData: Date?) -> String?{
         
         guard dateFromCoreData != nil else { return "no time" }
@@ -68,6 +59,16 @@ class ViewTaskViewController: UITableViewController {
         dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
         let timeTaskText = dateFormatter.string(from: dateFromCoreData!)
         return timeTaskText
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "editTask" {
+            let destinationNavigation = segue.destination as! UINavigationController
+            let targetController = destinationNavigation.viewControllers.first as! NewTaskViewController
+            targetController.currentTaskInNewTask = currentTask
+        }
+        
     }
     
 

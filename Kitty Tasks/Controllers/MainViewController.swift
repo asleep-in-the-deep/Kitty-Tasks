@@ -90,7 +90,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
         let task = tasks[indexPath.row]
         cell.taskTitleLabel.text = task.taskTitle
-        //cell.timeLabel.text = getTimeInString(timeFromCoreData: task.time)
+        cell.timeLabel.text = getTimeInString(timeFromCoreData: task.timeInt)
         cell.groupNameLabel.text = task.group
         cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group)
 
@@ -119,13 +119,26 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func getTimeInString(timeFromCoreData: Date?) -> String? {
-        
-        guard timeFromCoreData != nil else { return "no time" }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h'h' mm'min'"
-        let timeTaskText = dateFormatter.string(from: timeFromCoreData!)
-        return timeTaskText
+    func getTimeInString(timeFromCoreData: Int32) -> String {
+                
+        let hours = timeFromCoreData / (60 * 60)
+        let minutes = timeFromCoreData % (60 * 60) / 60
+                   
+        if hours == 0 {
+            let timeTaskText = "\(minutes) min"
+            return timeTaskText
+            
+        } else {
+            if minutes == 0 {
+                let timeTaskText = "\(hours) h"
+                return timeTaskText
+            }
+            else {
+                let timeTaskText = "\(hours) h \(minutes) min"
+                return timeTaskText
+            }
+        }
+
     }
     
     func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
