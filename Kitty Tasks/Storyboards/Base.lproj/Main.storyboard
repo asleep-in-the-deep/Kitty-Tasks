@@ -45,6 +45,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="calendar" destination="1Gc-Lt-nAv" id="EV1-LE-rXJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1mp-b1-H4y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -630,7 +633,7 @@
         <!--Data Source-->
         <scene sceneID="Gay-gm-u0y">
             <objects>
-                <viewController id="jCI-bT-IN6" customClass="MainViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainView" id="jCI-bT-IN6" customClass="MainViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SOt-wi-rw4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -795,7 +798,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="newTask" id="8Bc-Rb-aU5" customClass="NewTaskViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="spc-a4-VrK">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Task title" id="Tlh-gk-4b5">
@@ -1231,7 +1234,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="xqa-tG-bH5"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Qe5-Cv-lof">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1293,7 +1296,7 @@
         <image name="trash.fill" catalog="system" width="60" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="exc-cc-f4H"/>
+        <segue reference="qhr-ZH-Uvd"/>
         <segue reference="IL3-X8-ZH1"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -18,21 +18,23 @@ class TasksViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
-    
-    func setCell(object: TaskCell) {
-        self.taskTitleLabel.text = object.taskTitle
-        self.groupNameLabel.text = object.taskGroup
-        self.groupColorPoint.tintColor = GroupsViewCell().transformStringTo(color: object.groupColor)
-        self.timeLabel.text = object.time
     }
 
 }
 
-struct TaskCell {
-    var taskTitle: String
-    var taskGroup: String
-    var groupColor: String
-    var time: String
+extension UIImage {
+    
+    func resize(targetSize: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size:targetSize).image { _ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
+
+    func resize(scaledToHeight desiredHeight: CGFloat) -> UIImage {
+        let scaleFactor = desiredHeight / size.height
+        let newWidth = size.width * scaleFactor
+        let newSize = CGSize(width: newWidth, height: desiredHeight)
+
+        return resize(targetSize: newSize)
+    }
 }

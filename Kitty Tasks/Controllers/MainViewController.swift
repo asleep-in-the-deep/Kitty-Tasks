@@ -15,8 +15,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     var task: Task!
     var tasks: [Task] = []
     
+    var selectedDate: Date!
+    
     var groupEntity: Group!
-    var color: String?
     let groupsViewCell = GroupsViewCell()
     
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -40,6 +41,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.taskTable.dataSource = self
         
         currentDayLabel.text = TasksHeader().getCurrentDate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.calendar.reloadData()
+        getTheTasks(date: Date())
+        calculateTotalTime()
     }
     
     @IBAction func editButtonTapped(_ sender: Any) {
@@ -74,6 +83,37 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         getTheTasks(date: date)
         calculateTotalTime()
+    }
+    
+    func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
+        let catImage = UIImage(named: "cat.png")?.resize(scaledToHeight: 20)
+        let checkmarkImage = UIImage(named: "check.png")?.resize(scaledToHeight: 20)
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        
+        getDatePredicate(date: date, fetchRequest: fetchRequest)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            
+            if result.count > 0 {
+                var completedTask = 0
+                for task in result as [NSManagedObject] {
+                    if (task.value(forKey: "isDone") as! Bool) == true { completedTask += 1 }
+                    
+                    if completedTask == result.count {
+                        return checkmarkImage
+                    } else {
+                        return catImage
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        return nil
     }
 
     // MARK: - Table header
@@ -133,7 +173,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.taskTitleLabel.text = task.taskTitle
         cell.timeLabel.text = getTimeInString(timeFromCoreData: task.timeInt)
         cell.groupNameLabel.text = task.group
-        cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group)
+        cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group ?? "Red")
         
         if task.isDone == true {
             let strokeEffect: [NSAttributedString.Key : Any] = [
@@ -175,6 +215,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
             self.calculateTotalTime()
+            self.calendar.reloadData()
             
             completionHandler(true)
         }
@@ -209,6 +250,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 print(error.localizedDescription)
             }
             self.taskTable.reloadData()
+            self.calendar.reloadData()
             
             completionHandler(true)
         }
@@ -274,17 +316,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let result = try context.fetch(fetchRequest)
             for group in result as [NSManagedObject] {
                 if (group.value(forKey: "groupName") as! String?) == taskGroup {
-                    color = group.value(forKey: "color") as! String?
+                    let color = group.value(forKey: "color") as! String
+                    
+                    let finishColor = groupsViewCell.transformStringTo(color: color)
+                    return finishColor
                 }
             }
-            
         } catch let error as NSError {
             print(error.localizedDescription)
         }
 
-        let finishColor = groupsViewCell.transformStringTo(color: color ?? "Red")
-        
-        return finishColor
+        return .black
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -304,18 +346,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - Core Data
 
-   private func getContext() -> NSManagedObjectContext {
-       let appDelegate = UIApplication.shared.delegate as! AppDelegate
-       return appDelegate.persistentContainer.viewContext
-   }
-   
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        getTheTasks(date: Date())
-        
-        calculateTotalTime()
+    private func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
     }
+    
     
     func getTheTasks(date: Date) {
         let context = getContext()

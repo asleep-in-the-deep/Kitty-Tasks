@@ -73,7 +73,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             if timeInterval == 60 {
                 timeInterval = Int(currentTaskInNewTask.timeInt)
             }
-            self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: newTaskGroup.text!, withDate: newTaskDate.date, withComment: newTaskComment.text)
+            self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: newTaskGroup.text ?? "Default", withDate: newTaskDate.date, withComment: newTaskComment.text)
         } else {
             self.saveTask(withTitle: taskTitle, withTime: timeInterval, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
         }

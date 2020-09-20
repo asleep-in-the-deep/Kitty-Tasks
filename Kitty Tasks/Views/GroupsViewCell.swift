@@ -41,19 +41,11 @@ class GroupsViewCell: UITableViewCell {
             return .brown
         case "White":
             return .systemFill
+        case "Black":
+            return .black
         default:
             return .black
         }
     }
-
-    func setCell(object: TaskGroup) {
-        self.groupTitleLabel.text = object.title
-        self.colorPoint.tintColor = transformStringTo(color: object.color)
-    }
     
-}
-
-struct TaskGroup {
-    var title: String
-    var color: String
 }
