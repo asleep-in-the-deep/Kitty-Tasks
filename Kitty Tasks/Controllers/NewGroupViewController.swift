@@ -31,14 +31,7 @@ class NewGroupViewController: UITableViewController {
         
         groupNameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
-        if newGroup != nil {
-            self.title = "Edit group"
-            
-            groupNameTextField.text = newGroup.groupName
-            colorPickerView.selectRow(colorArray.firstIndex(of: newGroup.color ?? "Red") ?? 0, inComponent: 0, animated: true)
-        } else {
-            saveButton.isEnabled = false
-        }
+        setEditScreen()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,16 +40,6 @@ class NewGroupViewController: UITableViewController {
         if #available(iOS 13.0, *) {
             DispatchQueue.main.async {
                 self.navigationController?.navigationBar.setNeedsLayout()
-            }
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        if let settings = presentingViewController as? SettingsViewController {
-            DispatchQueue.main.async {
-                settings.getNumberOfGroups()
             }
         }
     }
@@ -77,6 +60,8 @@ class NewGroupViewController: UITableViewController {
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
     }
+    
+    // MARK: - Core Data
     
     private func getContext() -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -104,6 +89,18 @@ class NewGroupViewController: UITableViewController {
         }
         
         self.performSegue(withIdentifier: "saveGroupAndReload", sender: self)
+    }
+    
+    func setEditScreen() {
+        
+        if newGroup != nil {
+            self.title = "Edit group"
+            
+            groupNameTextField.text = newGroup.groupName
+            colorPickerView.selectRow(colorArray.firstIndex(of: newGroup.color ?? "Red") ?? 0, inComponent: 0, animated: true)
+        } else {
+            saveButton.isEnabled = false
+        }
     }
     
 }

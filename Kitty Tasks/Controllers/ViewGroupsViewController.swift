@@ -20,9 +20,12 @@ class ViewGroupsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
-        self.navigationItem.leftBarButtonItem?.image = UIImage(systemName: "pencil")
     }
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    
     
     @IBAction func unwindToGroupView(segue: UIStoryboardSegue) {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -32,13 +35,6 @@ class ViewGroupsViewController: UITableViewController {
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print("disappear")
-        
-        
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

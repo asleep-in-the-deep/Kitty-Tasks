@@ -71,10 +71,49 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.dateFormat = "E, d MMM"
         let currentDate = formatter.string(from: date)
         currentDayLabel.text = currentDate
-        self.viewWillAppear(true)
+        
+        getTheTasks(date: date)
+        calculateTotalTime()
     }
 
     // MARK: - Table header
+    
+    func calculateTotalTime() {
+        let context = getContext()
+        
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        getDatePredicate(date: calendar.selectedDate ?? Date(), fetchRequest: fetchRequest)
+        
+        var totalTime = 0
+        do {
+            let results = try context.fetch(fetchRequest)
+            for res in results {
+                let taskTime = res.value(forKey: "timeInt") as! Int
+                totalTime += taskTime
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        let hours = totalTime / (60 * 60)
+        let minutes = totalTime % (60 * 60) / 60
+        let timeText: String
+        
+        if hours == 0 {
+            timeText = "\(minutes) min"
+        } else {
+            if minutes == 0 {
+                timeText = "\(hours) h"
+            }
+            else {
+                timeText = "\(hours) h \(minutes) min"
+            }
+        }
+        
+        self.totalHoursLabel.text = "Total time: \(timeText)"
+    }
     
     
     // MARK: - Table view data source
@@ -135,7 +174,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 print(error.localizedDescription)
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
-            self.totalHoursLabel.text = self.calculateTotalTime()
+            self.calculateTotalTime()
             
             completionHandler(true)
         }
@@ -194,7 +233,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 print(error.localizedDescription)
             }
             self.taskTable.reloadData()
-            self.totalHoursLabel.text = self.calculateTotalTime()
+            self.calculateTotalTime()
             
             completionHandler(true)
         }
@@ -273,10 +312,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        getTheTasks(date: Date())
+        
+        calculateTotalTime()
+    }
+    
+    func getTheTasks(date: Date) {
         let context = getContext()
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-//        let date = Date()
-//        fetchRequest.predicate = NSPredicate(format: "date = \(date)")
+        
+        getDatePredicate(date: date, fetchRequest: fetchRequest)
         
         do {
             tasks = try context.fetch(fetchRequest)
@@ -286,42 +331,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         self.taskTable.reloadData()
-        totalHoursLabel.text = calculateTotalTime()
     }
     
-    func calculateTotalTime() -> String {
-        let context = getContext()
+    func getDatePredicate(date: Date, fetchRequest: NSFetchRequest<Task>) {
+        let calendar = Calendar.current
+        let dateFrom = calendar.startOfDay(for: date)
+        let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom)
         
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        fetchRequest.returnsObjectsAsFaults = false
-        
-        var totalTime = 0
-        do {
-            let results = try context.fetch(fetchRequest)
-            for res in results {
-                let taskTime = res.value(forKey: "timeInt") as! Int
-                totalTime += taskTime
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        let hours = totalTime / (60 * 60)
-        let minutes = totalTime % (60 * 60) / 60
-        let timeText: String
-        
-        if hours == 0 {
-            timeText = "\(minutes) min"
-        } else {
-            if minutes == 0 {
-                timeText = "\(hours) h"
-            }
-            else {
-                timeText = "\(hours) h \(minutes) min"
-            }
-        }
-        
-        return "Total time: \(timeText)"
+        let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
+        let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
+        let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
+        fetchRequest.predicate = datePredicate
     }
-
 }

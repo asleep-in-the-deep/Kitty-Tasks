@@ -99,6 +99,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             taskObject.group = taskGroup
             taskObject.comment = taskComment
             taskObject.isDone = false
+            
         } else {
             currentTaskInNewTask.taskTitle = taskTitle
             currentTaskInNewTask.timeInt = Int32(taskTime)

@@ -46,8 +46,6 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print(getTimeIntervalForNotifications())
-        
         getNumberOfGroups()
         self.tableView.reloadData()
     }
@@ -126,7 +124,7 @@ class SettingsViewController: UITableViewController {
         return appDelegate.persistentContainer.viewContext
     }
 
-    func getNumberOfGroups(){
+    func getNumberOfGroups() {
         settingsGroupNumbers.text = "No groups added"
         
         let context = getContext()

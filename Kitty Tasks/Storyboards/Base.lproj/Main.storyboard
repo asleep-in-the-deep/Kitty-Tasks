@@ -55,7 +55,7 @@
             <objects>
                 <tableViewController id="eyp-KZ-lSB" customClass="ViewGroupsViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="CBz-B4-PaS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
@@ -101,7 +101,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Task groups" id="zZn-xw-Y2z">
-                        <barButtonItem key="leftBarButtonItem" image="pencil" catalog="system" id="gM4-FI-WvA"/>
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="arrow.left" catalog="system" id="gM4-FI-WvA">
+                            <connections>
+                                <action selector="backButtonPressed:" destination="eyp-KZ-lSB" id="YXZ-7A-OWz"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="8D8-rn-peG">
                             <connections>
                                 <segue destination="F3g-nc-avt" kind="presentation" id="qW7-bQ-U99"/>
@@ -138,7 +142,7 @@
                                                         <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="Te6-bW-r5f" kind="presentation" id="gxQ-xQ-lbr"/>
+                                                        <segue destination="Te6-bW-r5f" kind="presentation" modalPresentationStyle="fullScreen" id="gxQ-xQ-lbr"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -541,7 +545,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="newGroup" id="oyw-Fa-E5v" customClass="NewGroupViewController" customModule="Kitty_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="znY-dc-AJU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Group name" id="YVk-r1-ihS">
@@ -1033,7 +1037,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="2mh-rd-4Ol"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ppa-h7-MII">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1263,7 +1267,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Te6-bW-r5f" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y69-PU-WYG">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1277,6 +1281,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.left" catalog="system" width="64" height="48"/>
         <image name="briefcase" catalog="system" width="64" height="50"/>
         <image name="calendar" catalog="system" width="64" height="52"/>
         <image name="calendar.badge.minus" catalog="system" width="64" height="50"/>
@@ -1289,6 +1294,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="exc-cc-f4H"/>
-        <segue reference="qW7-bQ-U99"/>
+        <segue reference="IL3-X8-ZH1"/>
     </inferredMetricsTieBreakers>
 </document>
