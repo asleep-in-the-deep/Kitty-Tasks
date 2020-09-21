@@ -15,38 +15,109 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Gc-Lt-nAv" customClass="FSCalendar">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="september" translatesAutoresizingMaskIntoConstraints="NO" id="62d-Ki-eDN">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Gc-Lt-nAv" customClass="FSCalendar">
+                                <rect key="frame" x="0.0" y="88" width="414" height="655"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="firstWeekday">
                                         <integer key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="headerTitleColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="weekdayTextColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="selectionColor">
+                                        <color key="value" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleWeekendColor">
+                                        <color key="value" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleDefaultColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="subtitleDefaultColor">
+                                        <color key="value" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleTextSize">
+                                        <real key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="headerTitleTextSize">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="headerMinimumDissolvedAlpha">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="GE6-xk-a2p" id="2NI-8a-hqS"/>
                                 </connections>
                             </view>
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZTT-w6-vkh">
+                                <rect key="frame" x="0.0" y="743" width="414" height="70"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="LV9-m5-Qan">
+                                        <rect key="frame" x="15" y="0.0" width="384" height="70"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🐱 – There're tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68n-Ix-fK3">
+                                                <rect key="frame" x="0.0" y="0.0" width="126.33333333333333" height="32.666666666666664"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🙀 – The day is overloaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvl-PJ-GXl">
+                                                <rect key="frame" x="0.0" y="37.666666666666629" width="176.33333333333334" height="32.333333333333343"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="LV9-m5-Qan" firstAttribute="leading" secondItem="ZTT-w6-vkh" secondAttribute="leading" constant="15" id="NLu-Xk-VC2"/>
+                                    <constraint firstAttribute="trailing" secondItem="LV9-m5-Qan" secondAttribute="trailing" constant="15" id="ROv-cC-WGx"/>
+                                    <constraint firstAttribute="bottom" secondItem="LV9-m5-Qan" secondAttribute="bottom" id="TRS-Nd-eUY"/>
+                                    <constraint firstAttribute="height" constant="70" id="eLE-Ts-6Df"/>
+                                    <constraint firstItem="LV9-m5-Qan" firstAttribute="top" secondItem="ZTT-w6-vkh" secondAttribute="top" id="oxN-iD-kJS"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="1Gc-Lt-nAv" firstAttribute="trailing" secondItem="v6C-ay-AA5" secondAttribute="trailing" id="7Bj-rJ-VBc"/>
+                            <constraint firstItem="62d-Ki-eDN" firstAttribute="leading" secondItem="v6C-ay-AA5" secondAttribute="leading" id="CMV-Rz-Fe8"/>
                             <constraint firstItem="1Gc-Lt-nAv" firstAttribute="top" secondItem="v6C-ay-AA5" secondAttribute="top" id="H8f-kP-CLE"/>
+                            <constraint firstItem="62d-Ki-eDN" firstAttribute="top" secondItem="v6C-ay-AA5" secondAttribute="top" id="KoU-cK-vJu"/>
+                            <constraint firstItem="ZTT-w6-vkh" firstAttribute="top" secondItem="1Gc-Lt-nAv" secondAttribute="bottom" id="PPx-bk-Lut"/>
+                            <constraint firstItem="v6C-ay-AA5" firstAttribute="trailing" secondItem="62d-Ki-eDN" secondAttribute="trailing" id="QsU-YW-GBx"/>
+                            <constraint firstItem="v6C-ay-AA5" firstAttribute="bottom" secondItem="ZTT-w6-vkh" secondAttribute="bottom" id="RmE-bY-fgi"/>
+                            <constraint firstItem="ZTT-w6-vkh" firstAttribute="leading" secondItem="v6C-ay-AA5" secondAttribute="leading" id="dxO-9R-9I7"/>
                             <constraint firstItem="1Gc-Lt-nAv" firstAttribute="leading" secondItem="v6C-ay-AA5" secondAttribute="leading" id="kyy-lC-YzN"/>
-                            <constraint firstItem="1Gc-Lt-nAv" firstAttribute="bottom" secondItem="v6C-ay-AA5" secondAttribute="bottom" id="p8p-bN-ovN"/>
+                            <constraint firstItem="ZTT-w6-vkh" firstAttribute="trailing" secondItem="v6C-ay-AA5" secondAttribute="trailing" id="nuT-cl-ap2"/>
+                            <constraint firstItem="v6C-ay-AA5" firstAttribute="bottom" secondItem="62d-Ki-eDN" secondAttribute="bottom" id="oKf-Dy-4Aq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="v6C-ay-AA5"/>
                     </view>
                     <navigationItem key="navigationItem" title="Calendar" id="qhV-H1-yMK">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="aGp-uV-4aN">
+                            <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="4o7-He-5EK" kind="presentation" id="qhr-ZH-Uvd"/>
+                                <segue destination="4o7-He-5EK" kind="presentation" identifier="" id="qhr-ZH-Uvd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backgroundView" destination="62d-Ki-eDN" id="l0r-9i-Xq7"/>
                         <outlet property="calendar" destination="1Gc-Lt-nAv" id="EV1-LE-rXJ"/>
+                        <segue destination="jCI-bT-IN6" kind="show" identifier="showDay" id="Pgf-yC-YHU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1mp-b1-H4y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -640,7 +711,6 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Des-mc-97g" customClass="FSCalendar">
                                 <rect key="frame" x="0.0" y="88" width="414" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="WRx-G2-TPK"/>
                                 </constraints>
@@ -960,11 +1030,13 @@
         <!--Tab Bar Controller-->
         <scene sceneID="BDE-Gx-Wvm">
             <objects>
-                <tabBarController id="7rz-fQ-q0V" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBarController" id="7rz-fQ-q0V" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="War-l9-8Eg"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yZd-JT-XnJ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="r4M-I7-kwd" kind="relationship" relationship="viewControllers" id="cMG-sM-Y58"/>
@@ -982,6 +1054,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r4M-I7-kwd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Tasks" image="briefcase" catalog="system" id="zD7-i8-Y6r"/>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="f3a-ZI-aOR"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="HwL-Gq-qKy">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1293,10 +1366,12 @@
         <image name="pencil" catalog="system" width="64" height="56"/>
         <image name="plus" catalog="system" width="64" height="56"/>
         <image name="rectangle.stack.badge.minus" catalog="system" width="64" height="56"/>
+        <image name="september" width="7360" height="4912"/>
         <image name="trash.fill" catalog="system" width="60" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="qhr-ZH-Uvd"/>
         <segue reference="IL3-X8-ZH1"/>
+        <segue reference="Pgf-yC-YHU"/>
     </inferredMetricsTieBreakers>
 </document>

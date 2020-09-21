@@ -15,7 +15,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     var task: Task!
     var tasks: [Task] = []
     
-    var selectedDate: Date!
+    var selectedDate: Date?
     
     var groupEntity: Group!
     let groupsViewCell = GroupsViewCell()
@@ -46,8 +46,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.calendar.select(selectedDate)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, d MMM"
+        let currentDate = formatter.string(from: selectedDate ?? Date())
+        currentDayLabel.text = currentDate
+        
         self.calendar.reloadData()
-        getTheTasks(date: Date())
+        getTheTasks(date: selectedDate ?? Date())
         calculateTotalTime()
     }
     
@@ -87,6 +94,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
         let catImage = UIImage(named: "cat.png")?.resize(scaledToHeight: 20)
+        let wearyImage = UIImage(named: "weary-cat.png")?.resize(scaledToHeight: 20)
         let checkmarkImage = UIImage(named: "check.png")?.resize(scaledToHeight: 20)
         
         let context = getContext()
@@ -98,12 +106,23 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let result = try context.fetch(fetchRequest)
             
             if result.count > 0 {
-                var completedTask = 0
                 for task in result as [NSManagedObject] {
-                    if (task.value(forKey: "isDone") as! Bool) == true { completedTask += 1 }
+                    var completedTask = 0
+                    var totalTime = 0
+                    
+                    for res in result {
+                        if (task.value(forKey: "isDone") as! Bool) == true {
+                            completedTask += 1
+                        }
+                        let taskTime = res.value(forKey: "timeInt") as! Int
+                        totalTime += taskTime
+                    }
+                    let hours = totalTime / (60 * 60)
                     
                     if completedTask == result.count {
                         return checkmarkImage
+                    } else if hours >= 16 {
+                        return wearyImage
                     } else {
                         return catImage
                     }
@@ -226,7 +245,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let editViewController = storyboard.instantiateViewController(withIdentifier: "newTask") as! NewTaskViewController
             let navController = UINavigationController(rootViewController: editViewController)
             
-            editViewController.currentTaskInNewTask = task
+            editViewController.currentTask = task
             self.present(navController, animated: true, completion: nil)
             
             completionHandler(true)

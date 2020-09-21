@@ -12,9 +12,10 @@ import CoreData
 
 class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     
-    let mainViewController = MainViewController()
+    var tappedDate: Date!
 
     @IBOutlet weak var calendar: FSCalendar!
+    @IBOutlet weak var backgroundView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,17 +23,45 @@ class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         self.calendar.delegate = self
         self.calendar.dataSource = self
         
+        self.calendar.scrollDirection = .vertical
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         self.calendar.reloadData()
     }
     
+    
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
-        self.tabBarController?.selectedIndex = 0
-        self.mainViewController.selectedDate = date
+        self.tappedDate = date
+        performSegue(withIdentifier: "showDay", sender: self)
+    }
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        let currentCalendar = calendar.currentPage
+        let month = Calendar.current.component(.month, from: currentCalendar)
+        
+        if month == 9 {
+            backgroundView.image = UIImage(named: "september.jpg")
+        } else if month == 10 {
+            backgroundView.image = UIImage(named: "october.jpg")
+        } else if month == 12 {
+             backgroundView.image = UIImage(named: "december.jpg")
+        } else if month == 1 {
+             backgroundView.image = UIImage(named: "january.jpg")
+        } else if month == 2 {
+            backgroundView.image = UIImage(named: "february.jpg")
+        }
+        
+        print(month)
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
         let catImage = UIImage(named: "cat.png")?.resize(scaledToHeight: 25)
+        let wearyImage = UIImage(named: "weary-cat.png")?.resize(scaledToHeight: 25)
         let checkmarkImage = UIImage(named: "check.png")?.resize(scaledToHeight: 25)
         
         let context = getContext()
@@ -44,12 +73,23 @@ class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             let result = try context.fetch(fetchRequest)
             
             if result.count > 0 {
-                var completedTask = 0
                 for task in result as [NSManagedObject] {
-                    if (task.value(forKey: "isDone") as! Bool) == true { completedTask += 1 }
+                    var completedTask = 0
+                    var totalTime = 0
+                    
+                    for res in result {
+                        if (task.value(forKey: "isDone") as! Bool) == true {
+                            completedTask += 1
+                        }
+                        let taskTime = res.value(forKey: "timeInt") as! Int
+                        totalTime += taskTime
+                    }
+                    let hours = totalTime / (60 * 60)
                     
                     if completedTask == result.count {
                         return checkmarkImage
+                    } else if hours >= 16 {
+                        return wearyImage
                     } else {
                         return catImage
                     }
@@ -115,8 +155,11 @@ class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "showDay" {
+            let mainView = segue.destination as? MainViewController
+
+            mainView?.selectedDate = tappedDate
+        }
     }
 
 }

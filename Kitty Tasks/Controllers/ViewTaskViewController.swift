@@ -14,7 +14,7 @@ class ViewTaskViewController: UITableViewController {
     var currentTask: Task!
     var tasks: [Task] = []
     
-    var mainVC = MainViewController()
+    var mainViewController = MainViewController()
     
     @IBOutlet weak var viewTaskName: UILabel!
     @IBOutlet weak var viewTaskDate: UILabel!
@@ -28,10 +28,10 @@ class ViewTaskViewController: UITableViewController {
         super.viewDidLoad()
    
         viewTaskName.text = currentTask.taskTitle
-        viewTaskTime.text = mainVC.getTimeInString(timeFromCoreData: currentTask.timeInt)
+        viewTaskTime.text = mainViewController.getTimeInString(timeFromCoreData: currentTask.timeInt)
         viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
         viewTaskComment.text = currentTask.comment
-        colorMark.tintColor = mainVC.getColorToGroupName(withGroup: currentTask.group)
+        colorMark.tintColor = mainViewController.getColorToGroupName(withGroup: currentTask.group)
         viewTaskGroup.text = currentTask.group
     }
     
@@ -66,7 +66,7 @@ class ViewTaskViewController: UITableViewController {
         if segue.identifier == "editTask" {
             let destinationNavigation = segue.destination as! UINavigationController
             let targetController = destinationNavigation.viewControllers.first as! NewTaskViewController
-            targetController.currentTaskInNewTask = currentTask
+            targetController.currentTask = currentTask
         }
     }
     
