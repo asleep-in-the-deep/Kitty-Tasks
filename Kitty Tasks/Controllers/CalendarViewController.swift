@@ -44,19 +44,34 @@ class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         let currentCalendar = calendar.currentPage
         let month = Calendar.current.component(.month, from: currentCalendar)
         
-        if month == 9 {
+        if month == 1 {
+            backgroundView.image = UIImage(named: "january.jpg")
+        } else if month == 2 {
+            backgroundView.image = UIImage(named: "february.jpg")
+        } else if month == 3 {
+            backgroundView.image = UIImage(named: "march.jpg")
+        } else if month == 4 {
+            backgroundView.image = UIImage(named: "april.jpg")
+        } else if month == 5  {
+            backgroundView.image = UIImage(named: "may.jpg")
+        } else if month == 6 {
+            backgroundView.image = UIImage(named: "june.jpg")
+        } else if month ==  7 {
+            backgroundView.image = UIImage(named: "july.jpg")
+        } else if month == 8 {
+            backgroundView.image = UIImage(named: "august.jpg")
+        } else if month == 9 {
             backgroundView.image = UIImage(named: "september.jpg")
         } else if month == 10 {
             backgroundView.image = UIImage(named: "october.jpg")
+        } else if month == 11 {
+            backgroundView.image = UIImage(named: "november.jpg")
         } else if month == 12 {
-             backgroundView.image = UIImage(named: "december.jpg")
-        } else if month == 1 {
-             backgroundView.image = UIImage(named: "january.jpg")
-        } else if month == 2 {
-            backgroundView.image = UIImage(named: "february.jpg")
+            backgroundView.image = UIImage(named: "december.jpg")
+        } else {
+            backgroundView.image = UIImage(named: "default.jpg")
         }
         
-        print(month)
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
