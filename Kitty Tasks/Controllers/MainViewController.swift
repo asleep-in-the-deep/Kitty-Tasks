@@ -14,11 +14,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var task: Task!
     var tasks: [Task] = []
+    var groupEntity: Group!
+    
+    let taskViewCell = TaskViewCell()
+
+    let dataManager = DataManager()
     
     var selectedDate: Date?
-    
-    var groupEntity: Group!
-    let groupsViewCell = GroupsViewCell()
+    let dateConverter = DateConverter()
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     
@@ -40,7 +43,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.taskTable.delegate = self
         self.taskTable.dataSource = self
         
-        currentDayLabel.text = TasksHeader().getCurrentDate()
+        currentDayLabel.text = dateConverter.getCurrentDate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,10 +51,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.calendar.select(selectedDate)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, d MMM"
-        let currentDate = formatter.string(from: selectedDate ?? Date())
-        currentDayLabel.text = currentDate
+        currentDayLabel.text = dateConverter.getCalendarDateFormat(forDate: selectedDate ?? Date())
         
         self.calendar.reloadData()
         getTheTasks(date: selectedDate ?? Date())
@@ -83,93 +83,23 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, d MMM"
-        let currentDate = formatter.string(from: date)
-        currentDayLabel.text = currentDate
+        currentDayLabel.text = dateConverter.getCalendarDateFormat(forDate: date)
         
         getTheTasks(date: date)
         calculateTotalTime()
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        let catImage = UIImage(named: "cat.png")?.resize(scaledToHeight: 20)
-        let wearyImage = UIImage(named: "weary-cat.png")?.resize(scaledToHeight: 20)
-        let checkmarkImage = UIImage(named: "check.png")?.resize(scaledToHeight: 20)
         
-        let context = getContext()
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        
-        getDatePredicate(date: date, fetchRequest: fetchRequest)
-        
-        do {
-            let result = try context.fetch(fetchRequest)
-            
-            if result.count > 0 {
-                for task in result as [NSManagedObject] {
-                    var completedTask = 0
-                    var totalTime = 0
-                    
-                    for res in result {
-                        if (task.value(forKey: "isDone") as! Bool) == true {
-                            completedTask += 1
-                        }
-                        let taskTime = res.value(forKey: "timeInt") as! Int
-                        totalTime += taskTime
-                    }
-                    let hours = totalTime / (60 * 60)
-                    
-                    if completedTask == result.count {
-                        return checkmarkImage
-                    } else if hours >= 16 {
-                        return wearyImage
-                    } else {
-                        return catImage
-                    }
-                }
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        return nil
+        return dataManager.getImageForDay(forDate: date, imageSize: 20)
     }
 
     // MARK: - Table header
     
     func calculateTotalTime() {
-        let context = getContext()
+        let totalTime = dataManager.getTotalTimeForDay(forDate: calendar.selectedDate ?? Date())
         
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        fetchRequest.returnsObjectsAsFaults = false
-        
-        getDatePredicate(date: calendar.selectedDate ?? Date(), fetchRequest: fetchRequest)
-        
-        var totalTime = 0
-        do {
-            let results = try context.fetch(fetchRequest)
-            for res in results {
-                let taskTime = res.value(forKey: "timeInt") as! Int
-                totalTime += taskTime
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        let hours = totalTime / (60 * 60)
-        let minutes = totalTime % (60 * 60) / 60
-        let timeText: String
-        
-        if hours == 0 {
-            timeText = "\(minutes) min"
-        } else {
-            if minutes == 0 {
-                timeText = "\(hours) h"
-            }
-            else {
-                timeText = "\(hours) h \(minutes) min"
-            }
-        }
+        let timeText = dateConverter.getTimeInString(timeFromCoreData: Int32(totalTime))
         
         self.totalHoursLabel.text = "Total time: \(timeText)"
     }
@@ -186,31 +116,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TasksViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskViewCell
         let task = tasks[indexPath.row]
         
-        cell.taskTitleLabel.text = task.taskTitle
-        cell.timeLabel.text = getTimeInString(timeFromCoreData: task.timeInt)
-        cell.groupNameLabel.text = task.group
-        cell.groupColorPoint.tintColor = getColorToGroupName(withGroup: task.group ?? "Red")
-        
-        if task.isDone == true {
-            let strokeEffect: [NSAttributedString.Key : Any] = [
-                NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                NSAttributedString.Key.strikethroughColor: UIColor.gray]
-            cell.taskTitleLabel.attributedText = NSAttributedString(string: task.taskTitle!, attributes: strokeEffect)
-            
-            cell.taskTitleLabel.textColor = .systemGray
-            cell.groupNameLabel.textColor = .systemGray
-        } else {
-            let strokeEffect: [NSAttributedString.Key : Any] = [
-                NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                NSAttributedString.Key.strikethroughColor: UIColor.clear]
-            cell.taskTitleLabel.attributedText = NSAttributedString(string: task.taskTitle!, attributes: strokeEffect)
-            
-            cell.taskTitleLabel.textColor = .black
-            cell.groupNameLabel.textColor = .black
-        }
+        taskViewCell.setTaskCell(cell: cell, forTask: task)
 
         return cell
     }
@@ -220,7 +129,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let context = getContext()
+        let context = dataManager.getContext()
         let task: Task! = tasks[indexPath.row]
         
         let deleteTask = UIContextualAction(style: .destructive, title: "Delete") { (_, _, completionHandler) in
@@ -258,7 +167,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let context = getContext()
+        let context = dataManager.getContext()
         let task: Task! = tasks[indexPath.row]
         
         let markCompleted = UIContextualAction(style: .normal, title: "Done") { (action, view, completionHandler) in
@@ -304,78 +213,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [markCompleted, copyTask])
     }
     
-    // MARK: - Data conversion
-    
-    func getTimeInString(timeFromCoreData: Int32) -> String {
-                
-        let hours = timeFromCoreData / (60 * 60)
-        let minutes = timeFromCoreData % (60 * 60) / 60
-                   
-        if hours == 0 {
-            let timeTaskText = "\(minutes) min"
-            return timeTaskText
-        } else {
-            if minutes == 0 {
-                let timeTaskText = "\(hours) h"
-                return timeTaskText
-            }
-            else {
-                let timeTaskText = "\(hours) h \(minutes) min"
-                return timeTaskText
-            }
-        }
-
-    }
-    
-    func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
-        let context = getContext()
-        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
-        
-        do {
-            let result = try context.fetch(fetchRequest)
-            for group in result as [NSManagedObject] {
-                if (group.value(forKey: "groupName") as! String?) == taskGroup {
-                    let color = group.value(forKey: "color") as! String
-                    
-                    let finishColor = groupsViewCell.transformStringTo(color: color)
-                    return finishColor
-                }
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-
-        return .black
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showTask" {
-            guard let indexPath = taskTable.indexPathForSelectedRow else { return }
-            let task: Task
-            
-            task = tasks[indexPath.row]
-            
-            let destinationNavigation = segue.destination as! UINavigationController
-            let targetController = destinationNavigation.topViewController as! ViewTaskViewController
-            targetController.currentTask = task
-        }
-    }
-    
-    
-    
     // MARK: - Core Data
-
-    private func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }
-    
     
     func getTheTasks(date: Date) {
-        let context = getContext()
+        let context = dataManager.getContext()
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         
-        getDatePredicate(date: date, fetchRequest: fetchRequest)
+        dataManager.getDatePredicate(date: date, fetchRequest: fetchRequest)
         
         do {
             tasks = try context.fetch(fetchRequest)
@@ -387,14 +231,20 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.taskTable.reloadData()
     }
     
-    func getDatePredicate(date: Date, fetchRequest: NSFetchRequest<Task>) {
-        let calendar = Calendar.current
-        let dateFrom = calendar.startOfDay(for: date)
-        let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom)
-        
-        let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
-        let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
-        let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
-        fetchRequest.predicate = datePredicate
-    }
+    // MARK: - Navigation
+    
+      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+          if segue.identifier == "showTask" {
+              guard let indexPath = taskTable.indexPathForSelectedRow else { return }
+              let task: Task
+              
+              task = tasks[indexPath.row]
+              
+              let destinationNavigation = segue.destination as! UINavigationController
+              let targetController = destinationNavigation.topViewController as! ViewTaskViewController
+              targetController.currentTask = task
+          }
+      }
+      
+    
 }

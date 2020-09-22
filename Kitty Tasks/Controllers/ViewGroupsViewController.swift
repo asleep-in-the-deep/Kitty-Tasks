@@ -14,12 +14,21 @@ class ViewGroupsViewController: UITableViewController {
     var group: Group!
     var groups: [Group] = []
     
-    let groupsViewCell = GroupsViewCell()
     var color: String?
+    
+    let groupViewCell = GroupViewCell()
+    
+    let dataManager = DataManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        loadGroups()
+        self.tableView.reloadData()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -46,10 +55,9 @@ class ViewGroupsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupViewCell
         let group = groups[indexPath.row]
-        cell.groupTitleLabel.text = group.groupName
-        cell.colorPoint.tintColor = groupsViewCell.transformStringTo(color: group.color ?? "Red")
+        groupViewCell.setTaskCell(cell: cell, forGroup: group)
         
         return cell
     }
@@ -67,18 +75,11 @@ class ViewGroupsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let context = getContext()
         let group = groups[indexPath.row]
         
         if editingStyle == .delete {
-            context.delete(group)
             groups.remove(at: indexPath.row)
-            
-            do {
-                try context.save()
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
+            dataManager.deleteGroup(for: group)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -86,15 +87,8 @@ class ViewGroupsViewController: UITableViewController {
 
     // MARK: - Core data
     
-    private func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        let context = getContext()
+    func loadGroups() {
+        let context = dataManager.getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
 
         do {
@@ -103,8 +97,6 @@ class ViewGroupsViewController: UITableViewController {
         catch let error as NSError {
             print(error.localizedDescription)
         }
-        
-        self.tableView.reloadData()
     }
 
 }

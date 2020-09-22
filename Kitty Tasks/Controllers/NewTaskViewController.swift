@@ -18,9 +18,9 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     
     var groupsForPicker: [String] = []
     var currentTask: Task!
-    var mainViewController = MainViewController()
     
     var currentDate: Date!
+    var dateConverter = DateConverter()
     
     @IBOutlet weak var newTaskName: UITextField!
     @IBOutlet weak var newTaskDate: UIDatePicker!
@@ -38,7 +38,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             
             newTaskName.text = currentTask.taskTitle
             newTaskDate.date = currentTask.date!
-            newTaskTime.text = mainViewController.getTimeInString(timeFromCoreData: currentTask.timeInt)
+            newTaskTime.text = dateConverter.getTimeInString(timeFromCoreData: currentTask.timeInt)
             newTaskGroup.text = currentTask.group
             newTaskComment.text = currentTask.comment
         } else {

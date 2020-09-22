@@ -8,13 +8,18 @@
 
 import UIKit
 
-class GroupsViewCell: UITableViewCell {
+class GroupViewCell: UITableViewCell {
     
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var colorPoint: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    func setTaskCell(cell: GroupViewCell, forGroup group: Group) {
+        cell.groupTitleLabel.text = group.groupName
+        cell.colorPoint.tintColor = transformStringTo(color: group.color ?? "Black")
     }
     
     func transformStringTo(color: String) -> UIColor {

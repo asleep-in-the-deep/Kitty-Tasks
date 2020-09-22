@@ -14,7 +14,10 @@ class ViewTaskViewController: UITableViewController {
     var currentTask: Task!
     var tasks: [Task] = []
     
-    var mainViewController = MainViewController()
+    let taskViewCell = TaskViewCell()
+    
+    let dataManager = DataManager()
+    let dateConverter = DateConverter()
     
     @IBOutlet weak var viewTaskName: UILabel!
     @IBOutlet weak var viewTaskDate: UILabel!
@@ -28,10 +31,10 @@ class ViewTaskViewController: UITableViewController {
         super.viewDidLoad()
    
         viewTaskName.text = currentTask.taskTitle
-        viewTaskTime.text = mainViewController.getTimeInString(timeFromCoreData: currentTask.timeInt)
+        viewTaskTime.text = dateConverter.getTimeInString(timeFromCoreData: currentTask.timeInt)
         viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
         viewTaskComment.text = currentTask.comment
-        colorMark.tintColor = mainViewController.getColorToGroupName(withGroup: currentTask.group)
+        colorMark.tintColor = dataManager.getColorToGroupName(withGroup: currentTask.group)
         viewTaskGroup.text = currentTask.group
     }
     

@@ -12,16 +12,15 @@ import CoreData
 class NewGroupViewController: UITableViewController {
     
     var newGroup: Group!
+    var groups: [Group] = []
+    
+    var selectedColor: String?
+    let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Sky", "Purple", "Pink", "Indigo", "Brown", "White"]
     
     @IBOutlet weak var groupNameTextField: UITextField!
     @IBOutlet weak var colorPickerView: UIPickerView!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    
-    let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Sky", "Purple", "Pink", "Indigo", "Brown", "White"]
-    
-    var groups: [Group] = []
-    var selectedColor: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +104,8 @@ class NewGroupViewController: UITableViewController {
     
 }
 
+// MARK: - Picker View
+
 extension NewGroupViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -123,6 +124,8 @@ extension NewGroupViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         selectedColor = colorArray[row]
     }
 }
+
+// MARK: - Text field control
 
 extension NewGroupViewController {
     

@@ -21,12 +21,13 @@
 		84085C4E24D3133D00AA718F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84085C4C24D3133D00AA718F /* LaunchScreen.storyboard */; };
 		842FEDA424DCBE0100AE6604 /* ViewGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842FEDA324DCBE0100AE6604 /* ViewGroupsViewController.swift */; };
 		842FEDA624DCBE2000AE6604 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842FEDA524DCBE2000AE6604 /* SettingsViewController.swift */; };
-		84366E1A24DDA20200D05FB5 /* TasksViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366E1924DDA20200D05FB5 /* TasksViewCell.swift */; };
-		84366E1C24DDA22F00D05FB5 /* GroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366E1B24DDA22F00D05FB5 /* GroupsViewCell.swift */; };
-		84366E1E24DDFE1200D05FB5 /* TasksHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366E1D24DDFE1200D05FB5 /* TasksHeader.swift */; };
+		84366E1A24DDA20200D05FB5 /* TaskViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366E1924DDA20200D05FB5 /* TaskViewCell.swift */; };
+		84366E1C24DDA22F00D05FB5 /* GroupViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84366E1B24DDA22F00D05FB5 /* GroupViewCell.swift */; };
 		84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314124D329E200CC7CCD /* MainViewController.swift */; };
 		84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314324D329FE00CC7CCD /* CalendarViewController.swift */; };
 		84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */; };
+		84DFA1C0251AA78600EBA7F8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DFA1BF251AA78600EBA7F8 /* DataManager.swift */; };
+		84DFA1C4251AB7ED00EBA7F8 /* DateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DFA1C3251AB7ED00EBA7F8 /* DateConverter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,12 +46,13 @@
 		84085C4F24D3133D00AA718F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		842FEDA324DCBE0100AE6604 /* ViewGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupsViewController.swift; sourceTree = "<group>"; };
 		842FEDA524DCBE2000AE6604 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		84366E1924DDA20200D05FB5 /* TasksViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewCell.swift; sourceTree = "<group>"; };
-		84366E1B24DDA22F00D05FB5 /* GroupsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewCell.swift; sourceTree = "<group>"; };
-		84366E1D24DDFE1200D05FB5 /* TasksHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksHeader.swift; sourceTree = "<group>"; };
+		84366E1924DDA20200D05FB5 /* TaskViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewCell.swift; sourceTree = "<group>"; };
+		84366E1B24DDA22F00D05FB5 /* GroupViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewCell.swift; sourceTree = "<group>"; };
 		84D9314124D329E200CC7CCD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		84D9314324D329FE00CC7CCD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		84D9314724D32EF500CC7CCD /* NewGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupViewController.swift; sourceTree = "<group>"; };
+		84DFA1BF251AA78600EBA7F8 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		84DFA1C3251AB7ED00EBA7F8 /* DateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateConverter.swift; sourceTree = "<group>"; };
 		8BA29CF0CB58BD9F97282B01 /* Pods-Kitty Tasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kitty Tasks.release.xcconfig"; path = "Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks.release.xcconfig"; sourceTree = "<group>"; };
 		9DF06D114C370F0FD91DE13C /* Pods-Kitty Tasks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kitty Tasks.debug.xcconfig"; path = "Target Support Files/Pods-Kitty Tasks/Pods-Kitty Tasks.debug.xcconfig"; sourceTree = "<group>"; };
 		D6D9FC7A8135BF4F3C22C1E6 /* Pods_Kitty_Tasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kitty_Tasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				84085C4724D3133A00AA718F /* Kitty_Tasks.xcdatamodeld */,
+				84DFA1BF251AA78600EBA7F8 /* DataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -120,9 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				8400AC7624D3356A00DF54B7 /* CalendarView.swift */,
-				84366E1924DDA20200D05FB5 /* TasksViewCell.swift */,
-				84366E1B24DDA22F00D05FB5 /* GroupsViewCell.swift */,
-				84366E1D24DDFE1200D05FB5 /* TasksHeader.swift */,
+				84366E1924DDA20200D05FB5 /* TaskViewCell.swift */,
+				84366E1B24DDA22F00D05FB5 /* GroupViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -148,6 +150,7 @@
 				84085C4024D3133A00AA718F /* SceneDelegate.swift */,
 				2E23CBF425066E5F006E4D27 /* UserNotificationSettings.swift */,
 				2E23CBF625093A8A006E4D27 /* Notifications.swift */,
+				84DFA1C3251AB7ED00EBA7F8 /* DateConverter.swift */,
 			);
 			path = "Supporting files";
 			sourceTree = "<group>";
@@ -288,18 +291,19 @@
 				84D9314424D329FE00CC7CCD /* CalendarViewController.swift in Sources */,
 				84D9314824D32EF500CC7CCD /* NewGroupViewController.swift in Sources */,
 				8400AC7724D3356A00DF54B7 /* CalendarView.swift in Sources */,
+				84DFA1C4251AB7ED00EBA7F8 /* DateConverter.swift in Sources */,
 				2E9594F924D4F6DE002B1127 /* NewTaskViewController.swift in Sources */,
 				842FEDA424DCBE0100AE6604 /* ViewGroupsViewController.swift in Sources */,
 				84085C3F24D3133A00AA718F /* AppDelegate.swift in Sources */,
-				84366E1A24DDA20200D05FB5 /* TasksViewCell.swift in Sources */,
+				84366E1A24DDA20200D05FB5 /* TaskViewCell.swift in Sources */,
 				84085C4924D3133A00AA718F /* Kitty_Tasks.xcdatamodeld in Sources */,
 				84085C4124D3133A00AA718F /* SceneDelegate.swift in Sources */,
+				84DFA1C0251AA78600EBA7F8 /* DataManager.swift in Sources */,
 				2E9594FB24D4F6ED002B1127 /* ViewTaskViewController.swift in Sources */,
-				84366E1E24DDFE1200D05FB5 /* TasksHeader.swift in Sources */,
 				2E23CBF725093A8A006E4D27 /* Notifications.swift in Sources */,
 				842FEDA624DCBE2000AE6604 /* SettingsViewController.swift in Sources */,
 				84D9314224D329E200CC7CCD /* MainViewController.swift in Sources */,
-				84366E1C24DDA22F00D05FB5 /* GroupsViewCell.swift in Sources */,
+				84366E1C24DDA22F00D05FB5 /* GroupViewCell.swift in Sources */,
 				2E23CBF525066E5F006E4D27 /* UserNotificationSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
