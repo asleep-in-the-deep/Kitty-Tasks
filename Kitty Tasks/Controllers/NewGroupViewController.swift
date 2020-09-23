@@ -35,15 +35,6 @@ class NewGroupViewController: UITableViewController {
         setEditScreen()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if #available(iOS 13.0, *) {
-            DispatchQueue.main.async {
-                self.navigationController?.navigationBar.setNeedsLayout()
-            }
-        }
-    }
     
     @IBAction func saveAction(_ sender: Any) {
         let groupTitle = self.groupNameTextField.text
@@ -56,6 +47,7 @@ class NewGroupViewController: UITableViewController {
         }
         
         self.performSegue(withIdentifier: "saveGroupAndReload", sender: self)
+        dismiss(animated: true)
     }
     
     @IBAction func cancelAction(_ sender: Any) {

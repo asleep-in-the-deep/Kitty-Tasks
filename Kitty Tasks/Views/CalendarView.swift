@@ -15,31 +15,32 @@ class CalendarView {
         let currentCalendar = currentDate
         let month = Calendar.current.component(.month, from: currentCalendar)
         
-        if month == 1 {
+        switch month {
+        case 1:
             backgroundView.image = UIImage(named: "january.jpg")
-        } else if month == 2 {
+        case 2:
             backgroundView.image = UIImage(named: "february.jpg")
-        } else if month == 3 {
+        case 3:
             backgroundView.image = UIImage(named: "march.jpg")
-        } else if month == 4 {
+        case 4:
             backgroundView.image = UIImage(named: "april.jpg")
-        } else if month == 5  {
+        case 5:
             backgroundView.image = UIImage(named: "may.jpg")
-        } else if month == 6 {
+        case 6:
             backgroundView.image = UIImage(named: "june.jpg")
-        } else if month ==  7 {
+        case 7:
             backgroundView.image = UIImage(named: "july.jpg")
-        } else if month == 8 {
+        case 8:
             backgroundView.image = UIImage(named: "august.jpg")
-        } else if month == 9 {
+        case 9:
             backgroundView.image = UIImage(named: "september.jpg")
-        } else if month == 10 {
+        case 10:
             backgroundView.image = UIImage(named: "october.jpg")
-        } else if month == 11 {
+        case 11:
             backgroundView.image = UIImage(named: "november.jpg")
-        } else if month == 12 {
+        case 12:
             backgroundView.image = UIImage(named: "december.jpg")
-        } else {
+        default:
             backgroundView.image = UIImage(named: "default.jpg")
         }
     }
@@ -49,21 +50,21 @@ class CalendarView {
         case "Red":
             return .systemRed
         case "Orange":
-            return .systemOrange
+            return .orange
         case "Yellow":
-            return .systemYellow
+            return .init(red: 255.0/255.0, green: 221.0/255.0, blue: 0.0/255.0, alpha: 1.0)
         case "Green":
             return .systemGreen
         case "Blue":
             return .systemBlue
         case "Sky":
-            return .systemTeal
+            return .init(red: 137.0/255.0, green: 207.0/255.0, blue: 240.0/255.0, alpha: 1.0)
         case "Purple":
             return .systemPurple
         case "Pink":
-            return .init(red: 251.0/255.0, green: 159.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+            return .init(red: 255.0/255.0, green: 166.0/255.0, blue: 201.0/255.0, alpha: 1.0)
         case "Indigo":
-            return .systemIndigo
+            return .init(red: 106.0/255.0, green: 0.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         case "Brown":
             return .brown
         case "White":

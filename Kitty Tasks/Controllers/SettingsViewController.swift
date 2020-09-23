@@ -41,6 +41,11 @@ class SettingsViewController: UITableViewController {
         
         setValuesForNotifications()
         sendNotificationOnShedule()
+        
+        if #available(iOS 14, *) {
+            firstTimePicker.preferredDatePickerStyle = .wheels
+            lastTimePicker.preferredDatePickerStyle = .wheels
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -275,9 +280,9 @@ class SettingsViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 && indexPath.section == 2 {
-            showAlert(message: "Do you really wanna delete all tasks?", deleteText: "Delete all tasks")
+            showAlert(message: "Do you really wanna delete all tasks?", deleteText: "Delete the tasks")
         } else if indexPath.row == 1 && indexPath.section == 2 {
-            showAlert(message: "Do you really wanna delete all groups?", deleteText: "Delete all groups")
+            showAlert(message: "Do you really wanna delete all groups?", deleteText: "Delete the groups")
             
         } else if indexPath.row == 2 && indexPath.section == 2 {
             showAlert(message: "Do you really wanna delete all data?", deleteText: "Delete all data")
