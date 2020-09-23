@@ -10,7 +10,9 @@ import UIKit
 
 class DateConverter {
     
-    func getCurrentDate() -> String {
+    // MARK: - Date Converting
+    
+    internal func getCurrentDate() -> String {
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "E, d MMM"
@@ -18,14 +20,16 @@ class DateConverter {
         return currentDate
     }
     
-    func getCalendarDateFormat(forDate date: Date) -> String {
+    internal func getCalendarDateFormat(forDate date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "E, d MMM"
         let currentDate = formatter.string(from: date)
         return currentDate
     }
     
-    func getTimeInString(timeFromCoreData: Int32) -> String {
+    // MARK: - Time Converting
+
+    internal func getTimeInString(timeFromCoreData: Int32) -> String {
         let hours = timeFromCoreData / (60 * 60)
         let minutes = timeFromCoreData % (60 * 60) / 60
                    
@@ -44,7 +48,7 @@ class DateConverter {
         }
     }
     
-    func getRoundedTime(forTime totalTime: Int) -> String? {
+    internal func getRoundedTime(forTime totalTime: Int) -> String? {
         let hours = totalTime / (60 * 60)
         let minutes = totalTime % (60 * 60) / 60
 

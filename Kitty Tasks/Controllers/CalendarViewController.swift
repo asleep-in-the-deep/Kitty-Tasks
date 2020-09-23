@@ -12,12 +12,12 @@ import CoreData
 
 class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     
-    var tappedDate: Date!
-    let dateConverter = DateConverter()
+    private var tappedDate: Date!
+    private let dateConverter = DateConverter()
     
-    let calendarView = CalendarView()
+    private let calendarView = CalendarView()
     
-    let dataManager = DataManager()
+    private let dataManager = DataManager()
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var backgroundView: UIImageView!
@@ -41,23 +41,23 @@ class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     
     // MARK: - Customize calendar
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+    internal func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
         self.tappedDate = date
         performSegue(withIdentifier: "showDay", sender: self)
     }
     
-    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+    internal func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         
         calendarView.setBackgroundsForMonths(forDate: calendar.currentPage, inView: backgroundView)
     }
     
-    func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
+    internal func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
         
         return dataManager.getImageForDay(forDate: date, imageSize: 25)
     }
     
-    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+    internal func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
         let totalTime = dataManager.getTotalTimeForDay(forDate: date)
 
         return dateConverter.getRoundedTime(forTime: totalTime)

@@ -12,10 +12,12 @@ import CoreData
 class NewGroupViewController: UITableViewController {
     
     var newGroup: Group!
-    var groups: [Group] = []
+    private var groups: [Group] = []
     
-    var selectedColor: String?
-    let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Sky", "Purple", "Pink", "Indigo", "Brown", "White"]
+    private let dataManager = DataManager()
+    
+    private var selectedColor: String?
+    private let colorArray: [String] = ["Red", "Orange", "Yellow", "Green", "Blue", "Sky", "Purple", "Pink", "Indigo", "Brown", "White"]
     
     @IBOutlet weak var groupNameTextField: UITextField!
     @IBOutlet weak var colorPickerView: UIPickerView!
@@ -48,49 +50,21 @@ class NewGroupViewController: UITableViewController {
         let groupColor = selectedColor
         
         if newGroup != nil {
-            self.saveGroup(withTitle: groupNameTextField.text, withColor: selectedColor)
+            dataManager.saveGroup(withTitle: groupNameTextField.text, withColor: selectedColor, newGroup: newGroup)
         } else {
-            self.saveGroup(withTitle: groupTitle, withColor: groupColor)
+            dataManager.saveGroup(withTitle: groupTitle, withColor: groupColor, newGroup: nil)
         }
         
-        dismiss(animated: true)
+        self.performSegue(withIdentifier: "saveGroupAndReload", sender: self)
     }
     
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
     }
     
-    // MARK: - Core Data
+    // MARK: - Edit View
     
-    private func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }
-    
-    private func saveGroup(withTitle groupTitle: String?, withColor groupColor: String?) {
-        let context = getContext()
-        
-        if newGroup == nil {
-            guard let entityGroup = NSEntityDescription.entity(forEntityName: "Group", in: context) else { return }
-             
-             let groupObject = Group(entity: entityGroup, insertInto: context)
-             groupObject.groupName = groupTitle
-             groupObject.color = groupColor
-        } else {
-            newGroup.groupName = groupTitle
-            newGroup.color = groupColor
-        }
-        
-        do {
-            try context.save()
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        self.performSegue(withIdentifier: "saveGroupAndReload", sender: self)
-    }
-    
-    func setEditScreen() {
+    private func setEditScreen() {
         
         if newGroup != nil {
             self.title = "Edit group"

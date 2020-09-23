@@ -50,14 +50,6 @@ class SettingsViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    @IBAction func unwindToSettings(segue: UIStoryboardSegue) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            DispatchQueue.main.async {
-                self.viewWillAppear(true)
-            }
-        }
-    }
-    
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {
         
         self.tableView.reloadData()

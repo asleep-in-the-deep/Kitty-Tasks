@@ -11,14 +11,14 @@ import CoreData
 
 class ViewGroupsViewController: UITableViewController {
     
-    var group: Group!
-    var groups: [Group] = []
+    private var group: Group!
+    private var groups: [Group] = []
     
-    var color: String?
+    private var color: String?
     
-    let groupViewCell = GroupViewCell()
+    private let groupViewCell = GroupViewCell()
     
-    let dataManager = DataManager()
+    private let dataManager = DataManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +57,7 @@ class ViewGroupsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupViewCell
         let group = groups[indexPath.row]
+        
         groupViewCell.setTaskCell(cell: cell, forGroup: group)
         
         return cell
@@ -75,11 +76,11 @@ class ViewGroupsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let group = groups[indexPath.row]
+        let selectedGroup = groups[indexPath.row]
         
         if editingStyle == .delete {
             groups.remove(at: indexPath.row)
-            dataManager.deleteGroup(for: group)
+            dataManager.deleteGroup(for: selectedGroup)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -87,7 +88,7 @@ class ViewGroupsViewController: UITableViewController {
 
     // MARK: - Core data
     
-    func loadGroups() {
+    private func loadGroups() {
         let context = dataManager.getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
 

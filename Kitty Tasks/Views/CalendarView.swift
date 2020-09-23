@@ -11,7 +11,7 @@ import FSCalendar
 
 class CalendarView {
     
-    func setBackgroundsForMonths(forDate currentDate: Date, inView backgroundView: UIImageView) {
+    internal func setBackgroundsForMonths(forDate currentDate: Date, inView backgroundView: UIImageView) {
         let currentCalendar = currentDate
         let month = Calendar.current.component(.month, from: currentCalendar)
         
@@ -44,7 +44,7 @@ class CalendarView {
         }
     }
     
-    func transformStringTo(color: String) -> UIColor {
+    internal func transformStringTo(color: String) -> UIColor {
         switch color {
         case "Red":
             return .systemRed
@@ -68,23 +68,23 @@ class CalendarView {
             return .brown
         case "White":
             return .systemFill
-        case "Black":
-            return .black
+        case "Gray":
+            return .systemGray
         default:
-            return .black
+            return .systemGray
         }
     }
 }
 
 extension UIImage {
     
-    func resize(targetSize: CGSize) -> UIImage {
+    public func resize(targetSize: CGSize) -> UIImage {
         return UIGraphicsImageRenderer(size:targetSize).image { _ in
             self.draw(in: CGRect(origin: .zero, size: targetSize))
         }
     }
 
-    func resize(scaledToHeight desiredHeight: CGFloat) -> UIImage {
+    public func resize(scaledToHeight desiredHeight: CGFloat) -> UIImage {
         let scaleFactor = desiredHeight / size.height
         let newWidth = size.width * scaleFactor
         let newSize = CGSize(width: newWidth, height: desiredHeight)

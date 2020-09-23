@@ -12,16 +12,16 @@ import CoreData
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FSCalendarDelegate, FSCalendarDataSource {
     
-    var task: Task!
-    var tasks: [Task] = []
-    var groupEntity: Group!
+    private var task: Task!
+    private var tasks: [Task] = []
+    private var groupEntity: Group!
     
-    let taskViewCell = TaskViewCell()
+    private let taskViewCell = TaskViewCell()
 
-    let dataManager = DataManager()
+    private let dataManager = DataManager()
     
     var selectedDate: Date?
-    let dateConverter = DateConverter()
+    private let dateConverter = DateConverter()
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     
@@ -49,13 +49,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.calendar.select(selectedDate)
+        self.calendar.select(self.selectedDate)
         
-        currentDayLabel.text = dateConverter.getCalendarDateFormat(forDate: selectedDate ?? Date())
+        currentDayLabel.text = dateConverter.getCalendarDateFormat(forDate: self.selectedDate ?? Date())
         
-        self.calendar.reloadData()
-        getTheTasks(date: selectedDate ?? Date())
-        calculateTotalTime()
+        getTheTasks(date: self.selectedDate ?? Date())
+        reloadCalendar()
     }
     
     @IBAction func editButtonTapped(_ sender: Any) {
@@ -72,31 +71,31 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - Calendar customize
     
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        self.calendarHeightConstraint.constant = bounds.height
-        self.view.layoutIfNeeded()
-    }
-    
-    func customCalendar() {
+    private func customCalendar() {
         self.calendar.scope = .week
         self.calendarHeightConstraint.constant = 400
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+    internal func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        self.calendarHeightConstraint.constant = bounds.height
+        self.view.layoutIfNeeded()
+    }
+    
+    internal func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         currentDayLabel.text = dateConverter.getCalendarDateFormat(forDate: date)
         
         getTheTasks(date: date)
         calculateTotalTime()
     }
     
-    func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
+    internal func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
         
         return dataManager.getImageForDay(forDate: date, imageSize: 20)
     }
 
     // MARK: - Table header
     
-    func calculateTotalTime() {
+    private func calculateTotalTime() {
         let totalTime = dataManager.getTotalTimeForDay(forDate: calendar.selectedDate ?? Date())
         
         let timeText = dateConverter.getTimeInString(timeFromCoreData: Int32(totalTime))
@@ -104,58 +103,52 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.totalHoursLabel.text = "Total time: \(timeText)"
     }
     
+    private func reloadCalendar() {
+        self.calculateTotalTime()
+        self.calendar.reloadData()
+        self.taskTable.reloadData()
+    }
     
     // MARK: - Table view data source
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    internal func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskViewCell
-        let task = tasks[indexPath.row]
+        let shownTask = tasks[indexPath.row]
         
-        taskViewCell.setTaskCell(cell: cell, forTask: task)
+        taskViewCell.setTaskCell(cell: cell, forTask: shownTask)
 
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         taskTable.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let context = dataManager.getContext()
-        let task: Task! = tasks[indexPath.row]
+    internal func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let selectedTask: Task! = tasks[indexPath.row]
         
         let deleteTask = UIContextualAction(style: .destructive, title: "Delete") { (_, _, completionHandler) in
-            context.delete(task)
             self.tasks.remove(at: indexPath.row)
             
-            do {
-                try context.save()
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            self.calculateTotalTime()
-            self.calendar.reloadData()
+            self.dataManager.deleteTask(for: selectedTask)
             
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            self.reloadCalendar()
             completionHandler(true)
         }
         deleteTask.image = UIImage(systemName: "trash")
         
         let editTask = UIContextualAction(style: .normal, title: "Edit") { (_, _, completionHandler) in
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let editViewController = storyboard.instantiateViewController(withIdentifier: "newTask") as! NewTaskViewController
-            let navController = UINavigationController(rootViewController: editViewController)
-            
-            editViewController.currentTask = task
-            self.present(navController, animated: true, completion: nil)
+            self.openEditTaskController(forTask: selectedTask)
             
             completionHandler(true)
         }
@@ -164,47 +157,26 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return UISwipeActionsConfiguration(actions: [deleteTask, editTask])
     }
-
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let context = dataManager.getContext()
-        let task: Task! = tasks[indexPath.row]
+    internal func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let selectedTask: Task! = tasks[indexPath.row]
         
         let markCompleted = UIContextualAction(style: .normal, title: "Done") { (action, view, completionHandler) in
-            task.isDone = !task.isDone
-            do {
-                try context.save()
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            self.taskTable.reloadData()
-            self.calendar.reloadData()
             
+            self.dataManager.setTaskStatus(for: selectedTask)
+            
+            self.reloadCalendar()
             completionHandler(true)
         }
         markCompleted.backgroundColor = .systemIndigo
         markCompleted.image = UIImage(systemName: "checkmark.circle")
         
         let copyTask = UIContextualAction(style: .normal, title: "Copy") { (_, _, completionHandler) in
-            guard let taskEntity = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+            guard let taskObject = self.dataManager.copyTask(for: selectedTask) else { return }
             
-            let taskObject = Task(entity: taskEntity, insertInto: context)
-            taskObject.taskTitle = task.taskTitle
-            taskObject.group = task.group
-            taskObject.timeInt = task.timeInt
-            taskObject.date = task.date
-            taskObject.comment = task.comment
-            taskObject.isDone = false
+            self.tasks.append(taskObject)
             
-            do {
-                try context.save()
-                self.tasks.append(taskObject)
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            self.taskTable.reloadData()
-            self.calculateTotalTime()
-            
+            self.reloadCalendar()
             completionHandler(true)
         }
         copyTask.backgroundColor = .systemGray
@@ -215,7 +187,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - Core Data
     
-    func getTheTasks(date: Date) {
+    private func getTheTasks(date: Date) {
         let context = dataManager.getContext()
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         
@@ -233,18 +205,26 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - Navigation
     
-      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-          if segue.identifier == "showTask" {
-              guard let indexPath = taskTable.indexPathForSelectedRow else { return }
-              let task: Task
-              
-              task = tasks[indexPath.row]
-              
-              let destinationNavigation = segue.destination as! UINavigationController
-              let targetController = destinationNavigation.topViewController as! ViewTaskViewController
-              targetController.currentTask = task
-          }
-      }
-      
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showTask" {
+            guard let indexPath = taskTable.indexPathForSelectedRow else { return }
+            let task: Task
+            
+            task = tasks[indexPath.row]
+            
+            let destinationNavigation = segue.destination as! UINavigationController
+            let targetController = destinationNavigation.topViewController as! ViewTaskViewController
+            targetController.currentTask = task
+        }
+    }
+    
+    private func openEditTaskController(forTask task: Task) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let editViewController = storyboard.instantiateViewController(withIdentifier: "newTask") as! NewTaskViewController
+        let navController = UINavigationController(rootViewController: editViewController)
+        
+        editViewController.currentTask = task
+        self.present(navController, animated: true, completion: nil)
+    }
     
 }

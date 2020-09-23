@@ -11,14 +11,16 @@ import CoreData
 
 class DataManager {
     
-    let calendarView = CalendarView()
+    private let calendarView = CalendarView()
     
-    func getContext() -> NSManagedObjectContext {
+    internal func getContext() -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
     
-    func getDatePredicate(date: Date, fetchRequest: NSFetchRequest<Task>) {
+    // MARK: - Calendar Data
+    
+    internal func getDatePredicate(date: Date, fetchRequest: NSFetchRequest<Task>) {
         let calendar = Calendar.current
         let dateFrom = calendar.startOfDay(for: date)
         let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom)
@@ -29,7 +31,7 @@ class DataManager {
         fetchRequest.predicate = datePredicate
     }
     
-    func getTotalTimeForDay(forDate date: Date) -> Int {
+    internal func getTotalTimeForDay(forDate date: Date) -> Int {
         let context = getContext()
         
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
@@ -51,7 +53,7 @@ class DataManager {
         return totalTime
     }
     
-    func getImageForDay(forDate date: Date, imageSize: CGFloat) -> UIImage? {
+    internal func getImageForDay(forDate date: Date, imageSize: CGFloat) -> UIImage? {
         let catImage = UIImage(named: "cat.png")?.resize(scaledToHeight: imageSize)
         let wearyImage = UIImage(named: "weary-cat.png")?.resize(scaledToHeight: imageSize)
         let checkmarkImage = UIImage(named: "check.png")?.resize(scaledToHeight: imageSize)
@@ -64,29 +66,29 @@ class DataManager {
         do {
             let result = try context.fetch(fetchRequest)
             
-            if result.count > 0 {
-                for task in result as [NSManagedObject] {
-                    var completedTask = 0
-                    var totalTime = 0
-                    
-                    for res in result {
-                        if (task.value(forKey: "isDone") as! Bool) == true {
-                            completedTask += 1
-                        }
-                        let taskTime = res.value(forKey: "timeInt") as! Int
-                        totalTime += taskTime
-                    }
-                    let hours = totalTime / (60 * 60)
-                    
-                    if completedTask == result.count {
-                        return checkmarkImage
-                    } else if hours >= 12 {
-                        return wearyImage
-                    } else {
-                        return catImage
-                    }
+            guard result.count > 0 else { return nil }
+            
+            var completedTasks = 0
+            var totalTime = 0
+            
+            for task in result as [NSManagedObject] {
+                if (task.value(forKey: "isDone") as! Bool) == true {
+                    completedTasks += 1
                 }
+                let taskTime = task.value(forKey: "timeInt") as! Int
+                totalTime += taskTime
             }
+
+            let hours = totalTime / (60 * 60)
+            
+            if completedTasks == result.count {
+                return checkmarkImage
+            } else if hours >= 12 {
+                return wearyImage
+            } else {
+                return catImage
+            }
+            
         } catch let error as NSError {
             print(error.localizedDescription)
         }
@@ -94,7 +96,7 @@ class DataManager {
         return nil
     }
     
-    func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
+    internal func getColorToGroupName(withGroup taskGroup: String?) -> UIColor {
         let context = getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
         
@@ -112,10 +114,80 @@ class DataManager {
             print(error.localizedDescription)
         }
 
-        return .black
+        return .systemGray
     }
     
-    func deleteGroup(for group: Group) {
+    // MARK: - Task Data
+    
+    internal func setTaskStatus(for task: Task) {
+        let context = getContext()
+        
+        task.isDone = !task.isDone
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    internal func copyTask(for task: Task) -> Task? {
+        let context = getContext()
+        
+        guard let taskEntity = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return nil }
+        
+        let taskObject = Task(entity: taskEntity, insertInto: context)
+        taskObject.taskTitle = task.taskTitle
+        taskObject.group = task.group
+        taskObject.timeInt = task.timeInt
+        taskObject.date = task.date
+        taskObject.comment = task.comment
+        taskObject.isDone = false
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        return taskObject
+    }
+    
+    internal func deleteTask(for task: Task) {
+        let context = getContext()
+        
+        context.delete(task)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    // MARK: - Group Data
+    
+    internal func saveGroup(withTitle groupTitle: String?, withColor groupColor: String?, newGroup: Group?) {
+        let context = getContext()
+        
+        if newGroup == nil {
+            guard let entityGroup = NSEntityDescription.entity(forEntityName: "Group", in: context) else { return }
+             
+             let groupObject = Group(entity: entityGroup, insertInto: context)
+             groupObject.groupName = groupTitle
+             groupObject.color = groupColor
+        } else {
+            newGroup?.groupName = groupTitle
+            newGroup?.color = groupColor
+        }
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    internal func deleteGroup(for group: Group) {
         let context = getContext()
         
         context.delete(group)

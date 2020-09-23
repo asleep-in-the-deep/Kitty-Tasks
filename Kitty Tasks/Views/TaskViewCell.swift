@@ -23,11 +23,11 @@ class TaskViewCell: UITableViewCell {
         super.awakeFromNib()
     }
 
-    func setTaskCell(cell: TaskViewCell, forTask task: Task) {
+    internal func setTaskCell(cell: TaskViewCell, forTask task: Task) {
         cell.taskTitleLabel.text = task.taskTitle
         cell.timeLabel.text = dateConverter.getTimeInString(timeFromCoreData: task.timeInt)
         cell.groupNameLabel.text = task.group
-        cell.groupColorPoint.tintColor = dataManager.getColorToGroupName(withGroup: task.group ?? "Black")
+        cell.groupColorPoint.tintColor = dataManager.getColorToGroupName(withGroup: task.group ?? "Gray")
         
         if task.isDone == true {
             let strokeEffect: [NSAttributedString.Key : Any] = [
@@ -43,8 +43,8 @@ class TaskViewCell: UITableViewCell {
                 NSAttributedString.Key.strikethroughColor: UIColor.clear]
             cell.taskTitleLabel.attributedText = NSAttributedString(string: task.taskTitle!, attributes: strokeEffect)
             
-            cell.taskTitleLabel.textColor = .black
-            cell.groupNameLabel.textColor = .black
+            cell.taskTitleLabel.textColor = .label
+            cell.groupNameLabel.textColor = .label
         }
     }
     
