@@ -14,8 +14,6 @@ class ViewTaskViewController: UITableViewController {
     var currentTask: Task!
     var tasks: [Task] = []
     
-    let taskViewCell = TaskViewCell()
-    
     let dataManager = DataManager()
     let dateConverter = DateConverter()
     
@@ -26,43 +24,34 @@ class ViewTaskViewController: UITableViewController {
     @IBOutlet weak var viewTaskTime: UILabel!
     @IBOutlet weak var viewTaskComment: UILabel!
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
    
+        setScreen()
+    }
+    
+    @IBAction func viewTaskCancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+   
+// MARK: - Edit view
+    
+    private func setScreen(){
         viewTaskName.text = currentTask.taskTitle
         viewTaskTime.text = dateConverter.getTimeInString(timeFromCoreData: currentTask.timeInt)
-        viewTaskDate.text = getDateInString(dateFromCoreData: currentTask.date)
+        viewTaskDate.text = dateConverter.getDateInString(dateFromCoreData: currentTask.date)
         viewTaskComment.text = currentTask.comment
         colorMark.tintColor = dataManager.getColorToGroupName(withGroup: currentTask.group)
         viewTaskGroup.text = currentTask.group
     }
     
-    
-    @IBAction func viewTaskCancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
+// MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // MARK: - Core Data
-
-    private func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-        
-    }
-    
-    func getDateInString(dateFromCoreData: Date?) -> String?{
-        
-        guard dateFromCoreData != nil else { return "no time" }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
-        let timeTaskText = dateFormatter.string(from: dateFromCoreData!)
-        return timeTaskText
-    }
+// MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -72,7 +61,4 @@ class ViewTaskViewController: UITableViewController {
             targetController.currentTask = currentTask
         }
     }
-    
-
 }
-

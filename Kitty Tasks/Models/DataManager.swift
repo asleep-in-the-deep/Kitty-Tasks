@@ -199,5 +199,26 @@ class DataManager {
         }
     }
     
+    internal func getNumberOfGroupsForLabel(groupNumbersLabel: UILabel) {
+        
+        groupNumbersLabel.text = "No groups added"
+        
+        let context = getContext()
+        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+        
+        do {
+            let count = try context.count(for: fetchRequest)
+            if count > 1 {
+                groupNumbersLabel.text = "\(count) groups added"
+            } else if count == 1 {
+                groupNumbersLabel.text = "\(count) group added"
+            } else {
+                groupNumbersLabel.text = "No groups added"
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+    }
     
 }

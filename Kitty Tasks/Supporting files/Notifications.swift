@@ -59,27 +59,9 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         lastContent.badge = 1
         lastContent.categoryIdentifier = userAction
         
-        //guard let path =  Bundle.main.path(forResource: "favicon", ofType: "png") else { return }
         
-//        let url = URL(fileURLWithPath: path)
-//        
-//        do {
-//            let attachment = try UNNotificationAttachment(identifier: "favicon", url: url, options: nil)
-//
-//            content.attachments = [attachment]
-//            firstContent.attachments = [attachment]
-//            lastContent.attachments = [attachment]
-//
-//        } catch {
-//            print("attachment couldn't be loaded")
-//        }
-        
-        let date = Date()
-        let timeIntervalNotif: TimeInterval = 60
         let calendar = Calendar.current
-        
-        let hour = calendar.component(.hour, from: date)
-        let minute = calendar.component(.minute, from: date)
+
         
         func getFisrtRequestFromIntervals() -> UNNotificationRequest{
             let firstHours = firstPickerTime / (60 * 60)

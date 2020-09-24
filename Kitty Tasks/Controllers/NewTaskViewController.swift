@@ -14,12 +14,12 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     var selectedGroup: String?
     
     var tasks: [Task] = []
-    var groups: [Group] = []
     
     var groupsForPicker: [String] = []
     var currentTask: Task!
     
     var currentDate: Date!
+    var dataManager = DataManager()
     var dateConverter = DateConverter()
     
     @IBOutlet weak var newTaskName: UITextField!
@@ -33,28 +33,14 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if currentTask != nil {
-            self.title = "Edit task"
-            
-            newTaskName.text = currentTask.taskTitle
-            newTaskDate.date = currentTask.date!
-            newTaskTime.text = dateConverter.getTimeInString(timeFromCoreData: currentTask.timeInt)
-            newTaskGroup.text = currentTask.group
-            newTaskComment.text = currentTask.comment
-        } else {
-            saveButton.isEnabled = false
-        }
-        
         createPickerView()
-        
         setInputViewDatePicker(target: self, selector: #selector(tapDone)) //1
 
         newTaskName.delegate = self
+        newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         newTaskComment.delegate = self
         
         self.hideKeyboardWhenTappedOutside()
-
-        newTaskName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
         if #available(iOS 14, *) {
             newTaskDate.preferredDatePickerStyle = .wheels
@@ -67,12 +53,8 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func newTaskSave(_ sender: UIBarButtonItem) {
         
-        let taskTitle = self.newTaskName.text
         let datePicker = self.newTaskTime.inputView as? UIDatePicker
         var timeInterval = Int(datePicker?.countDownDuration ?? 60)
-
-        let dateFromDatePicker = newTaskDate.date
-        let comment = newTaskComment.text
         
         if currentTask != nil {
             if timeInterval == 60 {
@@ -80,19 +62,31 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
             }
             self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: newTaskGroup.text ?? "Default", withDate: newTaskDate.date, withComment: newTaskComment.text)
         } else {
-            self.saveTask(withTitle: taskTitle, withTime: timeInterval, withGroup: selectedGroup ?? "Default", withDate: dateFromDatePicker, withComment: comment)
+            self.saveTask(withTitle: newTaskName.text, withTime: timeInterval, withGroup: selectedGroup ?? "Default", withDate: newTaskDate.date, withComment: newTaskComment.text)
         }
         
     }
     
-    private func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
+// MARK: - Edit View
+    
+    private func setScreen(){
+        if currentTask != nil {
+            self.title = "Edit task"
+            newTaskName.text = currentTask.taskTitle
+            newTaskDate.date = currentTask.date!
+            newTaskTime.text = dateConverter.getTimeInString(timeFromCoreData: currentTask.timeInt)
+            newTaskGroup.text = currentTask.group
+            newTaskComment.text = currentTask.comment
+        } else {
+            saveButton.isEnabled = false
+        }
     }
+    
+// MARK: - Core Data
     
     private func saveTask(withTitle taskTitle: String?, withTime taskTime: Int, withGroup taskGroup: String, withDate taskDate: Date?, withComment taskComment: String?) {
         
-        let context = getContext()
+        let context = dataManager.getContext()
 
         if currentTask == nil {
             guard let entityTask = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
@@ -122,47 +116,57 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         currentDate = taskDate
         self.performSegue(withIdentifier: "saveTaskAndReload", sender: self)
     }
+    
 
+// MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "saveTaskAndReload" {
             let mainView = segue.destination as? MainViewController
             mainView?.selectedDate = currentDate
         }
     }
+
+// MARK: - Exit from keyboard by "Done" button
     
-    @objc func tapDone() {
-        if let datePicker = self.newTaskTime.inputView as? UIDatePicker {
-            let timeInterval = Int(datePicker.countDownDuration)
-            let hours = timeInterval / (60 * 60)
-            var minutes = timeInterval % (60 * 60) / 60
-            
-            if minutes == 1 {
-                minutes = 5
-                self.newTaskTime.text = "\(minutes) min"
-            } else {
-                if hours == 0 {
-                    self.newTaskTime.text = "\(minutes) min"
-                } else {
-                    if minutes == 0 {
-                        self.newTaskTime.text = "\(hours) h"
-                    }
-                    else {
-                        self.newTaskTime.text = "\(hours) h \(minutes) min"
-                    }
-                }
-            }
-        }
-        
-        self.newTaskTime.resignFirstResponder()
-    }
-
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+
+
+// MARK: - Date Picker for Execution Time
+
+    @objc func tapDone() {
+        if let datePicker = self.newTaskTime.inputView as? UIDatePicker {
+            dateConverter.getOutputTimeForPickerView(datePicker: datePicker, timeTextField: newTaskTime)
+        }
+        self.newTaskTime.resignFirstResponder()
+    }
+
 }
+    
+extension NewTaskViewController {
+    
+    func setInputViewDatePicker(target: Any, selector: Selector) {
+        
+        let screenWidth = UIScreen.main.bounds.width
+        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
+        datePicker.datePickerMode = .countDownTimer
+        newTaskTime.inputView = datePicker
+        datePicker.minuteInterval = 5
+
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let button = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
+        toolBar.setItems([button], animated: true)
+        newTaskTime.inputAccessoryView = toolBar
+    }
+}
+
+
+// MARK: - Picker View
 
 extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -204,11 +208,10 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
           view.endEditing(true)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let context = getContext()
+        let context = dataManager.getContext()
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
 
         do {
@@ -220,29 +223,9 @@ extension NewTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource{
             print(error.localizedDescription)
         }
     }
-    
 }
-    
 
-extension NewTaskViewController {
-    
-    func setInputViewDatePicker(target: Any, selector: Selector) {
-        
-        let screenWidth = UIScreen.main.bounds.width
-        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
-        datePicker.datePickerMode = .countDownTimer
-        newTaskTime.inputView = datePicker
-        datePicker.minuteInterval = 5
-
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let button = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
-        toolBar.setItems([button], animated: true)
-        newTaskTime.inputAccessoryView = toolBar
-    }
-
-    
-}
+// MARK: - Hide Keyboard functions and Save button settings
 
 extension NewTaskViewController {
     
@@ -263,6 +246,5 @@ extension NewTaskViewController {
         } else {
             saveButton.isEnabled = false
         }
-        
     }
 }
