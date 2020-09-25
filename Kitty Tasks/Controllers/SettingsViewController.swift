@@ -44,7 +44,6 @@ class SettingsViewController: UITableViewController {
         createPickerView()
         
         setValuesForNotifications()
-        sendNotificationOnShedule()
         
         if #available(iOS 14, *) {
             firstTimePicker.preferredDatePickerStyle = .wheels
@@ -57,6 +56,11 @@ class SettingsViewController: UITableViewController {
         
         dataManager.getNumberOfGroupsForLabel(groupNumbersLabel: settingsGroupNumbers)
         self.tableView.reloadData()
+        
+        if stateOfNotification.isOn == false  {
+            notifications.notificationCenter.removeAllPendingNotificationRequests()
+            notifications.notificationCenter.removeAllDeliveredNotifications()
+        }
     }
     
     @IBAction func EnableNotificationSet(_ sender: UISwitch) {

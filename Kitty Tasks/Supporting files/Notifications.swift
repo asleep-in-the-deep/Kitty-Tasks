@@ -70,7 +70,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let dateFirst = calendar.date(from: componentsFirst)
             let compFirst = calendar.dateComponents([.hour,.minute], from: dateFirst!)
             let identifier = "First notification"
-            let triggerFirst = UNCalendarNotificationTrigger(dateMatching: compFirst, repeats: false)
+            let triggerFirst = UNCalendarNotificationTrigger(dateMatching: compFirst, repeats: true)
             let requestFirst = UNNotificationRequest(identifier: identifier, content: firstContent, trigger: triggerFirst)
             return requestFirst
         }
@@ -83,7 +83,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let dateSecond = calendar.date(from: componentsSecond)
             let compSecond = calendar.dateComponents([.hour,.minute], from: dateSecond!)
             let identifier = "Second notification"
-            let triggerSecond = UNCalendarNotificationTrigger(dateMatching: compSecond, repeats: false)
+            let triggerSecond = UNCalendarNotificationTrigger(dateMatching: compSecond, repeats: true)
             let requestSecond = UNNotificationRequest(identifier: identifier, content: content, trigger: triggerSecond)
             return requestSecond
         }
@@ -96,9 +96,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Third notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestThird = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
             return requestThird
         }
         
@@ -110,9 +109,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Fourth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestFourth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
             return requestFourth
         }
         
@@ -124,9 +122,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Fifth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestFifth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
             return requestFifth
         }
         
@@ -138,9 +135,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Sixth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestSixth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
             return requestSixth
         }
         
@@ -152,9 +148,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Seventh notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestSeventh = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
             return requestSeventh
         }
         
@@ -166,9 +161,8 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
             let identifier = "Last notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: false)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
             let requestLast = UNNotificationRequest(identifier: identifier, content: lastContent, trigger: trigger)
-            
             return requestLast
         }
         

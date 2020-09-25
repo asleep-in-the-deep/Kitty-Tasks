@@ -22,14 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notifications.requestAuthorization()
         notifications.notificationCenter.delegate = notifications
         
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         return true
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        
-    }
     
     
     // MARK: - UISceneSession Lifecycle
