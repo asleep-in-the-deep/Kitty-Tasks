@@ -14,6 +14,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
     
     let notificationCenter = UNUserNotificationCenter.current()
 
+// MARK: - Request Authorization
     
     func requestAuthorization(){
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
@@ -24,13 +25,15 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
+// MARK: - Get Notification Settings
+    
     func getNotificationSettings(){
         notificationCenter.getNotificationSettings { (settings) in
             print("Notification settings: \(settings)")
         }
     }
     
-
+// MARK: - Notifications shedule
     
     func sheduleNotification(firstPickerTime: Int, lastPickerTime: Int, numberOfNotification: Int, intervalOfNotifications: TimeInterval) {
         
@@ -62,110 +65,17 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         
         let calendar = Calendar.current
 
-        
-        func getFisrtRequestFromIntervals() -> UNNotificationRequest{
-            let firstHours = firstPickerTime / (60 * 60)
-            let firstMin = firstPickerTime % (60 * 60) / 60
-            let componentsFirst = DateComponents(hour: firstHours , minute: firstMin)
-            let dateFirst = calendar.date(from: componentsFirst)
-            let compFirst = calendar.dateComponents([.hour,.minute], from: dateFirst!)
-            let identifier = "First notification"
-            let triggerFirst = UNCalendarNotificationTrigger(dateMatching: compFirst, repeats: true)
-            let requestFirst = UNNotificationRequest(identifier: identifier, content: firstContent, trigger: triggerFirst)
-            return requestFirst
-        }
-        
-        func getSecondRequestFromIntervals() -> UNNotificationRequest{
-            let secondPickerInt = firstPickerTime + Int(intervalOfNotifications)
-            let secondHours = secondPickerInt / (60 * 60)
-            let secondMin = secondPickerInt % (60 * 60) / 60
-            let componentsSecond = DateComponents(hour: secondHours , minute: secondMin)
-            let dateSecond = calendar.date(from: componentsSecond)
-            let compSecond = calendar.dateComponents([.hour,.minute], from: dateSecond!)
-            let identifier = "Second notification"
-            let triggerSecond = UNCalendarNotificationTrigger(dateMatching: compSecond, repeats: true)
-            let requestSecond = UNNotificationRequest(identifier: identifier, content: content, trigger: triggerSecond)
-            return requestSecond
-        }
-        
-        func getThirdRequestFromIntervals() -> UNNotificationRequest{
-            let thirdPickerInt = firstPickerTime + Int(intervalOfNotifications) * 2
-            let thirdHours = thirdPickerInt / (60 * 60)
-            let thirdMin = thirdPickerInt % (60 * 60) / 60
-            let components = DateComponents(hour: thirdHours , minute: thirdMin)
+        func createRequest(pickerTime: Int, interval: TimeInterval, numberOfRepeats: Int, identifier: String, content: UNMutableNotificationContent) -> UNNotificationRequest{
+            let newPickerInt = pickerTime + Int(interval) * numberOfRepeats
+            let hours = newPickerInt / (60 * 60)
+            let minutes = newPickerInt % (60 * 60) / 60
+            let components = DateComponents(hour: hours , minute: minutes)
             let date = calendar.date(from: components)
             let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Third notification"
             let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestThird = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            return requestThird
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            return request
         }
-        
-        func getFourthRequestFromIntervals() -> UNNotificationRequest{
-            let fourthPickerInt = firstPickerTime + Int(intervalOfNotifications) * 3
-            let hour = fourthPickerInt / (60 * 60)
-            let minute = fourthPickerInt % (60 * 60) / 60
-            let components = DateComponents(hour: hour , minute: minute)
-            let date = calendar.date(from: components)
-            let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Fourth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestFourth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            return requestFourth
-        }
-        
-        func getFifthRequestFromIntervals() -> UNNotificationRequest{
-            let fifthPickerInt = firstPickerTime + Int(intervalOfNotifications) * 4
-            let hour = fifthPickerInt / (60 * 60)
-            let minute = fifthPickerInt % (60 * 60) / 60
-            let components = DateComponents(hour: hour , minute: minute)
-            let date = calendar.date(from: components)
-            let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Fifth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestFifth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            return requestFifth
-        }
-        
-        func getSixthRequestFromIntervals() -> UNNotificationRequest{
-            let sixthPickerInt = firstPickerTime + Int(intervalOfNotifications) * 5
-            let hour = sixthPickerInt / (60 * 60)
-            let minute = sixthPickerInt % (60 * 60) / 60
-            let components = DateComponents(hour: hour , minute: minute)
-            let date = calendar.date(from: components)
-            let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Sixth notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestSixth = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            return requestSixth
-        }
-        
-        func getSeventhRequestFromIntervals() -> UNNotificationRequest{
-            let seventhPickerInt = firstPickerTime + Int(intervalOfNotifications) * 6
-            let hour = seventhPickerInt / (60 * 60)
-            let minute = seventhPickerInt % (60 * 60) / 60
-            let components = DateComponents(hour: hour , minute: minute)
-            let date = calendar.date(from: components)
-            let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Seventh notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestSeventh = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            return requestSeventh
-        }
-        
-        func getLastRequestFromIntervals() -> UNNotificationRequest{
-            
-            let lastHours = lastPickerTime / (60 * 60)
-            let lastMin = lastPickerTime % (60 * 60) / 60
-            let components = DateComponents(hour: lastHours , minute: lastMin)
-            let date = calendar.date(from: components)
-            let comp = calendar.dateComponents([.hour,.minute], from: date!)
-            let identifier = "Last notification"
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comp, repeats: true)
-            let requestLast = UNNotificationRequest(identifier: identifier, content: lastContent, trigger: trigger)
-            return requestLast
-        }
-        
         
         func addNotification(requestName: UNNotificationRequest){
             
@@ -178,47 +88,47 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         
         switch numberOfNotification {
         case 2:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 3:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 4:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getThirdRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 2, identifier: "Third notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 5:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getThirdRequestFromIntervals())
-            addNotification(requestName: getFourthRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 2, identifier: "Third notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 3, identifier: "Fourth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 6:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getThirdRequestFromIntervals())
-            addNotification(requestName: getFourthRequestFromIntervals())
-            addNotification(requestName: getFifthRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 2, identifier: "Third notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 3, identifier: "Fourth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 4, identifier: "Fifth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 7:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getThirdRequestFromIntervals())
-            addNotification(requestName: getFourthRequestFromIntervals())
-            addNotification(requestName: getFifthRequestFromIntervals())
-            addNotification(requestName: getSixthRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 2, identifier: "Third notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 3, identifier: "Fourth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 4, identifier: "Fifth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 5, identifier: "Sixth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         case 8:
-            addNotification(requestName: getFisrtRequestFromIntervals())
-            addNotification(requestName: getSecondRequestFromIntervals())
-            addNotification(requestName: getThirdRequestFromIntervals())
-            addNotification(requestName: getFourthRequestFromIntervals())
-            addNotification(requestName: getFifthRequestFromIntervals())
-            addNotification(requestName: getSixthRequestFromIntervals())
-            addNotification(requestName: getSeventhRequestFromIntervals())
-            addNotification(requestName: getLastRequestFromIntervals())
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "First notification", content: firstContent))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 1, identifier: "Second notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 2, identifier: "Third notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 3, identifier: "Fourth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 4, identifier: "Fifth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 5, identifier: "Sixth notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: firstPickerTime, interval: intervalOfNotifications, numberOfRepeats: 6, identifier: "Seventh notification", content: content))
+            addNotification(requestName: createRequest(pickerTime: lastPickerTime, interval: intervalOfNotifications, numberOfRepeats: 0, identifier: "Last notification", content: lastContent))
         default:
             print("something went wrong")
         }
@@ -248,6 +158,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         
     }
 
+// MARK: - User Notifications Center Settings
     
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
