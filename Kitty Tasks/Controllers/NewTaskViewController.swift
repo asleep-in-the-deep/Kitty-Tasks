@@ -45,6 +45,7 @@ class NewTaskViewController: UITableViewController, UITextFieldDelegate {
         if #available(iOS 14, *) {
             newTaskDate.preferredDatePickerStyle = .wheels
         }
+        setScreen()
     }
 
     @IBAction func newTaskCancel(_ sender: UIBarButtonItem) {
